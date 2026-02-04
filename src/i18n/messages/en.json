@@ -1,0 +1,195 @@
+{
+  "common": {
+    "addToCart": "Add to cart",
+    "buyNow": "Buy now",
+    "outOfStock": "Out of stock",
+    "currency": "EUR",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "from": "From",
+    "new": "new",
+    "save": "Save"
+  },
+  "topBar": {
+    "quality": "Our Quality Pact",
+    "repair": "Repair",
+    "stopFastTech": "Stop fast tech",
+    "mag": "The Mag"
+  },
+  "search": {
+    "placeholder": "Search for a product"
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Phones",
+    "cart": "Cart",
+    "checkout": "Checkout",
+    "sell": "Sell",
+    "help": "Need help?",
+    "account": "My account"
+  },
+  "categories": {
+    "deals": "Deals",
+    "giftIdeas": "Gift Ideas",
+    "smartphones": "Smartphones",
+    "tablets": "Tablets",
+    "laptops": "Laptops",
+    "consoles": "Consoles",
+    "smartwatches": "Smartwatches",
+    "audio": "Audio",
+    "appliances": "Home appliances",
+    "other": "Other"
+  },
+  "promo": {
+    "flashSale": "FLASH SALE",
+    "message": "3 days: -35€ on EliteBook 840 G7",
+    "cta": "Shop now"
+  },
+  "home": {
+    "hero": {
+      "title": "Here, we get the best of refurbished.",
+      "subtitle": "Cheaper and just as good as new thanks to our Quality Pact.",
+      "cta": "View phones"
+    },
+    "brands": {
+      "title": "Our brands"
+    },
+    "trust": {
+      "warranty": "12-month warranty",
+      "shipping": "Fast shipping",
+      "quality": "Quality control"
+    }
+  },
+  "catalog": {
+    "title": "Refurbished iPhones",
+    "subtitle": "Looking for a refurbished iPhone? We are the masters of refurbished iPhone deals.",
+    "productsFound": "{count} products found",
+    "filters": {
+      "price": "Price",
+      "model": "Model",
+      "year": "Release year",
+      "screen": "Screen size",
+      "storage": "Storage capacity (GB)",
+      "filter": "Filter",
+      "sort": "Sort",
+      "bestSellers": "Best sellers"
+    }
+  },
+  "product": {
+    "reviews": "reviews",
+    "savings": "You save {amount} EUR",
+    "condition": "Condition",
+    "storage": "Storage",
+    "color": "Color",
+    "battery": "Battery",
+    "batteryStandard": "Standard battery",
+    "batteryStandardDesc": "80%+ capacity",
+    "batteryNew": "New battery",
+    "batteryNewDesc": "100% capacity",
+    "included": "Included",
+    "bestSeller": "Best-seller",
+    "addToCart": "Add to cart",
+    "warranty": "12-month warranty",
+    "freeReturn": "30-day free return",
+    "fastDelivery": "Fast delivery",
+    "securePayment": "Secure payment",
+    "sim": "SIM type",
+    "inStock": "In stock",
+    "lowStock": "Low stock",
+    "selectOptions": "Select your options",
+    "delivery": {
+      "standard": "Free standard shipping in 2-4 days",
+      "extended": "Delivery within 7 business days",
+      "express": "Express delivery",
+      "returnFree": "Free returns within 30 days",
+      "warranty": "12-month commercial warranty"
+    },
+    "qualityPact": "Quality Pact",
+    "configurator": {
+      "batteryTitle": "Select battery type",
+      "batteryDesc": "All batteries are guaranteed in excellent condition.",
+      "batteryStandardLabel": "Standard battery",
+      "batteryStandardSublabel": "For normal use",
+      "batteryNewLabel": "New battery",
+      "batteryNewSublabel": "For intensive use",
+      "soldOut": "Sold out",
+      "alreadySold": "Already sold",
+      "yourSelection": "Your selection",
+      "beforeTradeIn": "before trade-in",
+      "saveAmount": "Save",
+      "changeMind": "You have 30 days to change your mind",
+      "includedWith": "Included with",
+      "chargingCable": "Compatible charging cable",
+      "conditions": {
+        "parfait": "Excellent condition",
+        "tres-bon": "Very good condition",
+        "correct": "Good condition",
+        "imparfait": "Acceptable condition"
+      },
+      "sim": {
+        "ESIM": "eSIM",
+        "DUAL SIM": "Physical SIM + eSIM",
+        "SINGLE SIM": "Physical SIM",
+        "title": "Select SIM card type",
+        "description": "A SIM (physical or digital) allows you to activate a mobile plan with your carrier and contains information such as your phone number.",
+        "desc_ESIM": "2 virtual SIM slots (no physical SIM slot)",
+        "desc_DUAL SIM": "SIM slots: 1 physical + 1 virtual",
+        "desc_SINGLE SIM": "1 physical SIM slot"
+      }
+    }
+  },
+  "cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty",
+    "continueShopping": "Continue shopping",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "total": "Total",
+    "checkout": "Checkout",
+    "remove": "Remove"
+  },
+  "checkout": {
+    "shipping": "Shipping",
+    "payment": "Payment",
+    "confirmation": "Confirmation",
+    "address": {
+      "title": "Shipping address",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "postalCode": "Postal code",
+      "city": "City",
+      "country": "Country"
+    },
+    "payNow": "Pay now",
+    "processing": "Processing...",
+    "success": {
+      "title": "Order confirmed!",
+      "message": "Thank you for your order. You will receive a confirmation email.",
+      "orderNumber": "Order number"
+    }
+  },
+  "footer": {
+    "warranty": "12-month commercial warranty",
+    "qualityCheck": "Up to 100 quality checks",
+    "freeReturn": "Free returns within 30 days",
+    "support": "Dedicated customer service",
+    "about": "About",
+    "aboutUs": "About us",
+    "qualityPact": "Our Quality Pact",
+    "careers": "Careers",
+    "help": "Help",
+    "helpCenter": "Help center",
+    "contact": "Contact us",
+    "shipping": "Shipping",
+    "legal": "Legal information",
+    "terms": "Terms & conditions",
+    "privacy": "Privacy policy",
+    "legalNotice": "Legal notice",
+    "followUs": "Follow us",
+    "rights": "All rights reserved."
+  }
+}

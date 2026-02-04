@@ -1,0 +1,195 @@
+{
+  "common": {
+    "addToCart": "Ajouter au panier",
+    "buyNow": "Acheter maintenant",
+    "outOfStock": "Rupture de stock",
+    "currency": "EUR",
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "retry": "Reessayer",
+    "from": "A partir de",
+    "new": "neuf",
+    "save": "Economisez"
+  },
+  "topBar": {
+    "quality": "Notre Pacte Qualite",
+    "repair": "Reparation",
+    "stopFastTech": "Stop fast tech",
+    "mag": "Le Mag"
+  },
+  "search": {
+    "placeholder": "Rechercher un produit"
+  },
+  "nav": {
+    "home": "Accueil",
+    "products": "Telephones",
+    "cart": "Panier",
+    "checkout": "Commander",
+    "sell": "Revendre",
+    "help": "Besoin d'aide ?",
+    "account": "Mon compte"
+  },
+  "categories": {
+    "deals": "Bons plans",
+    "giftIdeas": "Idees Cadeaux",
+    "smartphones": "Smartphones",
+    "tablets": "Tablettes",
+    "laptops": "Ordinateurs portables",
+    "consoles": "Consoles",
+    "smartwatches": "Montres connectees",
+    "audio": "Audio",
+    "appliances": "Appareils electromenagers",
+    "other": "Autres"
+  },
+  "promo": {
+    "flashSale": "VENTE FLASH",
+    "message": "3 jours : -35€ sur l'EliteBook 840 G7",
+    "cta": "J'y vais"
+  },
+  "home": {
+    "hero": {
+      "title": "Ici, on s'offre le meilleur du reconditionne.",
+      "subtitle": "Moins cher et aussi performant que le neuf grace au Pacte Qualite.",
+      "cta": "Voir les telephones"
+    },
+    "brands": {
+      "title": "Nos marques"
+    },
+    "trust": {
+      "warranty": "Garantie 12 mois",
+      "shipping": "Livraison rapide",
+      "quality": "Controle qualite"
+    }
+  },
+  "catalog": {
+    "title": "iPhone reconditionnes",
+    "subtitle": "Vous cherchez un iPhone reconditionne ? Nous sommes les maitres des offres d'iPhone reconditionnes.",
+    "productsFound": "{count} produits trouves",
+    "filters": {
+      "price": "Prix",
+      "model": "Modele",
+      "year": "Annee de sortie",
+      "screen": "Taille d'ecran",
+      "storage": "Capacite de stockage (Go)",
+      "filter": "Filtrer",
+      "sort": "Trier",
+      "bestSellers": "Meilleures ventes"
+    }
+  },
+  "product": {
+    "reviews": "avis",
+    "savings": "Vous economisez {amount} EUR",
+    "condition": "Etat",
+    "storage": "Capacite",
+    "color": "Couleur",
+    "battery": "Batterie",
+    "batteryStandard": "Batterie standard",
+    "batteryStandardDesc": "80%+ de capacite",
+    "batteryNew": "Batterie neuve",
+    "batteryNewDesc": "100% de capacite",
+    "included": "Inclus",
+    "bestSeller": "Best-seller",
+    "addToCart": "Ajouter au panier",
+    "warranty": "Garantie 12 mois",
+    "freeReturn": "Retour gratuit 30j",
+    "fastDelivery": "Livraison rapide",
+    "securePayment": "Paiement securise",
+    "sim": "Type de SIM",
+    "inStock": "En stock",
+    "lowStock": "Stock limite",
+    "selectOptions": "Selectionnez vos options",
+    "delivery": {
+      "standard": "Livraison standard offerte sous 2-4 jours",
+      "extended": "Livraison sous 7 jours ouvres",
+      "express": "Livraison express",
+      "returnFree": "Retour gratuit sous 30 jours",
+      "warranty": "Garantie commerciale 12 mois"
+    },
+    "qualityPact": "Pacte Qualite",
+    "configurator": {
+      "batteryTitle": "Selectionnez le type de batterie",
+      "batteryDesc": "Toutes les batteries sont garanties en excellent etat.",
+      "batteryStandardLabel": "Batterie standard",
+      "batteryStandardSublabel": "Pour un usage normal",
+      "batteryNewLabel": "Batterie neuve",
+      "batteryNewSublabel": "Pour un usage intensif",
+      "soldOut": "Deja vendu",
+      "alreadySold": "Deja vendu",
+      "yourSelection": "Votre selection",
+      "beforeTradeIn": "avant reprise",
+      "saveAmount": "Economisez",
+      "changeMind": "Vous avez 30 jours pour changer d'avis",
+      "includedWith": "Fourni avec",
+      "chargingCable": "Cable de chargement compatible",
+      "conditions": {
+        "parfait": "Etat parfait",
+        "tres-bon": "Etat tres bon",
+        "correct": "Etat correct",
+        "imparfait": "Etat imparfait"
+      },
+      "sim": {
+        "ESIM": "eSIM",
+        "DUAL SIM": "SIM physique + eSIM",
+        "SINGLE SIM": "SIM physique",
+        "title": "Selectionnez le type de carte SIM",
+        "description": "Une SIM (physique ou numerique) vous permet d'activer un forfait mobile aupres de votre operateur et contient des informations telles que votre numero de telephone.",
+        "desc_ESIM": "2 emplacements SIM virtuels (aucun emplacement SIM physique)",
+        "desc_DUAL SIM": "Emplacements SIM : 1 physique + 1 virtuel",
+        "desc_SINGLE SIM": "1 emplacement SIM physique"
+      }
+    }
+  },
+  "cart": {
+    "title": "Votre panier",
+    "empty": "Votre panier est vide",
+    "continueShopping": "Continuer mes achats",
+    "subtotal": "Sous-total",
+    "shipping": "Livraison",
+    "total": "Total",
+    "checkout": "Passer commande",
+    "remove": "Supprimer"
+  },
+  "checkout": {
+    "shipping": "Livraison",
+    "payment": "Paiement",
+    "confirmation": "Confirmation",
+    "address": {
+      "title": "Adresse de livraison",
+      "firstName": "Prenom",
+      "lastName": "Nom",
+      "email": "Email",
+      "phone": "Telephone",
+      "address": "Adresse",
+      "postalCode": "Code postal",
+      "city": "Ville",
+      "country": "Pays"
+    },
+    "payNow": "Payer maintenant",
+    "processing": "Traitement en cours...",
+    "success": {
+      "title": "Commande confirmee !",
+      "message": "Merci pour votre commande. Vous recevrez un email de confirmation.",
+      "orderNumber": "Numero de commande"
+    }
+  },
+  "footer": {
+    "warranty": "Garantie commerciale de 12 mois",
+    "qualityCheck": "Jusqu'a 100 points de controle",
+    "freeReturn": "Retour gratuit sous 30 jours",
+    "support": "Service client aux petits oignons",
+    "about": "A propos",
+    "aboutUs": "Qui sommes-nous",
+    "qualityPact": "Notre Pacte Qualite",
+    "careers": "Carrieres",
+    "help": "Aide",
+    "helpCenter": "Centre d'aide",
+    "contact": "Nous contacter",
+    "shipping": "Livraison",
+    "legal": "Informations legales",
+    "terms": "Conditions generales",
+    "privacy": "Politique de confidentialite",
+    "legalNotice": "Mentions legales",
+    "followUs": "Suivez-nous",
+    "rights": "Tous droits reserves."
+  }
+}

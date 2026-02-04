@@ -1,36 +1,175 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DBC Frontend - Next.js E-commerce
 
-## Getting Started
+## Vue d'ensemble
 
-First, run the development server:
+Frontend Next.js 16 pour l'application e-commerce de smartphones reconditionnés.
+Design System: Wise (couleurs, typographie, radius).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Stack technique
+
+- **Framework:** Next.js 16.1.6 (App Router, Turbopack)
+- **Styling:** Tailwind CSS v4 (CSS-first config)
+- **i18n:** next-intl (fr/en)
+- **API:** Flask backend (`/api/public/v1`)
+
+## Architecture
+
+```
+src/
+├── app/
+│   └── [locale]/
+│       ├── (shop)/
+│       │   ├── products/page.tsx           # Liste produits
+│       │   ├── products/[brand]/page.tsx   # Produits par marque
+│       │   └── products/[brand]/[model]/page.tsx  # Page produit
+│       └── layout.tsx
+├── components/
+│   ├── ui/                    # Composants UI génériques (shadcn)
+│   └── products/
+│       ├── ProductCard.tsx
+│       ├── ProductGrid.tsx
+│       ├── Breadcrumb.tsx
+│       ├── ProductConfigurator.tsx   # Composant principal config produit
+│       └── configurator/             # Composants réutilisables
+│           ├── index.ts              # Export central
+│           ├── types.ts              # Types TypeScript
+│           ├── RadioOption.tsx       # Bouton radio stylisé
+│           ├── ConfigSection.tsx     # Layout section (image + contenu)
+│           ├── ImageGallery.tsx      # Galerie images + thumbnails
+│           ├── ColorSelector.tsx     # Sélecteur couleurs
+│           ├── TrustBadges.tsx       # Badges confiance
+│           ├── StickyBottomBar.tsx   # Barre CTA mobile
+│           ├── hooks/
+│           │   └── useProductConfigurator.ts  # Logique métier
+│           └── sections/
+│               ├── HeroSection.tsx      # Image + infos produit
+│               ├── ConditionSection.tsx # Sélection condition
+│               ├── BatterySection.tsx   # Sélection batterie
+│               └── StorageSection.tsx   # Sélection stockage
+├── lib/
+│   └── api/
+│       ├── client.ts          # Client API (fetch wrapper)
+│       ├── products.ts        # Fonctions API produits
+│       └── transformers.ts    # API -> Frontend types
+├── data/
+│   └── mock/
+│       └── products.ts        # Données mock (fallback)
+└── types/
+    └── product.ts             # Types produits
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Design System (Wise)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Le thème Tailwind est override dans `globals.css` pour matcher le design system Wise:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```css
+@theme inline {
+  /* Couleurs Wise */
+  --color-gray-900: #0E0F0C;     /* Content primary */
+  --color-green-400: #9FE870;    /* Accent bright */
+  --color-green-700: #163300;    /* Primary forest */
 
-## Learn More
+  /* Border radius Wise */
+  --radius-sm: 10px;   /* Mobile: 10px, Desktop: 16px */
+  --radius-lg: 20px;   /* Mobile: 20px, Desktop: 30px */
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+Les classes Tailwind standard (`bg-gray-900`, `rounded-lg`) utilisent automatiquement les valeurs Wise.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ProductConfigurator
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Composant modulaire pour la configuration produit (style BackMarket).
 
-## Deploy on Vercel
+### Usage
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```tsx
+import { ProductConfigurator } from "@/components/products/ProductConfigurator";
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+// iPhone - toutes les options
+<ProductConfigurator product={iphone} />
+
+// Mac - sans option batterie
+<ProductConfigurator product={mac} showBattery={false} />
+
+// Samsung - toutes les options
+<ProductConfigurator product={samsung} />
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `product` | `ExtendedProduct` | required | Produit à configurer |
+| `showBattery` | `boolean` | `true` | Afficher section batterie |
+| `showStorage` | `boolean` | `true` | Afficher section stockage |
+| `showCondition` | `boolean` | `true` | Afficher section condition |
+
+### Hook useProductConfigurator
+
+Encapsule toute la logique métier:
+
+```tsx
+const {
+  selection,        // { condition, storage, color, battery }
+  setCondition,     // (id: string) => void
+  setStorage,       // (value: string) => void
+  setColor,         // (name: string) => void
+  setBattery,       // ('standard' | 'new') => void
+  variantInfo,      // { sku, price, quantity, batteryFallback }
+  isLoadingVariant, // boolean
+  colorImages,      // string[] - URLs images pour couleur sélectionnée
+  totalPrice,       // number - Prix total calculé
+  isOutOfStock,     // boolean
+  handleAddToCart,  // () => void
+} = useProductConfigurator({ product });
+```
+
+## API Integration
+
+### Endpoints utilisés
+
+| Endpoint | Fonction |
+|----------|----------|
+| `GET /models` | `getModels()` |
+| `GET /models/by-slug/:slug` | `getModelBySlug()` |
+| `GET /models/:id/options` | `getModelOptions()` |
+| `GET /models/:id/prices` | `getModelPrices()` |
+| `GET /models/:id/images` | `getModelImages()` |
+| `POST /models/:id/find-variant` | `findVariant()` |
+
+### Transformation API -> Frontend
+
+```tsx
+import { apiModelToProduct } from "@/lib/api/transformers";
+
+const product = apiModelToProduct({
+  model: apiModel,
+  prices: pricesData,
+  options: optionsData,
+  images: imagesData,
+});
+```
+
+## Développement
+
+```bash
+# Installer dépendances
+npm install
+
+# Développement
+npm run dev
+
+# Build production
+npm run build
+
+# Linter
+npm run lint
+```
+
+## Variables d'environnement
+
+```
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+NEXT_PUBLIC_PUBLIC_API_URL=http://localhost:5000/api/public/v1
+```
