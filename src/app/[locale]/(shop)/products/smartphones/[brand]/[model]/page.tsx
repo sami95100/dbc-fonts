@@ -38,7 +38,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     getModelPrices(modelData.id),
     getModelImages(modelData.id),
     getModelConditionImages(modelData.id),
-    getCategoryImages(modelData.category), // Charge les images de la categorie (mobile)
+    getCategoryImages(modelData.category || "mobile"), // Charge les images de la categorie (mobile)
   ]);
 
   if (!optionsRes.data || !pricesRes.data) {
