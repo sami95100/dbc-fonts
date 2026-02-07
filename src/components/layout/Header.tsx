@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { SearchBar } from "./SearchBar";
@@ -8,7 +9,13 @@ import { useCartStore } from "@/stores/cart-store";
 export function Header() {
   const locale = useLocale();
   const t = useTranslations("nav");
+  const [mounted, setMounted] = useState(false);
   const itemCount = useCartStore((state) => state.getItemCount());
+
+  // Prevent hydration mismatch - cart comes from localStorage
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <header className="border-b border-gray-200 bg-white">
@@ -114,7 +121,7 @@ export function Header() {
                   d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                 />
               </svg>
-              {itemCount > 0 && (
+              {mounted && itemCount > 0 && (
                 <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-xs font-medium text-white">
                   {itemCount}
                 </span>

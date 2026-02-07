@@ -115,6 +115,7 @@
       "batteryNewSublabel": "For intensive use",
       "soldOut": "Sold out",
       "alreadySold": "Already sold",
+      "addedToCart": "Added to cart",
       "yourSelection": "Your selection",
       "beforeTradeIn": "before trade-in",
       "saveAmount": "Save",
@@ -141,20 +142,32 @@
   },
   "cart": {
     "title": "Your cart",
-    "empty": "Your cart is empty",
+    "emptyTitle": "Your cart is empty",
+    "emptyDescription": "Browse our catalog to find your next device.",
+    "browseProducts": "Browse products",
     "continueShopping": "Continue shopping",
+    "summary": "Summary",
     "subtotal": "Subtotal",
     "shipping": "Shipping",
+    "free": "Free",
+    "delivery": "Delivery",
+    "deliveryStandard": "1-2 days",
+    "deliveryExtended": "6-7 days",
     "total": "Total",
-    "checkout": "Checkout",
-    "remove": "Remove"
+    "checkout": "Proceed to checkout",
+    "remove": "Remove",
+    "newBattery": "New battery",
+    "standardBattery": "Standard battery"
   },
   "checkout": {
-    "shipping": "Shipping",
-    "payment": "Payment",
-    "confirmation": "Confirmation",
-    "address": {
-      "title": "Shipping address",
+    "emptyCart": "Your cart is empty",
+    "backToCart": "Back to cart",
+    "steps": {
+      "address": "Address",
+      "confirmation": "Confirmation"
+    },
+    "shippingInfo": "Shipping information",
+    "fields": {
       "firstName": "First name",
       "lastName": "Last name",
       "email": "Email",
@@ -164,13 +177,38 @@
       "city": "City",
       "country": "Country"
     },
-    "payNow": "Pay now",
-    "processing": "Processing...",
-    "success": {
-      "title": "Order confirmed!",
-      "message": "Thank you for your order. You will receive a confirmation email.",
-      "orderNumber": "Order number"
-    }
+    "errors": {
+      "required": "This field is required",
+      "invalidEmail": "Invalid email format",
+      "invalidPhone": "Invalid phone format",
+      "invalidPostalCode": "Invalid postal code",
+      "submitFailed": "Error creating order"
+    },
+    "orderSummary": "Order summary",
+    "items": "items",
+    "item": "item",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "free": "Free",
+    "total": "Total",
+    "confirmOrder": "Confirm order",
+    "submitting": "Creating order..."
+  },
+  "confirmation": {
+    "noOrder": "No order found",
+    "backToHome": "Back to home",
+    "title": "Order confirmed!",
+    "subtitle": "Thank you for your order.",
+    "orderNumber": "Order number",
+    "emailSent": "Confirmation email sent",
+    "emailDescription": "You will receive an email with your order details.",
+    "nextSteps": "Next steps",
+    "step1": "We are preparing your order as quickly as possible.",
+    "step2": "You will receive an email with your tracking number.",
+    "step3": "Your package will be delivered to the address provided.",
+    "continueShopping": "Continue shopping",
+    "questions": "Questions?",
+    "contactUs": "Contact us"
   },
   "footer": {
     "warranty": "12-month commercial warranty",

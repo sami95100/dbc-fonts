@@ -1,10 +1,10 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Check, Truck, RotateCcw, Cable, Calendar } from "lucide-react";
+import { Check, Truck, RotateCcw, Cable, Calendar, ShoppingCart } from "lucide-react";
 import { getImageUrls } from "@/lib/api/transformers";
 import type { ProductSelection, ConfigurableProduct } from "../types";
 import type { ModelImagesByColor } from "@/types/product";
@@ -17,7 +17,7 @@ interface OrderSummaryProps {
   priceNew: number;
   isOutOfStock: boolean;
   isLoading: boolean;
-  onAddToCart: () => void;
+  onAddToCart: () => boolean | void;
   /** Show SIM in summary (default: true if product has sims) */
   showSim?: boolean;
   /** Show battery in summary (default: true) */
@@ -45,11 +45,22 @@ function OrderSummaryComponent({
   const tDelivery = useTranslations("product.delivery");
   const tCommon = useTranslations("common");
 
+  const [isAdded, setIsAdded] = useState(false);
+
   const conditionLabel = t(`conditions.${selection.condition}`);
   const batteryLabel = selection.battery === "new" ? t("batteryNewLabel") : t("batteryStandardLabel");
   const simLabel = selection.sim ? t(`sim.${selection.sim.toUpperCase()}`) : selection.sim;
 
   const savings = priceNew - totalPrice;
+
+  const handleAddToCart = useCallback(() => {
+    const result = onAddToCart();
+    // Treat void (undefined) or true as success
+    if (result !== false) {
+      setIsAdded(true);
+      setTimeout(() => setIsAdded(false), 2000);
+    }
+  }, [onAddToCart]);
 
   // Check if extended delivery is needed (new battery selected but not in stock)
   const needsExtendedDelivery = useMemo(() => {
@@ -150,9 +161,13 @@ function OrderSummaryComponent({
 
         {/* Add to cart button */}
         <Button
-          onClick={onAddToCart}
-          disabled={isOutOfStock || isLoading}
-          className="mt-5 w-full rounded-xl bg-green-700 py-6 text-base font-semibold text-white hover:bg-green-800 disabled:opacity-50"
+          onClick={handleAddToCart}
+          disabled={isOutOfStock || isLoading || isAdded}
+          className={`mt-5 w-full rounded-xl py-6 text-base font-semibold text-white transition-all duration-300 ${
+            isAdded
+              ? "bg-green-600 scale-[1.02]"
+              : "bg-green-700 hover:bg-green-800 active:scale-[0.98]"
+          } disabled:opacity-50`}
         >
           {isLoading ? (
             <span className="flex items-center justify-center gap-2">
@@ -162,10 +177,18 @@ function OrderSummaryComponent({
               </svg>
               {tCommon("loading")}
             </span>
+          ) : isAdded ? (
+            <span className="flex items-center justify-center gap-2">
+              <Check className="h-5 w-5" />
+              {t("addedToCart")}
+            </span>
           ) : isOutOfStock ? (
             <span className="text-red-200">{t("alreadySold")}</span>
           ) : (
-            tCommon("addToCart")
+            <span className="flex items-center justify-center gap-2">
+              <ShoppingCart className="h-5 w-5" />
+              {tCommon("addToCart")}
+            </span>
           )}
         </Button>
 

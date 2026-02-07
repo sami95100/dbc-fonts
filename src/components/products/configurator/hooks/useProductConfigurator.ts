@@ -9,6 +9,8 @@ import {
 } from "@/lib/api/products";
 import { getImageUrls } from "@/lib/api/transformers";
 import { getProductImage } from "@/data/mock/products";
+import { useCartStore } from "@/stores/cart-store";
+import type { CartItem } from "@/types/cart";
 import type { ModelImagesByCondition } from "@/types/product";
 import type {
   ConfigurableProduct,
@@ -58,7 +60,7 @@ interface UseProductConfiguratorReturn {
   isOutOfStock: boolean;
 
   // Actions
-  handleAddToCart: () => void;
+  handleAddToCart: () => boolean;
 }
 
 /**
@@ -362,17 +364,40 @@ export function useProductConfigurator({
   // Actions
   // ============================================
 
-  const handleAddToCart = useCallback(() => {
-    if (!variantInfo || isOutOfStock) return;
+  const addItem = useCartStore((state) => state.addItem);
 
-    // TODO: Implement cart logic
-    console.log("Add to cart:", {
-      product: product.id,
-      variant: variantInfo.sku,
-      selection,
+  const handleAddToCart = useCallback((): boolean => {
+    if (!variantInfo || isOutOfStock) return false;
+
+    const cartItem: Omit<CartItem, "id"> = {
+      variantId: variantInfo.sku,
+      sku: variantInfo.sku,
+      model: product.name,
+      modelId: product.id,
+      storage: selection.storage,
+      color: selection.color,
+      grade: selection.condition,
+      battery: selection.battery,
+      batteryFallback: variantInfo.batteryFallback,
+      needsShopProcessing: variantInfo.needsShopProcessing,
       price: totalPrice,
-    });
-  }, [product.id, variantInfo, isOutOfStock, selection, totalPrice]);
+      quantity: 1,
+      imageUrl: colorImages[0] || fallbackImage,
+    };
+
+    addItem(cartItem);
+    return true;
+  }, [
+    product.id,
+    product.name,
+    variantInfo,
+    isOutOfStock,
+    selection,
+    totalPrice,
+    colorImages,
+    fallbackImage,
+    addItem,
+  ]);
 
   // ============================================
   // Return

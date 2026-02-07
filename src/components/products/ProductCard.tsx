@@ -61,7 +61,7 @@ export function ProductCard({ product }: ProductCardProps) {
               ))}
             </div>
             <span className="text-xs text-gray-500">
-              {product.rating}/5 ({product.reviewCount.toLocaleString()})
+              {product.rating}/5 ({product.reviewCount.toLocaleString("fr-FR")})
             </span>
           </div>
 
@@ -69,14 +69,14 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="flex items-baseline gap-2">
             <span className="text-xs text-gray-500">{t("from")}</span>
             <span className="text-lg font-bold text-gray-900">
-              {product.priceFrom.toLocaleString()} €
+              {product.priceFrom.toLocaleString("fr-FR")} €
             </span>
           </div>
 
           {/* Original price */}
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-400 line-through">
-              {product.priceNew.toLocaleString()} € {t("new")}
+              {product.priceNew.toLocaleString("fr-FR")} € {t("new")}
             </span>
           </div>
 

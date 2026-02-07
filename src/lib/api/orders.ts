@@ -1,4 +1,4 @@
-import { api } from "./client";
+import { api, publicApi } from "./client";
 import type {
   CreateOrderPayload,
   CreateOrderResponse,
@@ -12,7 +12,7 @@ interface OrderDetailResponse {
 }
 
 export async function createOrder(payload: CreateOrderPayload) {
-  return api.post<CreateOrderResponse>("/orders", payload);
+  return publicApi.post<CreateOrderResponse>("/orders", payload);
 }
 
 export async function getOrder(orderId: string) {

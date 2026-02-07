@@ -115,6 +115,7 @@
       "batteryNewSublabel": "Pour un usage intensif",
       "soldOut": "Deja vendu",
       "alreadySold": "Deja vendu",
+      "addedToCart": "Ajoute au panier",
       "yourSelection": "Votre selection",
       "beforeTradeIn": "avant reprise",
       "saveAmount": "Economisez",
@@ -141,20 +142,32 @@
   },
   "cart": {
     "title": "Votre panier",
-    "empty": "Votre panier est vide",
+    "emptyTitle": "Votre panier est vide",
+    "emptyDescription": "Parcourez notre catalogue pour trouver votre prochain appareil.",
+    "browseProducts": "Voir les produits",
     "continueShopping": "Continuer mes achats",
+    "summary": "Recapitulatif",
     "subtotal": "Sous-total",
     "shipping": "Livraison",
+    "free": "Gratuite",
+    "delivery": "Delai",
+    "deliveryStandard": "1-2 jours",
+    "deliveryExtended": "6-7 jours",
     "total": "Total",
-    "checkout": "Passer commande",
-    "remove": "Supprimer"
+    "checkout": "Passer la commande",
+    "remove": "Supprimer",
+    "newBattery": "Batterie neuve",
+    "standardBattery": "Batterie standard"
   },
   "checkout": {
-    "shipping": "Livraison",
-    "payment": "Paiement",
-    "confirmation": "Confirmation",
-    "address": {
-      "title": "Adresse de livraison",
+    "emptyCart": "Votre panier est vide",
+    "backToCart": "Retour au panier",
+    "steps": {
+      "address": "Adresse",
+      "confirmation": "Confirmation"
+    },
+    "shippingInfo": "Informations de livraison",
+    "fields": {
       "firstName": "Prenom",
       "lastName": "Nom",
       "email": "Email",
@@ -164,13 +177,38 @@
       "city": "Ville",
       "country": "Pays"
     },
-    "payNow": "Payer maintenant",
-    "processing": "Traitement en cours...",
-    "success": {
-      "title": "Commande confirmee !",
-      "message": "Merci pour votre commande. Vous recevrez un email de confirmation.",
-      "orderNumber": "Numero de commande"
-    }
+    "errors": {
+      "required": "Ce champ est requis",
+      "invalidEmail": "Format email invalide",
+      "invalidPhone": "Format telephone invalide",
+      "invalidPostalCode": "Code postal invalide",
+      "submitFailed": "Erreur lors de la creation de la commande"
+    },
+    "orderSummary": "Recapitulatif",
+    "items": "articles",
+    "item": "article",
+    "subtotal": "Sous-total",
+    "shipping": "Livraison",
+    "free": "Gratuite",
+    "total": "Total",
+    "confirmOrder": "Confirmer la commande",
+    "submitting": "Creation en cours..."
+  },
+  "confirmation": {
+    "noOrder": "Aucune commande trouvee",
+    "backToHome": "Retour a l'accueil",
+    "title": "Commande confirmee !",
+    "subtitle": "Merci pour votre commande.",
+    "orderNumber": "Numero de commande",
+    "emailSent": "Email de confirmation envoye",
+    "emailDescription": "Vous recevrez un email avec les details de votre commande.",
+    "nextSteps": "Prochaines etapes",
+    "step1": "Nous preparons votre commande dans les meilleurs delais.",
+    "step2": "Vous recevrez un email avec le numero de suivi.",
+    "step3": "Votre colis sera livre a l'adresse indiquee.",
+    "continueShopping": "Continuer mes achats",
+    "questions": "Des questions ?",
+    "contactUs": "Contactez-nous"
   },
   "footer": {
     "warranty": "Garantie commerciale de 12 mois",
