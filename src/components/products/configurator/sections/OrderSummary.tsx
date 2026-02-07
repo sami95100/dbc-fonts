@@ -152,7 +152,7 @@ function OrderSummaryComponent({
         <Button
           onClick={onAddToCart}
           disabled={isOutOfStock || isLoading}
-          className="mt-5 w-full rounded-xl bg-gray-900 py-6 text-base font-semibold text-white hover:bg-gray-800 disabled:opacity-50"
+          className="mt-5 w-full rounded-xl bg-green-700 py-6 text-base font-semibold text-white hover:bg-green-800 disabled:opacity-50"
         >
           {isLoading ? (
             <span className="flex items-center justify-center gap-2">

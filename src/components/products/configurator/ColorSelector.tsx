@@ -67,7 +67,7 @@ function ColorSelectorComponent({
               flex items-center gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all duration-150
               ${
                 isSelected && isAvailable
-                  ? "border-gray-900 bg-gray-50"
+                  ? "border-green-700 bg-green-50"
                   : isAvailable
                   ? "border-gray-200 bg-white hover:border-gray-300"
                   : "cursor-not-allowed border-gray-200 bg-gray-50 opacity-60"

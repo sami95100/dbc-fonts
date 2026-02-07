@@ -76,7 +76,7 @@ export function PriceRangeFilter({
         className={cn(
           "flex items-center gap-1 rounded-full border px-3 py-1.5 text-sm font-normal transition-colors",
           hasSelection
-            ? "border-gray-900 bg-gray-900 text-white"
+            ? "border-green-700 bg-green-700 text-white"
             : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
         )}
       >
@@ -152,7 +152,7 @@ export function PriceRangeFilter({
             <button
               type="button"
               onClick={handleApply}
-              className="flex-1 rounded-md bg-gray-900 py-2 text-sm font-medium text-white hover:bg-gray-800"
+              className="flex-1 rounded-md bg-green-700 py-2 text-sm font-medium text-white hover:bg-green-800"
             >
               Appliquer
             </button>

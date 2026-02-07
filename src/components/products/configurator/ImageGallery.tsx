@@ -52,7 +52,7 @@ function ImageGalleryComponent({
                   relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border-2
                   transition-all duration-150
                   ${currentIndex === idx
-                    ? "border-gray-900"
+                    ? "border-green-700"
                     : "border-gray-200 hover:border-gray-300"
                   }
                 `}
@@ -100,7 +100,7 @@ function ImageGalleryComponent({
               onClick={() => setCurrentIndex(idx)}
               className={`
                 h-2 w-2 rounded-full transition-colors
-                ${currentIndex === idx ? "bg-gray-900" : "bg-gray-300"}
+                ${currentIndex === idx ? "bg-green-700" : "bg-gray-300"}
               `}
             />
           ))}

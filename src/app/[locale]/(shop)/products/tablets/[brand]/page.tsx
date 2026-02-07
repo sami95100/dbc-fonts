@@ -103,8 +103,8 @@ export default async function TabletsBrandPage({ params }: TabletsBrandPageProps
                 href={`/${locale}/products/tablets/${sub.slug}`}
                 className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
                   sub.slug === brand
-                    ? "border-gray-900 bg-gray-900 text-white"
-                    : "border-gray-200 bg-white text-gray-700 hover:border-gray-900 hover:bg-gray-900 hover:text-white"
+                    ? "border-green-700 bg-green-700 text-white"
+                    : "border-gray-200 bg-white text-gray-700 hover:border-green-700 hover:bg-green-700 hover:text-white"
                 }`}
               >
                 {locale === "fr" ? sub.nameFr : sub.name}

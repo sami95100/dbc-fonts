@@ -12,7 +12,7 @@ export function PromoBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="relative bg-[#e8e4ff] py-2">
+    <div className="relative bg-yellow-200 py-2">
       <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 text-sm">
         <span className="font-semibold text-yellow-600">{t("flashSale")}</span>
         <span className="text-gray-800">{t("message")}</span>

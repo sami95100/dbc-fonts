@@ -44,7 +44,7 @@ function StickyBottomBarComponent({
             size="lg"
             disabled={isOutOfStock || isLoading}
             onClick={onAddToCart}
-            className="flex-1 rounded-xl bg-gray-900 py-4 font-semibold text-white hover:bg-gray-800 disabled:cursor-not-allowed disabled:bg-gray-300"
+            className="flex-1 rounded-xl bg-green-700 py-4 font-semibold text-white hover:bg-green-800 disabled:cursor-not-allowed disabled:bg-gray-300"
           >
             {isLoading ? (
               <LoadingSpinner />

@@ -188,7 +188,7 @@ function StickyHeaderComponent({
             <Button
               onClick={onAddToCart}
               disabled={isOutOfStock || isLoading}
-              className="shrink-0 whitespace-nowrap rounded-full bg-gray-900 px-6 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50"
+              className="shrink-0 whitespace-nowrap rounded-full bg-green-700 px-6 py-2 text-sm font-medium text-white hover:bg-green-800 disabled:opacity-50"
             >
               {isLoading ? (
                 <span className="flex items-center gap-2">

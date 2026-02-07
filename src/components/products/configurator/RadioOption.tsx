@@ -44,7 +44,7 @@ function RadioOptionComponent({
         flex w-full items-center justify-between rounded-2xl border p-4 text-left
         transition-all duration-150 ease-out
         ${selected && !soldOut
-          ? "border-gray-900 bg-gray-50"
+          ? "border-green-700 bg-green-50"
           : "border-gray-200 bg-white hover:border-gray-300"
         }
         ${isDisabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}
@@ -57,7 +57,7 @@ function RadioOptionComponent({
           className={`
             flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2
             transition-colors duration-150
-            ${selected && !soldOut ? "border-gray-900 bg-gray-900" : "border-gray-300 bg-white"}
+            ${selected && !soldOut ? "border-green-700 bg-green-700" : "border-gray-300 bg-white"}
             ${soldOut ? "border-gray-200 bg-gray-100" : ""}
           `}
           aria-hidden="true"

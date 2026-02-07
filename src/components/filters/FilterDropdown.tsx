@@ -67,13 +67,13 @@ export function FilterDropdown({
         className={cn(
           "flex items-center gap-1 rounded-full border px-3 py-1.5 text-sm font-normal transition-colors",
           hasSelection
-            ? "border-gray-900 bg-gray-900 text-white"
+            ? "border-green-700 bg-green-700 text-white"
             : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
         )}
       >
         {label}
         {hasSelection && selected.length > 1 && (
-          <span className="ml-0.5 rounded-full bg-white px-1.5 text-xs font-medium text-gray-900">
+          <span className="ml-0.5 rounded-full bg-white px-1.5 text-xs font-medium text-green-700">
             {selected.length}
           </span>
         )}
@@ -114,7 +114,7 @@ export function FilterDropdown({
                     className={cn(
                       "flex h-4 w-4 items-center justify-center rounded border",
                       selected.includes(option.value)
-                        ? "border-gray-900 bg-gray-900 text-white"
+                        ? "border-green-700 bg-green-700 text-white"
                         : "border-gray-300"
                     )}
                   >
@@ -139,7 +139,7 @@ export function FilterDropdown({
                     className={cn(
                       "flex h-4 w-4 items-center justify-center rounded-full border",
                       selected.includes(option.value)
-                        ? "border-gray-900 bg-gray-900"
+                        ? "border-green-700 bg-green-700"
                         : "border-gray-300"
                     )}
                   >

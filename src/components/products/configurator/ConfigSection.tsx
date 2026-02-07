@@ -162,7 +162,7 @@ function ConfigSectionComponent({
                   key={index}
                   onClick={() => setSelectedIndex(index)}
                   className={`h-2.5 w-2.5 rounded-full transition-colors ${
-                    selectedIndex === index ? "bg-gray-900" : "bg-gray-300"
+                    selectedIndex === index ? "bg-green-700" : "bg-gray-300"
                   }`}
                   aria-label={`Image ${index + 1}`}
                 />
@@ -173,7 +173,7 @@ function ConfigSectionComponent({
             <div className="flex gap-2">
               <button
                 onClick={() => setSelectedIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1))}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white transition-colors hover:bg-gray-700"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-green-700 text-white transition-colors hover:bg-green-800"
                 aria-label="Image precedente"
               >
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -182,7 +182,7 @@ function ConfigSectionComponent({
               </button>
               <button
                 onClick={() => setSelectedIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0))}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white transition-colors hover:bg-gray-700"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-green-700 text-white transition-colors hover:bg-green-800"
                 aria-label="Image suivante"
               >
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

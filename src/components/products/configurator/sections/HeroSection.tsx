@@ -113,7 +113,7 @@ function HeroSectionComponent({
             size="lg"
             disabled={isOutOfStock || isLoading}
             onClick={onAddToCart}
-            className="hidden rounded-xl bg-gray-900 px-8 py-6 text-lg font-semibold text-white hover:bg-gray-800 disabled:cursor-not-allowed disabled:bg-gray-300 lg:inline-flex"
+            className="hidden rounded-xl bg-green-700 px-8 py-6 text-lg font-semibold text-white hover:bg-green-800 disabled:cursor-not-allowed disabled:bg-gray-300 lg:inline-flex"
           >
             {isLoading ? (
               <LoadingSpinner />
