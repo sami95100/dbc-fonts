@@ -1,3 +1,4 @@
+import { Toaster } from "sonner";
 import { TopBar } from "@/components/layout/TopBar";
 import { Header } from "@/components/layout/Header";
 import { CategoryNav } from "@/components/layout/CategoryNav";
@@ -11,6 +12,7 @@ interface ShopLayoutProps {
 export default function ShopLayout({ children }: ShopLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
+      <Toaster position="top-right" richColors />
       <TopBar />
       <Header />
       <CategoryNav />

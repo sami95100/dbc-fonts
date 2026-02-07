@@ -367,7 +367,7 @@ export function useProductConfigurator({
   const addItem = useCartStore((state) => state.addItem);
 
   const handleAddToCart = useCallback((): boolean => {
-    if (!variantInfo || isOutOfStock) return false;
+    if (!variantInfo || !variantInfo.sku || isOutOfStock) return false;
 
     const cartItem: Omit<CartItem, "id"> = {
       variantId: variantInfo.sku,

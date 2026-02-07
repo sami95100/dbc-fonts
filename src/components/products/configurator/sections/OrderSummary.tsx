@@ -2,7 +2,9 @@
 
 import { memo, useMemo, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import Image from "next/image";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Check, Truck, RotateCcw, Cable, Calendar, ShoppingCart } from "lucide-react";
 import { getImageUrls } from "@/lib/api/transformers";
@@ -41,6 +43,7 @@ function OrderSummaryComponent({
   colorImages,
   availableBatteries,
 }: OrderSummaryProps) {
+  const locale = useLocale();
   const t = useTranslations("product.configurator");
   const tDelivery = useTranslations("product.delivery");
   const tCommon = useTranslations("common");
@@ -59,8 +62,18 @@ function OrderSummaryComponent({
     if (result !== false) {
       setIsAdded(true);
       setTimeout(() => setIsAdded(false), 2000);
+
+      // Show toast notification
+      toast.success(t("addedToCart"), {
+        description: `${product.name} ${selection.storage} - ${selection.color}`,
+        action: {
+          label: locale === "fr" ? "Voir le panier" : "View cart",
+          onClick: () => window.location.href = `/${locale}/cart`,
+        },
+        duration: 4000,
+      });
     }
-  }, [onAddToCart]);
+  }, [onAddToCart, product.name, selection.storage, selection.color, locale, t]);
 
   // Check if extended delivery is needed (new battery selected but not in stock)
   const needsExtendedDelivery = useMemo(() => {
