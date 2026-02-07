@@ -68,11 +68,11 @@
 
 @theme inline {
   /* ============================================
-   * WISE DESIGN SYSTEM - Tailwind Theme Override
-   * Les classes Tailwind standard utilisent les valeurs Wise
+   * DBC BRANDING - Tailwind Theme Override
+   * Dark Green: #034638 | Light Green: #00BF6F | Bright Green: #D8E142
    * ============================================ */
 
-  /* Gray scale -> Wise content colors */
+  /* Gray scale */
   --color-gray-50: #FAFAFA;
   --color-gray-100: #F5F5F5;
   --color-gray-200: #EBEBEB;
@@ -85,71 +85,75 @@
   --color-gray-900: #0E0F0C;
   --color-gray-950: #0A0B09;
 
-  /* Green -> Wise green (accent) */
-  --color-green-50: #F0FDF4;
-  --color-green-100: #DCFCE7;
-  --color-green-200: #BBF7D0;
-  --color-green-300: #9FE870;
-  --color-green-400: #9FE870;
-  --color-green-500: #9FE870;
-  --color-green-600: #2F5711;
-  --color-green-700: #163300;
-  --color-green-800: #163300;
-  --color-green-900: #163300;
-  --color-green-950: #0D1F00;
+  /* Green -> DBC Green palette */
+  --color-green-50: #E6F7F1;
+  --color-green-100: #C2EBD9;
+  --color-green-200: #8FDFC0;
+  --color-green-300: #4DD9A5;
+  --color-green-400: #00BF6F;
+  --color-green-500: #00BF6F;
+  --color-green-600: #00A35F;
+  --color-green-700: #034638;
+  --color-green-800: #034638;
+  --color-green-900: #022B23;
+  --color-green-950: #011A15;
 
-  /* Red -> Wise negative */
+  /* Red -> Negative */
   --color-red-50: #FEF2F2;
   --color-red-100: #FEE2E2;
   --color-red-200: #FECACA;
   --color-red-300: #FCA5A5;
   --color-red-400: #F87171;
-  --color-red-500: #A8200D;
-  --color-red-600: #A8200D;
-  --color-red-700: #7F1D1D;
-  --color-red-800: #5C1515;
-  --color-red-900: #450A0A;
-  --color-red-950: #2D0707;
+  --color-red-500: #EF4444;
+  --color-red-600: #DC2626;
+  --color-red-700: #B91C1C;
+  --color-red-800: #991B1B;
+  --color-red-900: #7F1D1D;
+  --color-red-950: #450A0A;
 
-  /* Yellow/Amber -> Wise warning */
-  --color-yellow-50: #FFFBEB;
-  --color-yellow-100: #FEF3C7;
-  --color-yellow-200: #FDE68A;
-  --color-yellow-300: #FCD34D;
-  --color-yellow-400: #FBBF24;
-  --color-yellow-500: #B25000;
-  --color-yellow-600: #B25000;
-  --color-yellow-700: #92400E;
-  --color-yellow-800: #78350F;
-  --color-yellow-900: #451A03;
-  --color-yellow-950: #2D1106;
+  /* Yellow -> DBC Bright Green (lime) */
+  --color-yellow-50: #FEFCE8;
+  --color-yellow-100: #FEF9C3;
+  --color-yellow-200: #FEF08A;
+  --color-yellow-300: #D8E142;
+  --color-yellow-400: #D8E142;
+  --color-yellow-500: #D8E142;
+  --color-yellow-600: #B5C235;
+  --color-yellow-700: #8A9428;
+  --color-yellow-800: #5F661C;
+  --color-yellow-900: #3D4212;
+  --color-yellow-950: #1F220A;
 
   /* White/Black */
   --color-white: #FFFFFF;
-  --color-black: #0E0F0C;
+  --color-black: #000000;
 
   /* Semantic colors */
   --color-background: #FFFFFF;
-  --color-foreground: #0E0F0C;
+  --color-foreground: #000000;
   --color-muted: #F5F5F5;
   --color-muted-foreground: #454745;
   --color-border: #EBEBEB;
-  --color-ring: #163300;
+  --color-ring: #034638;
 
-  /* Primary -> Forest green */
-  --color-primary: #163300;
+  /* Primary -> DBC Dark Green */
+  --color-primary: #034638;
   --color-primary-foreground: #FFFFFF;
 
   /* Secondary -> Elevated gray */
   --color-secondary: #F5F5F5;
-  --color-secondary-foreground: #0E0F0C;
+  --color-secondary-foreground: #000000;
 
-  /* Accent -> Bright green */
-  --color-accent: #9FE870;
-  --color-accent-foreground: #163300;
+  /* Accent -> DBC Light Green */
+  --color-accent: #00BF6F;
+  --color-accent-foreground: #FFFFFF;
+
+  /* Highlight -> DBC Bright Green */
+  --color-highlight: #D8E142;
+  --color-highlight-foreground: #034638;
 
   /* Destructive -> Negative red */
-  --color-destructive: #A8200D;
+  --color-destructive: #DC2626;
   --color-destructive-foreground: #FFFFFF;
 
   /* Fonts */
@@ -196,8 +200,8 @@ h1, h2, h3, h4, h5, h6 {
   outline-offset: 2px;
 }
 
-/* Selection - Wise bright green */
+/* Selection - DBC Light Green */
 ::selection {
-  background: #9FE870;
-  color: #163300;
+  background: #00BF6F;
+  color: #FFFFFF;
 }
