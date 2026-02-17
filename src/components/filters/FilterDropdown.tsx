@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useTranslations } from "next-intl";
+import { ChevronDown, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface FilterOption {
@@ -26,6 +28,7 @@ export function FilterDropdown({
   multiSelect = false,
   className,
 }: FilterDropdownProps) {
+  const t = useTranslations("catalog.filters");
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -65,7 +68,7 @@ export function FilterDropdown({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "flex items-center gap-1 rounded-full border px-3 py-1.5 text-sm font-normal transition-colors",
+          "flex items-center gap-1 rounded-full border px-3 py-2.5 text-sm font-normal transition-colors",
           hasSelection
             ? "border-green-700 bg-green-700 text-white"
             : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
@@ -77,29 +80,19 @@ export function FilterDropdown({
             {selected.length}
           </span>
         )}
-        <svg
+        <ChevronDown
           className={cn(
             "ml-1 h-4 w-4 transition-transform",
             isOpen && "rotate-180"
           )}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
+        />
       </button>
 
       {isOpen && (
         <div className="absolute left-0 top-full z-50 mt-2 min-w-[200px] rounded-lg border border-gray-200 bg-white py-2 shadow-lg">
           {options.length === 0 ? (
             <div className="px-4 py-2 text-sm text-gray-500">
-              Aucune option disponible
+              {t("noOptions")}
             </div>
           ) : (
             options.map((option) => (
@@ -107,7 +100,7 @@ export function FilterDropdown({
                 key={option.value}
                 type="button"
                 onClick={() => handleSelect(option.value)}
-                className="flex w-full items-center gap-3 px-4 py-2 text-left text-sm hover:bg-gray-50"
+                className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm hover:bg-gray-50"
               >
                 {multiSelect ? (
                   <span
@@ -119,19 +112,7 @@ export function FilterDropdown({
                     )}
                   >
                     {selected.includes(option.value) && (
-                      <svg
-                        className="h-3 w-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
+                      <Check className="h-3 w-3" />
                     )}
                   </span>
                 ) : (

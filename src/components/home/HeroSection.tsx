@@ -1,99 +1,91 @@
 import Link from "next/link";
+import Image from "next/image";
+import { useLocale, useTranslations } from "next-intl";
+import { ArrowRight, ShieldCheck, ClipboardCheck, RefreshCw, Truck } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { DbcLogoIcon } from "@/components/ui/dbc-logo";
 
-interface HeroSectionProps {
-  locale?: string;
-}
-
-export function HeroSection({ locale = "fr" }: HeroSectionProps) {
-  const isFr = locale === "fr";
+export function HeroSection() {
+  const locale = useLocale();
+  const t = useTranslations("home");
 
   return (
-    <section className="bg-gray-50 py-12 md:py-16 lg:py-20">
-      <div className="mx-auto max-w-7xl px-4 text-center">
-        <h1 className="mb-4 text-3xl font-bold italic text-gray-900 md:text-4xl lg:text-5xl">
-          {isFr
-            ? "Ici, on s'offre le meilleur du reconditionne."
-            : "Here, we treat ourselves to the best refurbished."}
-        </h1>
-        <p className="mb-8 text-base text-gray-600 md:text-lg">
-          {isFr
-            ? "Moins cher et aussi performant que le neuf grace au "
-            : "Cheaper and as powerful as new thanks to our "}
-          <Link href="/quality" className="font-medium text-gray-900 underline">
-            {isFr ? "Pacte Qualite DBC" : "DBC Quality Pact"}
+    <section className="relative overflow-hidden bg-primary">
+      {/* Pattern overlay */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: "url('/images/brand/pattern.svg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
+
+      <div className="relative mx-auto max-w-7xl px-4 py-16 md:py-20 lg:py-24">
+        <div className="flex flex-col items-center text-center">
+          {/* Logo icon as decorative element */}
+          <DbcLogoIcon className="mb-6 h-10 w-auto text-highlight md:h-12" />
+
+          {/* Tagline */}
+          <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-highlight">
+            {t("hero.tagline")}
+          </p>
+
+          {/* Main heading */}
+          <h1 className="mb-6 max-w-3xl font-display text-4xl font-bold text-white md:text-5xl lg:text-6xl">
+            {t("hero.title")}
+          </h1>
+
+          {/* Brush stroke underline */}
+          <div className="mb-8 h-3 w-48 md:w-64">
+            <Image
+              src="/images/brand/brush-underline.svg"
+              alt=""
+              width={624}
+              height={71}
+              className="h-full w-full object-contain opacity-30 brightness-0 invert"
+              aria-hidden="true"
+            />
+          </div>
+
+          {/* Subtitle */}
+          <p className="mb-10 max-w-xl text-lg text-green-200 md:text-xl">
+            {t("hero.subtitle")}
+          </p>
+
+          {/* CTA Button */}
+          <Link
+            href={`/${locale}/products/smartphones`}
+            className={cn(
+              "group inline-flex items-center gap-2 rounded-full px-8 py-4",
+              "bg-highlight text-highlight-foreground",
+              "text-base font-semibold",
+              "transition-all hover:scale-105 hover:shadow-lg hover:shadow-highlight/20"
+            )}
+          >
+            {t("hero.cta")}
+            <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
           </Link>
-          .
-        </p>
+        </div>
 
         {/* Trust badges */}
-        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-700 md:gap-8">
-          <div className="flex items-center gap-2">
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        <div className="mt-16 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+          {[
+            { icon: ShieldCheck, label: t("trust.warrantyMonths") },
+            { icon: ClipboardCheck, label: t("trust.checkpoints") },
+            { icon: RefreshCw, label: t("trust.freeReturn") },
+            { icon: Truck, label: t("trust.shipping") },
+          ].map(({ icon: Icon, label }) => (
+            <div
+              key={label}
+              className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-sm"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-              />
-            </svg>
-            <span>{isFr ? "Reconditionneurs verifies" : "Verified refurbishers"}</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-              />
-            </svg>
-            <span>{isFr ? "Jusqu'a 100 points de controle" : "Up to 100 checkpoints"}</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-              />
-            </svg>
-            <span>{isFr ? "Retour gratuit sous 30 jours" : "Free returns within 30 days"}</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-              />
-            </svg>
-            <span>{isFr ? "12 mois de garantie commerciale" : "12 months warranty"}</span>
-          </div>
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-highlight/10">
+                <Icon className="h-5 w-5 text-highlight" aria-hidden="true" />
+              </div>
+              <span className="text-sm font-medium text-white/90">{label}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>

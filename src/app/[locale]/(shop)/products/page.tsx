@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import { TrustBar } from "@/components/products/TrustBar";
 import { CATEGORIES } from "@/data/mock/categories";
 
@@ -8,6 +10,7 @@ interface ProductsPageProps {
 
 export default async function ProductsPage({ params }: ProductsPageProps) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "products" });
 
   return (
     <>
@@ -16,12 +19,10 @@ export default async function ProductsPage({ params }: ProductsPageProps) {
       <div className="mx-auto max-w-7xl px-4 py-6">
         <div className="mb-8">
           <h1 className="mb-2 text-3xl font-bold text-gray-900 md:text-4xl">
-            {locale === "fr" ? "Nos produits reconditionnes" : "Our refurbished products"}
+            {t("title")}
           </h1>
           <p className="text-gray-600">
-            {locale === "fr"
-              ? "Choisissez une categorie pour decouvrir nos produits"
-              : "Choose a category to discover our products"}
+            {t("subtitle")}
           </p>
         </div>
 
@@ -35,7 +36,7 @@ export default async function ProductsPage({ params }: ProductsPageProps) {
             >
               <div className="mb-4">
                 <h2 className="text-xl font-bold text-gray-900 group-hover:text-gray-700">
-                  {locale === "fr" ? category.nameFr : category.name}
+                  {category.nameFr}
                 </h2>
               </div>
 
@@ -47,7 +48,7 @@ export default async function ProductsPage({ params }: ProductsPageProps) {
                       key={sub.id}
                       className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600"
                     >
-                      {locale === "fr" ? sub.nameFr : sub.name}
+                      {sub.name}
                     </span>
                   ))}
                   {category.subcategories.length > 4 && (
@@ -60,9 +61,7 @@ export default async function ProductsPage({ params }: ProductsPageProps) {
 
               {/* Arrow */}
               <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 transition-transform group-hover:translate-x-1">
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                <ChevronRight className="h-6 w-6" />
               </div>
             </Link>
           ))}

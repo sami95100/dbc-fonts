@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
+import { X } from "lucide-react";
 
 export function PromoBanner() {
   const [isVisible, setIsVisible] = useState(true);
@@ -12,30 +13,23 @@ export function PromoBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="relative bg-yellow-200 py-2">
+    <div className="relative bg-highlight py-2">
       <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 text-sm">
-        <span className="font-semibold text-yellow-600">{t("flashSale")}</span>
-        <span className="text-gray-800">{t("message")}</span>
+        <span className="font-bold text-primary">{t("flashSale")}</span>
+        <span className="text-primary/80">{t("message")}</span>
         <Link
-          href={`/${locale}/deals`}
-          className="font-medium text-gray-900 underline hover:no-underline"
+          href={`/${locale}/products/smartphones`}
+          className="font-medium text-primary underline hover:no-underline"
         >
           {t("cta")}
         </Link>
       </div>
       <button
         onClick={() => setIsVisible(false)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700"
+        className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-primary/50 hover:text-primary"
         aria-label="Close"
       >
-        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
+        <X className="h-5 w-5" aria-hidden="true" />
       </button>
     </div>
   );

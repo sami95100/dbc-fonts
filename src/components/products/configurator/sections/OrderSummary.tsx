@@ -2,11 +2,10 @@
 
 import { memo, useMemo, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
-import { useLocale } from "next-intl";
 import Image from "next/image";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Check, Truck, RotateCcw, Cable, Calendar, ShoppingCart } from "lucide-react";
+import { Check, Truck, RotateCcw, Cable, Calendar, ShoppingCart, Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { getImageUrls } from "@/lib/api/transformers";
 import type { ProductSelection, ConfigurableProduct } from "../types";
 import type { ModelImagesByColor } from "@/types/product";
@@ -43,7 +42,6 @@ function OrderSummaryComponent({
   colorImages,
   availableBatteries,
 }: OrderSummaryProps) {
-  const locale = useLocale();
   const t = useTranslations("product.configurator");
   const tDelivery = useTranslations("product.delivery");
   const tCommon = useTranslations("common");
@@ -62,18 +60,8 @@ function OrderSummaryComponent({
     if (result !== false) {
       setIsAdded(true);
       setTimeout(() => setIsAdded(false), 2000);
-
-      // Show toast notification
-      toast.success(t("addedToCart"), {
-        description: `${product.name} ${selection.storage} - ${selection.color}`,
-        action: {
-          label: locale === "fr" ? "Voir le panier" : "View cart",
-          onClick: () => window.location.href = `/${locale}/cart`,
-        },
-        duration: 4000,
-      });
     }
-  }, [onAddToCart, product.name, selection.storage, selection.color, locale, t]);
+  }, [onAddToCart]);
 
   // Check if extended delivery is needed (new battery selected but not in stock)
   const needsExtendedDelivery = useMemo(() => {
@@ -176,18 +164,17 @@ function OrderSummaryComponent({
         <Button
           onClick={handleAddToCart}
           disabled={isOutOfStock || isLoading || isAdded}
-          className={`mt-5 w-full rounded-xl py-6 text-base font-semibold text-white transition-all duration-300 ${
+          className={cn(
+            "mt-5 w-full rounded-xl py-6 text-base font-semibold text-white transition-all duration-300",
             isAdded
               ? "bg-green-600 scale-[1.02]"
-              : "bg-green-700 hover:bg-green-800 active:scale-[0.98]"
-          } disabled:opacity-50`}
+              : "bg-green-700 hover:bg-green-800 active:scale-[0.98]",
+            "disabled:opacity-50"
+          )}
         >
           {isLoading ? (
             <span className="flex items-center justify-center gap-2">
-              <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-              </svg>
+              <Loader2 className="h-5 w-5 animate-spin" />
               {tCommon("loading")}
             </span>
           ) : isAdded ? (

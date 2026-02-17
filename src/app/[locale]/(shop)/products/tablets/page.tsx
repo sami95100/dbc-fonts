@@ -5,6 +5,7 @@ import { getModels, getModelOptions, getModelPrices } from "@/lib/api/products";
 import { getFilters } from "@/lib/api/filters";
 import { apiModelToProduct } from "@/lib/api/transformers";
 import { getCategoryBySlug } from "@/data/mock/categories";
+import { getTranslations } from "next-intl/server";
 
 interface TabletsPageProps {
   params: Promise<{
@@ -15,8 +16,10 @@ interface TabletsPageProps {
 export default async function TabletsPage({ params }: TabletsPageProps) {
   const { locale } = await params;
 
+  const t = await getTranslations({ locale, namespace: "products" });
+  const tCat = await getTranslations({ locale, namespace: "categories" });
+
   const category = getCategoryBySlug("tablets");
-  const categoryName = locale === "fr" ? category?.nameFr : category?.name;
 
   // Charger les modeles tablettes et les filtres
   const [modelsResponse, filtersResponse] = await Promise.all([
@@ -69,19 +72,17 @@ export default async function TabletsPage({ params }: TabletsPageProps) {
         {/* Breadcrumb */}
         <Breadcrumb
           items={[
-            { label: categoryName || "Tablettes" },
+            { label: tCat("tablets") },
           ]}
         />
 
         {/* Title */}
         <div className="mb-6">
           <h1 className="mb-2 text-3xl font-bold text-gray-900 md:text-4xl">
-            {locale === "fr" ? "Tablettes reconditionnees" : "Refurbished tablets"}
+            {t("tabletsTitle")}
           </h1>
           <p className="text-gray-600">
-            {locale === "fr"
-              ? "Decouvrez notre selection de tablettes reconditionnees"
-              : "Discover our selection of refurbished tablets"}
+            {t("tabletsSubtitle")}
           </p>
         </div>
 
@@ -94,7 +95,7 @@ export default async function TabletsPage({ params }: TabletsPageProps) {
                 href={`/${locale}/products/tablets/${sub.slug}`}
                 className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:border-green-700 hover:bg-green-700 hover:text-white"
               >
-                {locale === "fr" ? sub.nameFr : sub.name}
+                {sub.name}
               </a>
             ))}
           </div>

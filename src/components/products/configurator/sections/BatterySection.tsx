@@ -2,6 +2,7 @@
 
 import { memo, useMemo } from "react";
 import { useTranslations } from "next-intl";
+import { Calendar } from "lucide-react";
 import { ConfigSection } from "../ConfigSection";
 import { RadioOption } from "../RadioOption";
 import type { BatterySectionProps } from "../types";
@@ -88,9 +89,7 @@ function BatterySectionComponent({
       {/* Extended delivery message when battery replacement needed */}
       {showExtendedDelivery && (
         <div className="mt-3 flex items-center gap-2 rounded-lg bg-blue-50 p-3">
-          <svg className="h-5 w-5 shrink-0 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
+          <Calendar className="h-5 w-5 shrink-0 text-blue-600" />
           <p className="text-sm text-blue-800">
             {tDelivery("extended")}
           </p>

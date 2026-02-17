@@ -64,6 +64,18 @@ export interface VariantInfo {
 }
 
 // ============================================
+// Cart Confirmation
+// ============================================
+
+export interface CartConfirmationItem {
+  productName: string;
+  imageUrl: string;
+  price: number;
+  storage: string;
+  color: string;
+}
+
+// ============================================
 // Component Props
 // ============================================
 

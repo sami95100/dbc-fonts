@@ -1,36 +1,37 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export function SearchBar() {
   const [query, setQuery] = useState("");
+  const router = useRouter();
+  const locale = useLocale();
   const t = useTranslations("search");
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = query.trim();
+    if (!trimmed) return;
+    router.push(`/${locale}/products/smartphones?search=${encodeURIComponent(trimmed)}`);
+    setQuery("");
+  };
+
   return (
-    <div className="relative flex-1 max-w-xl">
+    <form onSubmit={handleSubmit} className="relative flex-1 max-w-xl">
       <div className="relative">
-        <svg
-          className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
-        <input
+        <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" aria-hidden="true" />
+        <Input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t("placeholder")}
-          className="h-12 w-full rounded-full border border-gray-200 bg-gray-50 pl-12 pr-4 text-sm placeholder:text-gray-400 focus:border-gray-300 focus:bg-white focus:outline-none"
+          className="h-12 rounded-full bg-gray-50 pl-12 pr-4 focus:bg-white"
         />
       </div>
-    </div>
+    </form>
   );
 }

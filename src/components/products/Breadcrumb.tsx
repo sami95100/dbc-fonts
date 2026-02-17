@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
+import { ChevronRight } from "lucide-react";
 
 interface BreadcrumbItem {
   label: string;
@@ -21,19 +22,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
       </Link>
       {items.map((item, index) => (
         <div key={index} className="flex items-center gap-2">
-          <svg
-            className="h-4 w-4 text-gray-300"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
+          <ChevronRight className="h-4 w-4 text-gray-300" />
           {item.href ? (
             <Link href={`/${locale}${item.href}`} className="hover:text-gray-900">
               {item.label}

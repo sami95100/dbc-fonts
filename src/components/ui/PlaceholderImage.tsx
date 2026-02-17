@@ -1,5 +1,8 @@
 "use client";
 
+import { Smartphone } from "lucide-react";
+import { cn } from "@/lib/utils";
+
 interface PlaceholderImageProps {
   productName: string;
   className?: string;
@@ -31,22 +34,10 @@ export function PlaceholderImage({
 
   return (
     <div
-      className={`${sizeClasses[size]} ${getColor(productName)} ${className} flex items-center justify-center rounded-xl`}
+      className={cn(sizeClasses[size], getColor(productName), className, "flex items-center justify-center rounded-xl")}
     >
       <div className="text-center">
-        <svg
-          className="mx-auto h-12 w-12 text-gray-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-          />
-        </svg>
+        <Smartphone className="mx-auto h-12 w-12 text-gray-400" />
         <p className="mt-2 text-xs text-gray-500">{productName}</p>
       </div>
     </div>

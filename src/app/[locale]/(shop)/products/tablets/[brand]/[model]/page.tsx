@@ -10,6 +10,7 @@ import {
   getCategoryImages,
 } from "@/lib/api/products";
 import { apiModelToProduct } from "@/lib/api/transformers";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 interface ProductPageProps {
@@ -22,6 +23,8 @@ interface ProductPageProps {
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { locale, brand, model: modelSlug } = await params;
+
+  const tCat = await getTranslations({ locale, namespace: "categories" });
 
   // Charger le modele par slug
   const modelResponse = await getModelBySlug(modelSlug);
@@ -67,7 +70,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div className="mx-auto max-w-7xl px-4 py-6">
         <Breadcrumb
           items={[
-            { label: locale === "fr" ? "Tablettes" : "Tablets", href: `/${locale}/products/tablets` },
+            { label: tCat("tablets"), href: `/${locale}/products/tablets` },
             { label: modelData.brand, href: `/${locale}/products/tablets/${brand}` },
             { label: modelData.name },
           ]}

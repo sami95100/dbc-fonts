@@ -17,6 +17,7 @@ import type {
   ProductSelection,
   VariantInfo,
   BatteryType,
+  CartConfirmationItem,
 } from "../types";
 
 // Mapping grade ID vers nom API
@@ -61,6 +62,10 @@ interface UseProductConfiguratorReturn {
 
   // Actions
   handleAddToCart: () => boolean;
+
+  // Cart confirmation
+  lastAddedItem: CartConfirmationItem | null;
+  clearLastAdded: () => void;
 }
 
 /**
@@ -365,6 +370,9 @@ export function useProductConfigurator({
   // ============================================
 
   const addItem = useCartStore((state) => state.addItem);
+  const [lastAddedItem, setLastAddedItem] = useState<CartConfirmationItem | null>(null);
+
+  const clearLastAdded = useCallback(() => setLastAddedItem(null), []);
 
   const handleAddToCart = useCallback((): boolean => {
     if (!variantInfo || !variantInfo.sku || isOutOfStock) return false;
@@ -386,6 +394,15 @@ export function useProductConfigurator({
     };
 
     addItem(cartItem);
+
+    setLastAddedItem({
+      productName: product.name,
+      imageUrl: colorImages[0] || fallbackImage,
+      price: totalPrice,
+      storage: selection.storage,
+      color: selection.color,
+    });
+
     return true;
   }, [
     product.id,
@@ -422,5 +439,7 @@ export function useProductConfigurator({
     savings,
     isOutOfStock,
     handleAddToCart,
+    lastAddedItem,
+    clearLastAdded,
   };
 }

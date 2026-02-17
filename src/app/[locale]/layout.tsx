@@ -5,6 +5,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { cn } from "@/lib/utils";
+import { AuthProvider } from "@/components/auth/AuthProvider";
 import "../globals.css";
 
 // Police principale pour les titres
@@ -93,10 +95,10 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${almarenaNeue.variable} ${generalSans.variable} ${geistMono.variable} font-sans antialiased`}
+        className={cn(almarenaNeue.variable, generalSans.variable, geistMono.variable, "font-sans antialiased")}
       >
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <AuthProvider>{children}</AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>

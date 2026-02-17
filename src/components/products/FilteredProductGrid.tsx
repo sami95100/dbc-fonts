@@ -2,6 +2,7 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { ProductGrid } from "./ProductGrid";
 import { FilterBarWrapper } from "@/components/filters";
 import { getModels, getModelOptions, getModelPrices } from "@/lib/api/products";
@@ -23,6 +24,7 @@ function FilteredProductGridInner({
   locale,
 }: FilteredProductGridProps) {
   const searchParams = useSearchParams();
+  const t = useTranslations("catalog.filters");
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [filters] = useState<FilterValues>(initialFilters);
   const [loading, setLoading] = useState(false);
@@ -99,7 +101,7 @@ function FilteredProductGridInner({
         <FilterBarWrapper availableFilters={filters} />
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-500">
-            {products.length} {locale === "fr" ? "produit(s) trouve(s)" : "product(s) found"}
+            {t("productsFound", { count: products.length })}
           </span>
         </div>
       </div>
@@ -117,9 +119,7 @@ function FilteredProductGridInner({
       ) : products.length === 0 ? (
         <div className="py-12 text-center">
           <p className="text-gray-500">
-            {locale === "fr"
-              ? "Aucun produit ne correspond a vos criteres"
-              : "No products match your criteria"}
+            {t("noResults")}
           </p>
         </div>
       ) : (

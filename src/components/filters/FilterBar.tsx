@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+import { X } from "lucide-react";
 import { FilterDropdown, type FilterOption } from "./FilterDropdown";
 import { PriceRangeFilter } from "./PriceRangeFilter";
 import type { FilterValues } from "@/lib/api/filters";
@@ -24,6 +26,8 @@ export function FilterBar({
   onFiltersChange,
   className,
 }: FilterBarProps) {
+  const t = useTranslations("catalog.filters");
+
   // Convertir les annees en options
   const yearOptions: FilterOption[] = availableFilters.years.map((year) => ({
     value: String(year),
@@ -80,7 +84,7 @@ export function FilterBar({
       <div className="flex flex-wrap items-center gap-2">
         {/* Filtre Prix */}
         <PriceRangeFilter
-          label="Prix"
+          label={t("price")}
           min={availableFilters.price.min || 0}
           max={availableFilters.price.max || 2000}
           currentMin={activeFilters.minPrice}
@@ -91,7 +95,7 @@ export function FilterBar({
         {/* Filtre Annee */}
         {yearOptions.length > 0 && (
           <FilterDropdown
-            label="Annee"
+            label={t("year")}
             options={yearOptions}
             selected={activeFilters.years.map(String)}
             onChange={handleYearsChange}
@@ -102,7 +106,7 @@ export function FilterBar({
         {/* Filtre Stockage */}
         {storageOptions.length > 0 && (
           <FilterDropdown
-            label="Stockage"
+            label={t("storage")}
             options={storageOptions}
             selected={activeFilters.storages}
             onChange={handleStoragesChange}
@@ -115,22 +119,10 @@ export function FilterBar({
           <button
             type="button"
             onClick={handleClearAll}
-            className="flex items-center gap-1 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm font-normal text-gray-700 hover:bg-gray-50"
+            className="flex items-center gap-1 rounded-full border border-gray-200 bg-white px-3 py-2.5 text-sm font-normal text-gray-700 hover:bg-gray-50"
           >
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-            Effacer
+            <X className="h-4 w-4" />
+            {t("clear")}
           </button>
         )}
       </div>

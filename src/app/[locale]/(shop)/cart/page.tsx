@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useCartStore } from "@/stores/cart-store";
 import { CartItemRow } from "@/components/cart/CartItemRow";
@@ -26,19 +27,7 @@ export default function CartPage() {
           /* Empty state */
           <div className="rounded-lg border border-gray-200 bg-white p-8 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-              <svg
-                className="h-8 w-8 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                />
-              </svg>
+              <ShoppingCart className="h-8 w-8 text-gray-400" />
             </div>
             <h2 className="mb-2 text-lg font-medium text-gray-900">
               {t("emptyTitle")}

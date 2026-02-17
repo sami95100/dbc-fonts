@@ -1,7 +1,7 @@
 "use client";
 
 import { memo } from "react";
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { ConfigSection } from "../ConfigSection";
 import { ColorSelector } from "../ColorSelector";
 import type { ProductColor } from "@/data/mock/products";
@@ -42,7 +42,7 @@ function ColorSectionComponent({
   colorImages,
   availableColors,
 }: ColorSectionProps) {
-  const locale = useLocale();
+  const t = useTranslations("product.configurator");
 
   // Get all image URLs for selected color
   const selectedColorImages = colorImages
@@ -51,7 +51,7 @@ function ColorSectionComponent({
 
   if (colors.length === 0) return null;
 
-  const title = locale === "fr" ? "Selectionnez la couleur" : "Select color";
+  const title = t("colorTitle");
 
   return (
     <ConfigSection

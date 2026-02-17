@@ -1,6 +1,8 @@
 "use client";
 
+import { memo } from "react";
 import Image from "next/image";
+import { ImageIcon, Minus, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { CartItem } from "@/types/cart";
 
@@ -10,19 +12,14 @@ interface CartItemRowProps {
   onRemove: (id: string) => void;
 }
 
-const GRADE_LABELS: Record<string, string> = {
-  parfait: "Parfait",
-  "tres-bon": "Tres bon",
-  correct: "Correct",
-  imparfait: "Imparfait",
-};
 
-export function CartItemRow({
+function CartItemRowComponent({
   item,
   onUpdateQuantity,
   onRemove,
 }: CartItemRowProps) {
   const t = useTranslations("cart");
+  const gradeLabel = t(`grades.${item.grade}`);
 
   const handleDecrement = () => {
     if (item.quantity > 1) {
@@ -48,19 +45,7 @@ export function CartItemRow({
           />
         ) : (
           <div className="flex h-full items-center justify-center text-gray-400">
-            <svg
-              className="h-8 w-8"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-              />
-            </svg>
+            <ImageIcon className="h-8 w-8" />
           </div>
         )}
       </div>
@@ -72,7 +57,7 @@ export function CartItemRow({
             {item.model} {item.storage}
           </h3>
           <p className="mt-1 text-sm text-gray-500">
-            {item.color} &bull; {GRADE_LABELS[item.grade] || item.grade}
+            {item.color} &bull; {gradeLabel}
           </p>
           <p className="text-sm text-gray-500">
             {item.battery === "new" ? t("newBattery") : t("standardBattery")}
@@ -80,42 +65,44 @@ export function CartItemRow({
         </div>
 
         {/* Price and quantity */}
-        <div className="mt-2 flex items-center justify-between">
+        <div className="mt-2 flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
             {/* Quantity controls */}
             <button
+              type="button"
               onClick={handleDecrement}
               disabled={item.quantity <= 1}
-              className="flex h-8 w-8 items-center justify-center rounded border border-gray-300 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex h-9 w-9 items-center justify-center rounded border border-gray-300 text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 sm:h-11 sm:w-11"
+              aria-label={t("decreaseQuantity")}
             >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-              </svg>
+              <Minus className="h-4 w-4" />
             </button>
-            <span className="w-8 text-center font-medium">{item.quantity}</span>
+            <span className="w-6 text-center font-medium sm:w-8">{item.quantity}</span>
             <button
+              type="button"
               onClick={handleIncrement}
-              className="flex h-8 w-8 items-center justify-center rounded border border-gray-300 text-gray-600 transition hover:bg-gray-50"
+              className="flex h-9 w-9 items-center justify-center rounded border border-gray-300 text-gray-600 transition hover:bg-gray-50 sm:h-11 sm:w-11"
+              aria-label={t("increaseQuantity")}
             >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
+              <Plus className="h-4 w-4" />
             </button>
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="font-semibold text-gray-900">
-              {(item.price * item.quantity).toLocaleString("fr-FR")} €
-            </span>
-            <button
-              onClick={() => onRemove(item.id)}
-              className="text-sm text-red-600 hover:text-red-700"
-            >
-              {t("remove")}
-            </button>
-          </div>
+          <span className="font-semibold text-gray-900">
+            {(item.price * item.quantity).toLocaleString("fr-FR")} €
+          </span>
+
+          <button
+            type="button"
+            onClick={() => onRemove(item.id)}
+            className="ml-auto text-sm text-red-600 hover:text-red-700"
+          >
+            {t("remove")}
+          </button>
         </div>
       </div>
     </div>
   );
 }
+
+export const CartItemRow = memo(CartItemRowComponent);

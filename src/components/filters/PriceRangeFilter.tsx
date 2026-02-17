@@ -1,7 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useTranslations } from "next-intl";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 
 interface PriceRangeFilterProps {
   label: string;
@@ -22,6 +25,7 @@ export function PriceRangeFilter({
   onChange,
   className,
 }: PriceRangeFilterProps) {
+  const t = useTranslations("catalog.filters");
   const [isOpen, setIsOpen] = useState(false);
   const [localMin, setLocalMin] = useState(currentMin?.toString() || "");
   const [localMax, setLocalMax] = useState(currentMax?.toString() || "");
@@ -81,40 +85,30 @@ export function PriceRangeFilter({
         )}
       >
         {displayLabel}
-        <svg
+        <ChevronDown
           className={cn(
             "ml-1 h-4 w-4 transition-transform",
             isOpen && "rotate-180"
           )}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
+        />
       </button>
 
       {isOpen && (
         <div className="absolute left-0 top-full z-50 mt-2 w-[280px] rounded-lg border border-gray-200 bg-white p-4 shadow-lg">
           <div className="mb-3 text-sm font-medium text-gray-900">
-            Fourchette de prix
+            {t("priceRange")}
           </div>
 
           <div className="mb-4 flex items-center gap-2">
             <div className="flex-1">
               <label className="mb-1 block text-xs text-gray-500">Min</label>
               <div className="relative">
-                <input
+                <Input
                   type="number"
                   value={localMin}
                   onChange={(e) => setLocalMin(e.target.value)}
                   placeholder={String(min)}
-                  className="w-full rounded-md border border-gray-200 px-3 py-2 pr-8 text-sm focus:border-gray-400 focus:outline-none"
+                  className="pr-8"
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
                   EUR
@@ -127,12 +121,12 @@ export function PriceRangeFilter({
             <div className="flex-1">
               <label className="mb-1 block text-xs text-gray-500">Max</label>
               <div className="relative">
-                <input
+                <Input
                   type="number"
                   value={localMax}
                   onChange={(e) => setLocalMax(e.target.value)}
                   placeholder={String(max)}
-                  className="w-full rounded-md border border-gray-200 px-3 py-2 pr-8 text-sm focus:border-gray-400 focus:outline-none"
+                  className="pr-8"
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
                   EUR
@@ -147,14 +141,14 @@ export function PriceRangeFilter({
               onClick={handleReset}
               className="flex-1 rounded-md border border-gray-200 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
-              Effacer
+              {t("clear")}
             </button>
             <button
               type="button"
               onClick={handleApply}
               className="flex-1 rounded-md bg-green-700 py-2 text-sm font-medium text-white hover:bg-green-800"
             >
-              Appliquer
+              {t("apply")}
             </button>
           </div>
         </div>

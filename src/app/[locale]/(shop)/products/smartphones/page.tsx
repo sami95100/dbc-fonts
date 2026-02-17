@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { Breadcrumb } from "@/components/products/Breadcrumb";
 import { TrustBar } from "@/components/products/TrustBar";
 import { FilteredProductGrid } from "@/components/products/FilteredProductGrid";
@@ -14,6 +15,7 @@ interface SmartphonesPageProps {
 
 export default async function SmartphonesPage({ params }: SmartphonesPageProps) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "products" });
 
   const category = getCategoryBySlug("smartphones");
 
@@ -65,18 +67,16 @@ export default async function SmartphonesPage({ params }: SmartphonesPageProps) 
       <div className="mx-auto max-w-7xl px-4 py-6">
         <Breadcrumb
           items={[
-            { label: locale === "fr" ? "Smartphones" : "Smartphones" },
+            { label: "Smartphones" },
           ]}
         />
 
         <div className="mb-6">
           <h1 className="mb-2 text-3xl font-bold text-gray-900 md:text-4xl">
-            {locale === "fr" ? "Smartphones reconditionnes" : "Refurbished smartphones"}
+            {t("smartphonesTitle")}
           </h1>
           <p className="text-gray-600">
-            {locale === "fr"
-              ? "Decouvrez notre selection de smartphones reconditionnes"
-              : "Discover our selection of refurbished smartphones"}
+            {t("smartphonesSubtitle")}
           </p>
         </div>
 
@@ -89,7 +89,7 @@ export default async function SmartphonesPage({ params }: SmartphonesPageProps) 
                 href={`/${locale}/products/smartphones/${sub.slug}`}
                 className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:border-green-700 hover:bg-green-700 hover:text-white"
               >
-                {locale === "fr" ? sub.nameFr : sub.name}
+                {sub.name}
               </a>
             ))}
           </div>

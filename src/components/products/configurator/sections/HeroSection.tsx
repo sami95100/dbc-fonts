@@ -2,6 +2,8 @@
 
 import { memo, useMemo } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import { Star, Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ImageGallery } from "../ImageGallery";
 import { TrustBadges, DeliveryIcon, ReturnIcon, ShieldIcon } from "../TrustBadges";
@@ -37,6 +39,7 @@ function HeroSectionComponent({
   onAddToCart,
 }: HeroSectionProps) {
   const t = useTranslations("product");
+  const tCommon = useTranslations("common");
   const locale = useLocale();
 
   // Calculate prices
@@ -52,18 +55,18 @@ function HeroSectionComponent({
   const trustBadges = useMemo(() => [
     {
       icon: <DeliveryIcon />,
-      title: locale === "fr" ? "Livraison standard offerte" : "Free standard delivery",
+      title: t("configurator.freeDelivery"),
     },
     {
       icon: <ReturnIcon />,
-      title: locale === "fr" ? "Retour gratuit sous 30 jours" : "Free 30-day returns",
-      subtitle: locale === "fr" ? "Garantie commerciale 12 mois" : "12-month warranty",
+      title: t("configurator.freeReturns"),
+      subtitle: t("configurator.warrantyMonths"),
     },
     {
       icon: <ShieldIcon />,
-      title: locale === "fr" ? "Pacte Qualite" : "Quality Pledge",
+      title: t("configurator.qualityPledge"),
     },
-  ], [locale]);
+  ], [t]);
 
   return (
     <section className="grid gap-8 py-8 lg:grid-cols-2 lg:items-start">
@@ -94,18 +97,18 @@ function HeroSectionComponent({
               <span className="text-3xl font-bold text-gray-900">{totalPrice} EUR</span>
               {product.priceNew > 0 && (
                 <span className="text-lg text-gray-400 line-through">
-                  {product.priceNew} EUR {locale === "fr" ? "neuf" : "new"}
+                  {product.priceNew} EUR {tCommon("new")}
                 </span>
               )}
             </div>
             {savings > 0 && (
               <p className="mt-1 text-sm font-medium text-green-600">
-                {locale === "fr" ? `Economisez ${savings} EUR` : `Save ${savings} EUR`}
+                {t("savings", { amount: savings })}
               </p>
             )}
             {isOutOfStock && (
               <p className="mt-1 text-sm font-medium text-gray-500">
-                {locale === "fr" ? "Deja vendu" : "Already sold"}
+                {t("configurator.alreadySold")}
               </p>
             )}
           </div>
@@ -118,7 +121,7 @@ function HeroSectionComponent({
             {isLoading ? (
               <LoadingSpinner />
             ) : isOutOfStock ? (
-              locale === "fr" ? "Deja vendu" : "Already sold"
+              t("configurator.alreadySold")
             ) : (
               t("addToCart")
             )}
@@ -132,12 +135,10 @@ function HeroSectionComponent({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/paypal.svg" alt="PayPal" className="h-4 w-auto" />
           <span className="ml-1">
-            {locale === "fr"
-              ? `Payez en 4 echeances de ${Math.round(totalPrice / 4).toFixed(2).replace(".", ",")}€ sans frais.`
-              : `Pay in 4 installments of €${Math.round(totalPrice / 4).toFixed(2)} interest-free.`}
+            {t("configurator.payInstallments", { amount: Math.round(totalPrice / 4).toFixed(2) })}
           </span>
           <a href="#" className="ml-1 text-blue-600 underline">
-            {locale === "fr" ? "En savoir plus" : "Learn more"}
+            {t("configurator.learnMore")}
           </a>
         </div>
 
@@ -155,15 +156,11 @@ function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex items-center" aria-label={`Rating: ${rating} out of 5`}>
       {[...Array(5)].map((_, i) => (
-        <svg
+        <Star
           key={i}
-          className={`h-4 w-4 ${i < Math.floor(rating) ? "text-yellow-400" : "text-gray-300"}`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
+          className={cn("h-4 w-4", i < Math.floor(rating) ? "fill-current text-yellow-400" : "text-gray-300")}
           aria-hidden="true"
-        >
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
+        />
       ))}
     </div>
   );
@@ -172,10 +169,7 @@ function StarRating({ rating }: { rating: number }) {
 function LoadingSpinner() {
   return (
     <span className="flex items-center gap-2">
-      <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24" aria-hidden="true">
-        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-      </svg>
+      <Loader2 className="h-5 w-5 animate-spin" />
     </span>
   );
 }

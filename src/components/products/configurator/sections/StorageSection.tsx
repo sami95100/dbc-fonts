@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useMemo } from "react";
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { ConfigSection } from "../ConfigSection";
 import { RadioOption } from "../RadioOption";
 import type { StorageSectionProps } from "../types";
@@ -30,7 +30,7 @@ function StorageSectionComponent({
   imageUrl,
   availableStorages,
 }: StorageSectionProps) {
-  const locale = useLocale();
+  const t = useTranslations("product.configurator");
 
   // Build a map of storage availability from stock check
   const storageAvailabilityMap = useMemo(() => {
@@ -44,11 +44,8 @@ function StorageSectionComponent({
 
   if (storages.length === 0) return null;
 
-  const title = locale === "fr"
-    ? "Selectionnez la capacite de stockage"
-    : "Select storage capacity";
-
-  const soldOutLabel = locale === "fr" ? "Deja vendu" : "Already sold";
+  const title = t("storageTitle");
+  const soldOutLabel = t("soldOut");
 
   return (
     <ConfigSection title={title} imageUrl={imageUrl}>

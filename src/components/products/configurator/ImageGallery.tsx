@@ -2,6 +2,7 @@
 
 import { useState, useEffect, memo } from "react";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import type { ImageGalleryProps } from "./types";
 
 /**
@@ -48,14 +49,12 @@ function ImageGalleryComponent({
                 aria-selected={currentIndex === idx}
                 aria-label={`View image ${idx + 1} of ${displayImages.length}`}
                 onClick={() => setCurrentIndex(idx)}
-                className={`
-                  relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border-2
-                  transition-all duration-150
-                  ${currentIndex === idx
+                className={cn(
+                  "relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-150",
+                  currentIndex === idx
                     ? "border-green-700"
                     : "border-gray-200 hover:border-gray-300"
-                  }
-                `}
+                )}
               >
                 <Image
                   src={img}
@@ -98,10 +97,10 @@ function ImageGalleryComponent({
               aria-selected={currentIndex === idx}
               aria-label={`Go to image ${idx + 1}`}
               onClick={() => setCurrentIndex(idx)}
-              className={`
-                h-2 w-2 rounded-full transition-colors
-                ${currentIndex === idx ? "bg-green-700" : "bg-gray-300"}
-              `}
+              className={cn(
+                "h-2 w-2 rounded-full transition-colors",
+                currentIndex === idx ? "bg-green-700" : "bg-gray-300"
+              )}
             />
           ))}
         </div>

@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { Breadcrumb } from "@/components/products/Breadcrumb";
 import { TrustBar } from "@/components/products/TrustBar";
 import { FilteredProductGrid } from "@/components/products/FilteredProductGrid";
@@ -6,6 +7,7 @@ import { getFilters } from "@/lib/api/filters";
 import { apiModelToProduct } from "@/lib/api/transformers";
 import { BRANDS } from "@/data/mock/brands";
 import { getCategoryBySlug, getSubcategoryBySlug } from "@/data/mock/categories";
+import { cn } from "@/lib/utils";
 
 interface SmartphonesBrandPageProps {
   params: Promise<{
@@ -16,6 +18,7 @@ interface SmartphonesBrandPageProps {
 
 export default async function SmartphonesBrandPage({ params }: SmartphonesBrandPageProps) {
   const { locale, brand } = await params;
+  const t = await getTranslations({ locale, namespace: "products" });
 
   const category = getCategoryBySlug("smartphones");
   const subcategory = getSubcategoryBySlug("smartphones", brand);
@@ -23,7 +26,7 @@ export default async function SmartphonesBrandPage({ params }: SmartphonesBrandP
   const brandData = BRANDS.find((b) => b.slug === brand);
   const brandName = brandData?.name || brand.charAt(0).toUpperCase() + brand.slice(1);
 
-  const subcategoryName = locale === "fr" ? subcategory?.nameFr : subcategory?.name;
+  const subcategoryName = subcategory?.name;
   const pageTitle = subcategoryName || brandName;
 
   // Charger les smartphones de cette marque
@@ -81,12 +84,10 @@ export default async function SmartphonesBrandPage({ params }: SmartphonesBrandP
 
         <div className="mb-6">
           <h1 className="mb-2 text-3xl font-bold text-gray-900 md:text-4xl">
-            {pageTitle} {locale === "fr" ? "reconditionnes" : "refurbished"}
+            {pageTitle} {t("refurbished")}
           </h1>
           <p className="text-gray-600">
-            {locale === "fr"
-              ? `Decouvrez notre selection de ${pageTitle} reconditionnes`
-              : `Discover our selection of refurbished ${pageTitle}`}
+            {t("discoverSelection", { name: pageTitle })}
           </p>
         </div>
 
@@ -97,13 +98,13 @@ export default async function SmartphonesBrandPage({ params }: SmartphonesBrandP
               <a
                 key={sub.id}
                 href={`/${locale}/products/smartphones/${sub.slug}`}
-                className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+                className={cn("rounded-full border px-4 py-2 text-sm font-medium transition-colors",
                   sub.slug === brand
                     ? "border-green-700 bg-green-700 text-white"
                     : "border-gray-200 bg-white text-gray-700 hover:border-green-700 hover:bg-green-700 hover:text-white"
-                }`}
+                )}
               >
-                {locale === "fr" ? sub.nameFr : sub.name}
+                {sub.name}
               </a>
             ))}
           </div>

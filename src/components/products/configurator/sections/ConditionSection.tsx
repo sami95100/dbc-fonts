@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useMemo } from "react";
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { ConfigSection } from "../ConfigSection";
 import { RadioOption } from "../RadioOption";
 import { getConditionImageUrls } from "@/lib/api/transformers";
@@ -15,64 +15,28 @@ const CONDITION_ID_TO_API: Record<string, string> = {
   imparfait: "Imparfait",
 };
 
-// Mapping condition ID -> image label
-const CONDITION_IMAGE_LABELS: Record<string, { fr: string; en: string }> = {
-  parfait: { fr: "Coque", en: "Case" },
-  "tres-bon": { fr: "Coque", en: "Case" },
-  correct: { fr: "Coque", en: "Case" },
-  imparfait: { fr: "Coque", en: "Case" },
-};
-
-// Badges per condition (different wear descriptions)
-const CONDITION_BADGES: Record<string, { fr: ImageBadge[]; en: ImageBadge[] }> = {
-  parfait: {
-    fr: [
-      { icon: "scratches", label: "Aucun signe d'usure" },
-      { icon: "verified", label: "Pieces verifiees" },
-      { icon: "battery", label: "Batterie optimale" },
-    ],
-    en: [
-      { icon: "scratches", label: "No signs of wear" },
-      { icon: "verified", label: "Verified parts" },
-      { icon: "battery", label: "Optimal battery" },
-    ],
-  },
-  "tres-bon": {
-    fr: [
-      { icon: "scratches", label: "Micro-rayures invisibles" },
-      { icon: "verified", label: "Pieces verifiees" },
-      { icon: "battery", label: "Batterie pour usage normal" },
-    ],
-    en: [
-      { icon: "scratches", label: "Invisible micro-scratches" },
-      { icon: "verified", label: "Verified parts" },
-      { icon: "battery", label: "Battery for normal use" },
-    ],
-  },
-  correct: {
-    fr: [
-      { icon: "scratches", label: "Legers signes d'usure" },
-      { icon: "verified", label: "Pieces verifiees" },
-      { icon: "battery", label: "Batterie pour usage normal" },
-    ],
-    en: [
-      { icon: "scratches", label: "Light signs of wear" },
-      { icon: "verified", label: "Verified parts" },
-      { icon: "battery", label: "Battery for normal use" },
-    ],
-  },
-  imparfait: {
-    fr: [
-      { icon: "scratches", label: "Signes visibles d'usure" },
-      { icon: "verified", label: "Pieces verifiees" },
-      { icon: "battery", label: "Batterie pour usage normal" },
-    ],
-    en: [
-      { icon: "scratches", label: "Visible signs of wear" },
-      { icon: "verified", label: "Verified parts" },
-      { icon: "battery", label: "Battery for normal use" },
-    ],
-  },
+// Badges per condition (keys resolved via useTranslations)
+const CONDITION_BADGE_KEYS: Record<string, { icon: ImageBadge["icon"]; labelKey: string }[]> = {
+  parfait: [
+    { icon: "scratches", labelKey: "conditionBadges.noWear" },
+    { icon: "verified", labelKey: "conditionBadges.verifiedParts" },
+    { icon: "battery", labelKey: "conditionBadges.optimalBattery" },
+  ],
+  "tres-bon": [
+    { icon: "scratches", labelKey: "conditionBadges.microScratches" },
+    { icon: "verified", labelKey: "conditionBadges.verifiedParts" },
+    { icon: "battery", labelKey: "conditionBadges.normalBattery" },
+  ],
+  correct: [
+    { icon: "scratches", labelKey: "conditionBadges.lightWear" },
+    { icon: "verified", labelKey: "conditionBadges.verifiedParts" },
+    { icon: "battery", labelKey: "conditionBadges.normalBattery" },
+  ],
+  imparfait: [
+    { icon: "scratches", labelKey: "conditionBadges.visibleWear" },
+    { icon: "verified", labelKey: "conditionBadges.verifiedParts" },
+    { icon: "battery", labelKey: "conditionBadges.normalBattery" },
+  ],
 };
 
 /**
@@ -89,8 +53,7 @@ function ConditionSectionComponent({
   conditionImages,
   fallbackImageUrl,
 }: ConditionSectionProps) {
-  const locale = useLocale();
-  const isFr = locale === "fr";
+  const t = useTranslations("product.configurator");
 
   // Get all image URLs for selected condition
   const selectedConditionImages = useMemo(() => {
@@ -107,18 +70,13 @@ function ConditionSectionComponent({
       : undefined;
 
   // Get badges and label for current condition
-  const imageBadges = CONDITION_BADGES[selectedCondition]?.[isFr ? "fr" : "en"] || [];
-  const imageLabel = CONDITION_IMAGE_LABELS[selectedCondition]?.[isFr ? "fr" : "en"];
+  const imageBadges = (CONDITION_BADGE_KEYS[selectedCondition] || []).map(b => ({ icon: b.icon, label: t(b.labelKey) }));
+  const imageLabel = t("conditionBadges.caseLabel");
 
   if (conditions.length === 0) return null;
 
-  const title = isFr
-    ? "Selectionnez la condition"
-    : "Select condition";
-
-  const description = isFr
-    ? "Tous les appareils sont testes et verifies par des pros, garantis 100% fonctionnels."
-    : "All devices are tested and verified by professionals, guaranteed 100% functional.";
+  const title = t("conditionTitle");
+  const description = t("conditionDesc");
 
   return (
     <ConfigSection
@@ -135,20 +93,18 @@ function ConditionSectionComponent({
           key={condition.id}
           selected={selectedCondition === condition.id}
           onClick={() => condition.available && onConditionChange(condition.id)}
-          label={locale === "fr" ? condition.nameFr : condition.name}
-          sublabel={locale === "fr" ? condition.descriptionFr : condition.description}
+          label={t(`conditions.${condition.id}`)}
+          sublabel={condition.description}
           price={
             condition.available
               ? `${condition.price} EUR`
               : undefined
           }
           soldOut={!condition.available}
-          soldOutLabel={locale === "fr" ? "Deja vendu" : "Sold out"}
+          soldOutLabel={t("soldOut")}
           badge={
             condition.isBestSeller && condition.available
-              ? locale === "fr"
-                ? "Best-seller"
-                : "Best seller"
+              ? t("bestSellerBadge")
               : undefined
           }
           disabled={!condition.available}

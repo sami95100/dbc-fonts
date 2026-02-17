@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Product } from "@/data/mock/products";
 import type { ModelImagesByColor } from "@/types/product";
 import {
@@ -15,6 +15,7 @@ import {
   StickyBottomBar,
   StickyHeader,
 } from "./configurator";
+import { AddToCartSheet } from "./configurator/AddToCartSheet";
 
 // ============================================
 // Types
@@ -82,7 +83,6 @@ export function ProductConfigurator({
   simImageUrl,
 }: ProductConfiguratorProps) {
   const t = useTranslations("product");
-  const locale = useLocale();
 
   // Auto-detect if battery section should be shown
   // Only show for mobile devices (smartphones), not tablets, laptops, etc.
@@ -106,6 +106,8 @@ export function ProductConfigurator({
     basePrice,
     isOutOfStock,
     handleAddToCart,
+    lastAddedItem,
+    clearLastAdded,
   } = useProductConfigurator({ product });
 
   // Calculate prices for battery section
@@ -215,8 +217,11 @@ export function ProductConfigurator({
         isLoading={isLoadingVariant}
         onAddToCart={handleAddToCart}
         ctaLabel={t("addToCart")}
-        outOfStockLabel={locale === "fr" ? "Deja vendu" : "Already sold"}
+        outOfStockLabel={t("configurator.alreadySold")}
       />
+
+      {/* Add to Cart confirmation sheet */}
+      <AddToCartSheet item={lastAddedItem} onClose={clearLastAdded} />
     </div>
   );
 }

@@ -3,14 +3,19 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
+import { ArrowLeftRight, User, ShoppingCart } from "lucide-react";
+import { DbcLogo } from "@/components/ui/dbc-logo";
 import { SearchBar } from "./SearchBar";
+import { MobileMenu } from "./MobileMenu";
 import { useCartStore } from "@/stores/cart-store";
+import { useAuthStore } from "@/stores/auth-store";
 
 export function Header() {
   const locale = useLocale();
   const t = useTranslations("nav");
   const [mounted, setMounted] = useState(false);
   const itemCount = useCartStore((state) => state.getItemCount());
+  const isAuthenticated = useAuthStore((s) => !!s.user);
 
   // Prevent hydration mismatch - cart comes from localStorage
   useEffect(() => {
@@ -21,28 +26,12 @@ export function Header() {
     <header className="border-b border-gray-200 bg-white">
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex h-16 items-center justify-between gap-4 md:h-20">
-          {/* Mobile menu button */}
-          <button className="p-2 md:hidden" aria-label="Menu">
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
+          {/* Mobile menu */}
+          <MobileMenu />
 
           {/* Logo */}
           <Link href={`/${locale}`} className="flex shrink-0 items-center">
-            <span className="text-xl font-bold tracking-tight md:text-2xl">
-              DBC
-            </span>
+            <DbcLogo className="h-6 w-auto text-gray-900 md:h-8" />
           </Link>
 
           {/* Search - Hidden on mobile */}
@@ -55,21 +44,9 @@ export function Header() {
             {/* Sell button - Hidden on mobile */}
             <Link
               href={`/${locale}/sell`}
-              className="hidden items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-50 lg:flex"
+              className="hidden items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-medium transition-colors hover:border-accent hover:text-accent lg:flex"
             >
-              <svg
-                className="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-                />
-              </svg>
+              <ArrowLeftRight className="h-5 w-5" aria-hidden="true" />
               {t("sell")}
             </Link>
 
@@ -84,45 +61,24 @@ export function Header() {
             {/* Account */}
             <Link
               href={`/${locale}/account`}
-              className="p-2 hover:text-gray-600"
+              className="relative p-2.5 hover:text-gray-600"
               aria-label={t("account")}
             >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
+              <User className="h-6 w-6" aria-hidden="true" />
+              {mounted && isAuthenticated && (
+                <span className="absolute right-0.5 top-0.5 h-2.5 w-2.5 rounded-full bg-accent" />
+              )}
             </Link>
 
             {/* Cart */}
             <Link
               href={`/${locale}/cart`}
-              className="relative p-2 hover:text-gray-600"
+              className="relative p-2.5 hover:text-gray-600"
               aria-label={t("cart")}
             >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                />
-              </svg>
+              <ShoppingCart className="h-6 w-6" aria-hidden="true" />
               {mounted && itemCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-xs font-medium text-white">
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-xs font-medium text-white">
                   {itemCount}
                 </span>
               )}

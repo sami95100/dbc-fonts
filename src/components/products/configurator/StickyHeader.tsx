@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, memo } from "react";
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getImageUrls } from "@/lib/api/transformers";
 import type { ProductSelection, ConfigurableProduct } from "./types";
@@ -19,24 +20,10 @@ interface StickyHeaderProps {
   colorImages?: ModelImagesByColor;
 }
 
-// Mapping condition ID -> Display name FR
-const CONDITION_LABELS_FR: Record<string, string> = {
-  parfait: "Parfait",
-  "tres-bon": "Tres bon",
-  correct: "Correct",
-  imparfait: "Imparfait",
-};
-
-const CONDITION_LABELS_EN: Record<string, string> = {
-  parfait: "Excellent",
-  "tres-bon": "Very good",
-  correct: "Good",
-  imparfait: "Acceptable",
-};
-
-const BATTERY_LABELS: Record<string, { fr: string; en: string }> = {
-  standard: { fr: "Batterie standard", en: "Standard battery" },
-  new: { fr: "Batterie neuve", en: "New battery" },
+// Mapping battery ID -> configurator translation key
+const BATTERY_KEYS: Record<string, string> = {
+  standard: "batteryStandardLabel",
+  new: "batteryNewLabel",
 };
 
 function StickyHeaderComponent({
@@ -49,7 +36,8 @@ function StickyHeaderComponent({
   onAddToCart,
   colorImages,
 }: StickyHeaderProps) {
-  const locale = useLocale();
+  const t = useTranslations("product.configurator");
+  const tCommon = useTranslations("common");
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -78,11 +66,8 @@ function StickyHeaderComponent({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const conditionLabel = locale === "fr"
-    ? CONDITION_LABELS_FR[selection.condition] || selection.condition
-    : CONDITION_LABELS_EN[selection.condition] || selection.condition;
-
-  const batteryLabel = BATTERY_LABELS[selection.battery]?.[locale === "fr" ? "fr" : "en"] || selection.battery;
+  const conditionLabel = t(`conditions.${selection.condition}`);
+  const batteryLabel = BATTERY_KEYS[selection.battery] ? t(BATTERY_KEYS[selection.battery]) : selection.battery;
 
   const savings = priceNew - totalPrice;
 
@@ -124,7 +109,7 @@ function StickyHeaderComponent({
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
           {/* Left: Product image + config summary */}
           <div
-            className="flex items-center gap-4"
+            className="flex min-w-0 flex-1 items-center gap-4"
             style={{
               transform: `translateX(${(1 - scrollProgress) * -20}px)`,
               opacity: scrollProgress,
@@ -152,7 +137,7 @@ function StickyHeaderComponent({
 
           {/* Right: Price + CTA */}
           <div
-            className="flex items-center gap-4"
+            className="flex shrink-0 items-center gap-4"
             style={{
               transform: `translateX(${(1 - scrollProgress) * 20}px)`,
               opacity: scrollProgress,
@@ -164,16 +149,16 @@ function StickyHeaderComponent({
               <p className="text-lg font-bold text-gray-900">
                 {totalPrice.toLocaleString("fr-FR")} €
                 <span className="ml-1 text-xs font-normal text-gray-500">
-                  {locale === "fr" ? "avant reprise" : "before trade-in"}
+                  {t("beforeTradeIn")}
                 </span>
               </p>
               <div className="flex items-center justify-end gap-2 text-xs">
                 <span className="text-gray-400 line-through">
-                  {priceNew.toLocaleString("fr-FR")} € {locale === "fr" ? "neuf" : "new"}
+                  {priceNew.toLocaleString("fr-FR")} € {tCommon("new")}
                 </span>
                 {savings > 0 && (
                   <span className="rounded bg-green-100 px-1.5 py-0.5 font-medium text-green-700">
-                    {locale === "fr" ? "Economisez" : "Save"} {savings.toLocaleString("fr-FR")} €
+                    {t("savingsAmount", { amount: savings.toLocaleString("fr-FR") })}
                   </span>
                 )}
               </div>
@@ -191,16 +176,11 @@ function StickyHeaderComponent({
               className="shrink-0 whitespace-nowrap rounded-full bg-green-700 px-6 py-2 text-sm font-medium text-white hover:bg-green-800 disabled:opacity-50"
             >
               {isLoading ? (
-                <span className="flex items-center gap-2">
-                  <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                  </svg>
-                </span>
+                <Loader2 className="h-4 w-4 animate-spin" />
               ) : isOutOfStock ? (
-                locale === "fr" ? "Deja vendu" : "Sold out"
+                t("soldOut")
               ) : (
-                locale === "fr" ? "Ajouter au panier" : "Add to cart"
+                tCommon("addToCart")
               )}
             </Button>
           </div>

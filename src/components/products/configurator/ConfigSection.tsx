@@ -2,6 +2,8 @@
 
 import { memo, useState, useEffect } from "react";
 import Image from "next/image";
+import { ChevronLeft, ChevronRight, Info } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { ConfigSectionProps, ImageBadge } from "./types";
 
 // Badge icons
@@ -161,9 +163,9 @@ function ConfigSectionComponent({
                 <button
                   key={index}
                   onClick={() => setSelectedIndex(index)}
-                  className={`h-2.5 w-2.5 rounded-full transition-colors ${
+                  className={cn("h-2.5 w-2.5 rounded-full transition-colors",
                     selectedIndex === index ? "bg-green-700" : "bg-gray-300"
-                  }`}
+                  )}
                   aria-label={`Image ${index + 1}`}
                 />
               ))}
@@ -176,18 +178,14 @@ function ConfigSectionComponent({
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-green-700 text-white transition-colors hover:bg-green-800"
                 aria-label="Image precedente"
               >
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
+                <ChevronLeft className="h-5 w-5" />
               </button>
               <button
                 onClick={() => setSelectedIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0))}
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-green-700 text-white transition-colors hover:bg-green-800"
                 aria-label="Image suivante"
               >
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                <ChevronRight className="h-5 w-5" />
               </button>
             </div>
           </div>
@@ -215,22 +213,7 @@ function ConfigSectionComponent({
 
 // Info icon component
 function InfoIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      aria-hidden="true"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-      />
-    </svg>
-  );
+  return <Info className={className} aria-hidden="true" />;
 }
 
 export const ConfigSection = memo(ConfigSectionComponent);

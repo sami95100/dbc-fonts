@@ -1,7 +1,8 @@
 "use client";
 
 import { memo, useMemo } from "react";
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
 import type { ColorSelectorProps } from "./types";
 
 /**
@@ -25,7 +26,7 @@ function ColorSelectorComponent({
   onColorChange,
   availableColors,
 }: ColorSelectorProps) {
-  const locale = useLocale();
+  const t = useTranslations("product.configurator");
 
   // Build a map of color availability from stock check
   const colorAvailabilityMap = useMemo(() => {
@@ -39,7 +40,7 @@ function ColorSelectorComponent({
 
   if (colors.length === 0) return null;
 
-  const soldOutLabel = locale === "fr" ? "Deja vendu" : "Already sold";
+  const soldOutLabel = t("soldOut");
 
   return (
     <div
@@ -63,34 +64,31 @@ function ColorSelectorComponent({
             aria-checked={isSelected}
             disabled={!isAvailable}
             onClick={() => isAvailable && onColorChange(color.name)}
-            className={`
-              flex items-center gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all duration-150
-              ${
-                isSelected && isAvailable
-                  ? "border-green-700 bg-green-50"
-                  : isAvailable
-                  ? "border-gray-200 bg-white hover:border-gray-300"
-                  : "cursor-not-allowed border-gray-200 bg-gray-50 opacity-60"
-              }
-            `}
+            className={cn(
+              "flex items-center gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all duration-150",
+              isSelected && isAvailable
+                ? "border-green-700 bg-green-50"
+                : isAvailable
+                ? "border-gray-200 bg-white hover:border-gray-300"
+                : "cursor-not-allowed border-gray-200 bg-gray-50 opacity-60"
+            )}
           >
             {/* Color swatch */}
             <span
-              className={`
-                h-6 w-6 flex-shrink-0 rounded-full border
-                ${color.hex === "#FFFFFF" || color.hex === "#f5f5f7" || color.hex === "#e3e4e5"
+              className={cn(
+                "h-6 w-6 flex-shrink-0 rounded-full border",
+                color.hex === "#FFFFFF" || color.hex === "#f5f5f7" || color.hex === "#e3e4e5"
                   ? "border-gray-300"
-                  : "border-transparent"
-                }
-                ${!isAvailable ? "opacity-50" : ""}
-              `}
+                  : "border-transparent",
+                !isAvailable && "opacity-50"
+              )}
               style={{ backgroundColor: color.hex }}
               aria-hidden="true"
             />
 
             {/* Color name + sold out badge */}
             <div className="flex flex-1 items-center justify-between">
-              <span className={`text-sm font-medium ${!isAvailable ? "text-gray-400 line-through" : "text-gray-900"}`}>
+              <span className={cn("text-sm font-medium", !isAvailable ? "text-gray-400 line-through" : "text-gray-900")}>
                 {color.name}
               </span>
               {!isAvailable && (
