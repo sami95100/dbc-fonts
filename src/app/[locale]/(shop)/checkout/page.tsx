@@ -1,14 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useCartStore } from "@/stores/cart-store";
+import { useAuthStore } from "@/stores/auth-store";
 import { createOrder } from "@/lib/api/orders";
+import { getProfile } from "@/lib/api/profile";
+import { COUNTRY_CODES } from "@/lib/constants";
 import type { CreateOrderPayload, OrderItem } from "@/types/order";
 
-interface FormData {
+interface ShippingFormData {
   firstName: string;
   lastName: string;
   email: string;
@@ -19,42 +24,56 @@ interface FormData {
   country: string;
 }
 
-interface FormErrors {
-  [key: string]: string;
-}
-
-const GRADE_LABELS: Record<string, string> = {
-  parfait: "Parfait",
-  "tres-bon": "Tres bon",
-  correct: "Correct",
-  imparfait: "Imparfait",
+const INITIAL_FORM: ShippingFormData = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  address: "",
+  postalCode: "",
+  city: "",
+  country: "FR",
 };
 
 export default function CheckoutPage() {
   const locale = useLocale();
   const router = useRouter();
   const t = useTranslations("checkout");
-  const { items, getSubtotal, clearCart, hasShopProcessingItems } = useCartStore();
   const tCart = useTranslations("cart");
+  const { items, getSubtotal, clearCart, hasShopProcessingItems } =
+    useCartStore();
+  const { user, initialized, getAccessToken } = useAuthStore();
 
-  const [formData, setFormData] = useState<FormData>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address: "",
-    postalCode: "",
-    city: "",
-    country: "FR",
-  });
-
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [formData, setFormData] = useState<ShippingFormData>(INITIAL_FORM);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const subtotal = getSubtotal();
 
-  // Redirect if cart is empty
+  // Pre-fill from saved profile
+  useEffect(() => {
+    if (!initialized || !user) return;
+
+    const token = getAccessToken();
+    if (!token) return;
+
+    getProfile(token).then(({ data }) => {
+      if (!data) return;
+      setFormData((prev) => ({
+        ...prev,
+        firstName: data.first_name || prev.firstName,
+        lastName: data.last_name || prev.lastName,
+        email: user.email || prev.email,
+        phone: data.phone || prev.phone,
+        address: data.address || prev.address,
+        postalCode: data.postal_code || prev.postalCode,
+        city: data.city || prev.city,
+        country: data.country || prev.country,
+      }));
+    });
+  }, [initialized, user, getAccessToken]);
+
   if (items.length === 0) {
     return (
       <div className="bg-gray-50 py-8">
@@ -78,21 +97,18 @@ export default function CheckoutPage() {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
   const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
+    const newErrors: Record<string, string> = {};
 
-    if (!formData.firstName.trim()) {
+    if (!formData.firstName.trim())
       newErrors.firstName = t("errors.required");
-    }
-    if (!formData.lastName.trim()) {
+    if (!formData.lastName.trim())
       newErrors.lastName = t("errors.required");
-    }
     if (!formData.email.trim()) {
       newErrors.email = t("errors.required");
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
@@ -100,20 +116,22 @@ export default function CheckoutPage() {
     }
     if (!formData.phone.trim()) {
       newErrors.phone = t("errors.required");
-    } else if (!/^[\d\s+.-]{10,}$/.test(formData.phone.replace(/\s/g, ""))) {
+    } else if (
+      !/^[\d\s+.-]{10,}$/.test(formData.phone.replace(/\s/g, ""))
+    ) {
       newErrors.phone = t("errors.invalidPhone");
     }
-    if (!formData.address.trim()) {
+    if (!formData.address.trim())
       newErrors.address = t("errors.required");
-    }
     if (!formData.postalCode.trim()) {
       newErrors.postalCode = t("errors.required");
-    } else if (formData.country === "FR" && !/^\d{5}$/.test(formData.postalCode)) {
+    } else if (
+      formData.country === "FR" &&
+      !/^\d{5}$/.test(formData.postalCode)
+    ) {
       newErrors.postalCode = t("errors.invalidPostalCode");
     }
-    if (!formData.city.trim()) {
-      newErrors.city = t("errors.required");
-    }
+    if (!formData.city.trim()) newErrors.city = t("errors.required");
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -123,28 +141,26 @@ export default function CheckoutPage() {
     e.preventDefault();
     setSubmitError(null);
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
 
     try {
-      // Build order items from cart
       const orderItems: OrderItem[] = items.map((item) => ({
         variant_id: item.variantId,
         sku: item.sku,
         product_name: `${item.model} ${item.storage}`,
         storage: item.storage,
         color: item.color,
-        grade: GRADE_LABELS[item.grade] || item.grade,
+        grade: tCart(`grades.${item.grade}`),
         unit_price: item.price,
         quantity: item.quantity,
+        image_url: item.imageUrl,
         foxway_sku: item.foxwaySku,
         battery_fallback: item.batteryFallback,
+        needs_shop_processing: item.needsShopProcessing,
       }));
 
-      // Build order payload
       const payload: CreateOrderPayload = {
         customer_name: `${formData.firstName} ${formData.lastName}`,
         customer_email: formData.email,
@@ -153,7 +169,7 @@ export default function CheckoutPage() {
         shipping_postal_code: formData.postalCode,
         shipping_city: formData.city,
         shipping_country: formData.country,
-        shipping_cost: 0, // Free shipping for now
+        shipping_cost: 0,
         items: orderItems,
       };
 
@@ -165,7 +181,6 @@ export default function CheckoutPage() {
       }
 
       if (response.data?.success) {
-        // Clear cart and redirect to confirmation
         clearCart();
         router.push(
           `/${locale}/checkout/confirmation?order=${response.data.order.order_number}`
@@ -187,7 +202,9 @@ export default function CheckoutPage() {
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-700 text-sm font-medium text-white">
               1
             </div>
-            <span className="font-medium text-gray-900">{t("steps.address")}</span>
+            <span className="font-medium text-gray-900">
+              {t("steps.address")}
+            </span>
           </div>
           <div className="h-px w-16 bg-gray-300" />
           <div className="flex items-center gap-2">
@@ -213,166 +230,66 @@ export default function CheckoutPage() {
               )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Name row */}
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label
-                      htmlFor="firstName"
-                      className="mb-1 block text-sm font-medium text-gray-700"
-                    >
-                      {t("fields.firstName")} *
-                    </label>
-                    <input
-                      type="text"
-                      id="firstName"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleChange}
-                      className={`w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 ${
-                        errors.firstName ? "border-red-500" : "border-gray-300"
-                      }`}
-                    />
-                    {errors.firstName && (
-                      <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
-                    )}
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="lastName"
-                      className="mb-1 block text-sm font-medium text-gray-700"
-                    >
-                      {t("fields.lastName")} *
-                    </label>
-                    <input
-                      type="text"
-                      id="lastName"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleChange}
-                      className={`w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 ${
-                        errors.lastName ? "border-red-500" : "border-gray-300"
-                      }`}
-                    />
-                    {errors.lastName && (
-                      <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Contact row */}
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="mb-1 block text-sm font-medium text-gray-700"
-                    >
-                      {t("fields.email")} *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className={`w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 ${
-                        errors.email ? "border-red-500" : "border-gray-300"
-                      }`}
-                    />
-                    {errors.email && (
-                      <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-                    )}
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="phone"
-                      className="mb-1 block text-sm font-medium text-gray-700"
-                    >
-                      {t("fields.phone")} *
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder="+33 6 12 34 56 78"
-                      className={`w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 ${
-                        errors.phone ? "border-red-500" : "border-gray-300"
-                      }`}
-                    />
-                    {errors.phone && (
-                      <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Address */}
-                <div>
-                  <label
-                    htmlFor="address"
-                    className="mb-1 block text-sm font-medium text-gray-700"
-                  >
-                    {t("fields.address")} *
-                  </label>
-                  <input
-                    type="text"
-                    id="address"
-                    name="address"
-                    value={formData.address}
+                  <CheckoutField
+                    id="firstName"
+                    label={`${t("fields.firstName")} *`}
+                    value={formData.firstName}
                     onChange={handleChange}
-                    className={`w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 ${
-                      errors.address ? "border-red-500" : "border-gray-300"
-                    }`}
+                    error={errors.firstName}
                   />
-                  {errors.address && (
-                    <p className="mt-1 text-sm text-red-600">{errors.address}</p>
-                  )}
+                  <CheckoutField
+                    id="lastName"
+                    label={`${t("fields.lastName")} *`}
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    error={errors.lastName}
+                  />
                 </div>
 
-                {/* City row */}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <CheckoutField
+                    id="email"
+                    type="email"
+                    label={`${t("fields.email")} *`}
+                    value={formData.email}
+                    onChange={handleChange}
+                    error={errors.email}
+                  />
+                  <CheckoutField
+                    id="phone"
+                    type="tel"
+                    label={`${t("fields.phone")} *`}
+                    value={formData.phone}
+                    onChange={handleChange}
+                    error={errors.phone}
+                    placeholder="+33 6 12 34 56 78"
+                  />
+                </div>
+
+                <CheckoutField
+                  id="address"
+                  label={`${t("fields.address")} *`}
+                  value={formData.address}
+                  onChange={handleChange}
+                  error={errors.address}
+                />
+
                 <div className="grid gap-4 sm:grid-cols-3">
-                  <div>
-                    <label
-                      htmlFor="postalCode"
-                      className="mb-1 block text-sm font-medium text-gray-700"
-                    >
-                      {t("fields.postalCode")} *
-                    </label>
-                    <input
-                      type="text"
-                      id="postalCode"
-                      name="postalCode"
-                      value={formData.postalCode}
-                      onChange={handleChange}
-                      className={`w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 ${
-                        errors.postalCode ? "border-red-500" : "border-gray-300"
-                      }`}
-                    />
-                    {errors.postalCode && (
-                      <p className="mt-1 text-sm text-red-600">{errors.postalCode}</p>
-                    )}
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="city"
-                      className="mb-1 block text-sm font-medium text-gray-700"
-                    >
-                      {t("fields.city")} *
-                    </label>
-                    <input
-                      type="text"
-                      id="city"
-                      name="city"
-                      value={formData.city}
-                      onChange={handleChange}
-                      className={`w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 ${
-                        errors.city ? "border-red-500" : "border-gray-300"
-                      }`}
-                    />
-                    {errors.city && (
-                      <p className="mt-1 text-sm text-red-600">{errors.city}</p>
-                    )}
-                  </div>
+                  <CheckoutField
+                    id="postalCode"
+                    label={`${t("fields.postalCode")} *`}
+                    value={formData.postalCode}
+                    onChange={handleChange}
+                    error={errors.postalCode}
+                  />
+                  <CheckoutField
+                    id="city"
+                    label={`${t("fields.city")} *`}
+                    value={formData.city}
+                    onChange={handleChange}
+                    error={errors.city}
+                  />
                   <div>
                     <label
                       htmlFor="country"
@@ -387,22 +304,22 @@ export default function CheckoutPage() {
                       onChange={handleChange}
                       className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500"
                     >
-                      <option value="FR">France</option>
-                      <option value="BE">Belgique</option>
-                      <option value="CH">Suisse</option>
-                      <option value="LU">Luxembourg</option>
+                      {COUNTRY_CODES.map((code) => (
+                        <option key={code} value={code}>
+                          {t(`countries.${code}`)}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
 
-                {/* Submit */}
-                <button
+                <Button
                   type="submit"
                   disabled={isSubmitting}
                   className="mt-6 w-full rounded-full bg-green-700 py-3 font-medium text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isSubmitting ? t("submitting") : t("confirmOrder")}
-                </button>
+                </Button>
               </form>
             </div>
           </div>
@@ -443,12 +360,16 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">{t("shipping")}</span>
-                  <span className="text-green-700 font-medium">{t("free")}</span>
+                  <span className="font-medium text-green-700">
+                    {t("free")}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">{tCart("delivery")}</span>
                   <span className="text-gray-700">
-                    {hasShopProcessingItems() ? tCart("deliveryExtended") : tCart("deliveryStandard")}
+                    {hasShopProcessingItems()
+                      ? tCart("deliveryExtended")
+                      : tCart("deliveryStandard")}
                   </span>
                 </div>
               </div>
@@ -461,6 +382,45 @@ export default function CheckoutPage() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function CheckoutField({
+  id,
+  label,
+  value,
+  onChange,
+  error,
+  type = "text",
+  placeholder,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
+  type?: string;
+  placeholder?: string;
+}) {
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="mb-1 block text-sm font-medium text-gray-700"
+      >
+        {label}
+      </label>
+      <Input
+        type={type}
+        id={id}
+        name={id}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        aria-invalid={!!error}
+      />
+      {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
     </div>
   );
 }

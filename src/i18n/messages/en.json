@@ -9,13 +9,16 @@
     "retry": "Retry",
     "from": "From",
     "new": "new",
-    "save": "Save"
+    "save": "Save",
+    "close": "Close"
   },
   "topBar": {
     "quality": "Our Quality Pact",
     "repair": "Repair",
     "stopFastTech": "Stop fast tech",
-    "mag": "The Mag"
+    "mag": "The Mag",
+    "chooseLanguage": "Choose language",
+    "physicalStores": "DBC isn't just a website — it's 11 physical stores."
   },
   "search": {
     "placeholder": "Search for a product"
@@ -27,7 +30,8 @@
     "checkout": "Checkout",
     "sell": "Sell",
     "help": "Need help?",
-    "account": "My account"
+    "account": "My account",
+    "menu": "Menu"
   },
   "categories": {
     "deals": "Deals",
@@ -48,18 +52,55 @@
   },
   "home": {
     "hero": {
-      "title": "Here, we get the best of refurbished.",
-      "subtitle": "Cheaper and just as good as new thanks to our Quality Pact.",
-      "cta": "View phones"
+      "title": "We're shaking up the industry.",
+      "subtitle": "Refurbished smartphones, tested and guaranteed. Cheaper, more responsible.",
+      "subtitlePrefix": "Cheaper and as powerful as new thanks to our ",
+      "qualityPactLink": "DBC Quality Pact",
+      "cta": "Discover our phones",
+      "tagline": "Today, before tomorrow."
     },
     "brands": {
       "title": "Our brands"
     },
     "trust": {
+      "verifiedRefurbishers": "Verified refurbishers",
+      "checkpoints": "Up to 100 checkpoints",
+      "freeReturn": "Free returns within 30 days",
+      "warrantyMonths": "12 months warranty",
       "warranty": "12-month warranty",
       "shipping": "Fast shipping",
       "quality": "Quality control"
-    }
+    },
+    "values": {
+      "title": "Why DBC?",
+      "access": {
+        "title": "Opening doors for everyone",
+        "description": "Making technology accessible to all, with no compromise on the environment or budget."
+      },
+      "community": {
+        "title": "Building connections",
+        "description": "We don't just sell, we connect with our communities, always close and listening."
+      },
+      "urban": {
+        "title": "Embracing the urban spirit",
+        "description": "Inspired by the street, we offer modern, agile solutions adapted to the pace of urban life."
+      },
+      "future": {
+        "title": "Acting for tomorrow",
+        "description": "Every action, every decision is designed to leave a positive footprint on society and the environment."
+      }
+    },
+    "bestDeals": "Our best deals"
+  },
+  "products": {
+    "title": "Our refurbished products",
+    "subtitle": "Choose a category to find your ideal device, tested and guaranteed.",
+    "refurbished": "refurbished",
+    "discoverSelection": "Discover our selection of refurbished {name}, tested and guaranteed.",
+    "smartphonesTitle": "Refurbished smartphones",
+    "smartphonesSubtitle": "Discover our selection of refurbished smartphones, tested and guaranteed.",
+    "tabletsTitle": "Refurbished tablets",
+    "tabletsSubtitle": "Discover our selection of refurbished tablets, tested and guaranteed."
   },
   "catalog": {
     "title": "Refurbished iPhones",
@@ -73,7 +114,13 @@
       "storage": "Storage capacity (GB)",
       "filter": "Filter",
       "sort": "Sort",
-      "bestSellers": "Best sellers"
+      "bestSellers": "Best sellers",
+      "clear": "Clear",
+      "priceRange": "Price range",
+      "apply": "Apply",
+      "noOptions": "No options available",
+      "noResults": "No products match your criteria.",
+      "productsFound": "{count} product(s) found"
     }
   },
   "product": {
@@ -116,12 +163,26 @@
       "soldOut": "Sold out",
       "alreadySold": "Already sold",
       "addedToCart": "Added to cart",
+      "addedToCartBanner": "Product added to cart!",
       "yourSelection": "Your selection",
       "beforeTradeIn": "before trade-in",
       "saveAmount": "Save",
       "changeMind": "You have 30 days to change your mind",
       "includedWith": "Included with",
       "chargingCable": "Compatible charging cable",
+      "savingsAmount": "Save {amount} €",
+      "bestSellerBadge": "Best seller",
+      "viewCart": "View cart",
+      "freeDelivery": "Free standard delivery",
+      "freeReturns": "Free 30-day returns",
+      "warrantyMonths": "12-month warranty",
+      "qualityPledge": "Quality Pledge",
+      "payInstallments": "Pay in 4 installments of €{amount}/month interest-free with PayPal",
+      "learnMore": "Learn more",
+      "conditionTitle": "Select condition",
+      "conditionDesc": "All devices are tested and verified by professionals, guaranteed 100% functional.",
+      "storageTitle": "Select storage capacity",
+      "colorTitle": "Select color",
       "conditions": {
         "parfait": "Excellent condition",
         "tres-bon": "Very good condition",
@@ -137,6 +198,16 @@
         "desc_ESIM": "2 virtual SIM slots (no physical SIM slot)",
         "desc_DUAL SIM": "SIM slots: 1 physical + 1 virtual",
         "desc_SINGLE SIM": "1 physical SIM slot"
+      },
+      "conditionBadges": {
+        "noWear": "No signs of wear",
+        "microScratches": "Invisible micro-scratches",
+        "lightWear": "Light signs of wear",
+        "visibleWear": "Visible signs of wear",
+        "verifiedParts": "Verified parts",
+        "optimalBattery": "Optimal battery",
+        "normalBattery": "Battery for normal use",
+        "caseLabel": "Case"
       }
     }
   },
@@ -156,8 +227,16 @@
     "total": "Total",
     "checkout": "Proceed to checkout",
     "remove": "Remove",
+    "decreaseQuantity": "Decrease quantity",
+    "increaseQuantity": "Increase quantity",
     "newBattery": "New battery",
-    "standardBattery": "Standard battery"
+    "standardBattery": "Standard battery",
+    "grades": {
+      "parfait": "Excellent",
+      "tres-bon": "Very good",
+      "correct": "Good",
+      "imparfait": "Acceptable"
+    }
   },
   "checkout": {
     "emptyCart": "Your cart is empty",
@@ -183,6 +262,12 @@
       "invalidPhone": "Invalid phone format",
       "invalidPostalCode": "Invalid postal code",
       "submitFailed": "Error creating order"
+    },
+    "countries": {
+      "FR": "France",
+      "BE": "Belgium",
+      "CH": "Switzerland",
+      "LU": "Luxembourg"
     },
     "orderSummary": "Order summary",
     "items": "items",
@@ -210,6 +295,110 @@
     "questions": "Questions?",
     "contactUs": "Contact us"
   },
+  "pages": {
+    "legalNotice": "Legal notice",
+    "termsOfSale": "Terms of sale",
+    "refundPolicy": "Returns & refunds policy",
+    "shippingPolicy": "Shipping policy",
+    "faq": "Frequently asked questions",
+    "backToHome": "Back to home",
+    "lastUpdated": "Last updated: {date}",
+    "lastUpdatedDateJuly2025": "July 2025",
+    "aboutTitle": "About us",
+    "qualityTitle": "Our Quality Pact",
+    "contactTitle": "Contact us",
+    "privacyTitle": "Privacy policy",
+    "about": {
+      "storesTitle": "11 physical stores",
+      "storesDesc": "Before being a website, DBC is 11 stores across France where you can touch, test and walk out with your phone.",
+      "teamTitle": "A passionate team",
+      "teamDesc": "Refurbishment experts who test, verify and prepare every device with care.",
+      "planetTitle": "Today, before tomorrow",
+      "planetDesc": "Every refurbished phone means less electronic waste and a concrete step for the planet.",
+      "warrantyTitle": "24-month warranty",
+      "warrantyDesc": "Twice as much as the competition. We stand behind the quality of our products with a solid guarantee."
+    },
+    "quality": {
+      "checkpointsTitle": "24 checkpoints",
+      "checkpointsDesc": "of control on every device",
+      "gradesTitle": "4 grades",
+      "gradesDesc": "transparent cosmetic grades",
+      "batteryTitle": "Battery",
+      "batteryDesc": "new or replacement available",
+      "warrantyTitle": "24 months",
+      "warrantyDesc": "of commercial warranty"
+    },
+    "contact": {
+      "whatsappTitle": "WhatsApp",
+      "whatsappResponse": "Response < 4 business hours",
+      "phoneTitle": "Phone",
+      "phoneResponse": "Response < 1 business hour",
+      "emailTitle": "Email",
+      "emailResponse": "Response < 24 business hours",
+      "hoursTitle": "Hours",
+      "hoursDays": "Monday - Friday",
+      "hoursTime": "9am \u2013 7pm (Paris time)"
+    }
+  },
+  "account": {
+    "login": {
+      "title": "Sign in",
+      "subtitle": "Enter your email to receive a login link.",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "your@email.com",
+      "sendLink": "Send login link",
+      "sending": "Sending...",
+      "checkEmail": "Check your inbox",
+      "checkEmailSubtitle": "A login link has been sent to {email}. Click it to sign in.",
+      "changeEmail": "Change email",
+      "errors": {
+        "invalidEmail": "Invalid email format",
+        "sendFailed": "Error sending link. Please try again."
+      }
+    },
+    "page": {
+      "title": "My account",
+      "email": "Email",
+      "logout": "Sign out",
+      "ordersTitle": "My orders",
+      "noOrders": "You don't have any orders yet.",
+      "browseProducts": "Browse products",
+      "orderNumber": "Order",
+      "orderDate": "Date",
+      "orderTotal": "Total",
+      "orderStatus": "Status",
+      "orderItems": "Items",
+      "loadMore": "Load more"
+    },
+    "profile": {
+      "title": "My profile",
+      "subtitle": "This information will be used to pre-fill your orders.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "address": "Address",
+      "postalCode": "Postal code",
+      "city": "City",
+      "country": "Country",
+      "addressTitle": "My address",
+      "editAddress": "Edit address",
+      "addAddress": "Add an address",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving...",
+      "saved": "Profile updated",
+      "error": "Error updating profile"
+    },
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    }
+  },
   "footer": {
     "warranty": "12-month commercial warranty",
     "qualityCheck": "Up to 100 quality checks",
@@ -228,6 +417,8 @@
     "privacy": "Privacy policy",
     "legalNotice": "Legal notice",
     "followUs": "Follow us",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "tagline": "The future, in your hands.",
+    "description": "DBC reinvents electronics consumption by combining social responsibility, ecology, and equitable access for all."
   }
 }

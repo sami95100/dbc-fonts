@@ -9,13 +9,16 @@
     "retry": "Reessayer",
     "from": "A partir de",
     "new": "neuf",
-    "save": "Economisez"
+    "save": "Economisez",
+    "close": "Fermer"
   },
   "topBar": {
     "quality": "Notre Pacte Qualite",
     "repair": "Reparation",
     "stopFastTech": "Stop fast tech",
-    "mag": "Le Mag"
+    "mag": "Le Mag",
+    "chooseLanguage": "Choisir la langue",
+    "physicalStores": "DBC, avant d'etre un site, c'est 11 magasins physiques."
   },
   "search": {
     "placeholder": "Rechercher un produit"
@@ -27,7 +30,8 @@
     "checkout": "Commander",
     "sell": "Revendre",
     "help": "Besoin d'aide ?",
-    "account": "Mon compte"
+    "account": "Mon compte",
+    "menu": "Menu"
   },
   "categories": {
     "deals": "Bons plans",
@@ -48,18 +52,55 @@
   },
   "home": {
     "hero": {
-      "title": "Ici, on s'offre le meilleur du reconditionne.",
-      "subtitle": "Moins cher et aussi performant que le neuf grace au Pacte Qualite.",
-      "cta": "Voir les telephones"
+      "title": "On fait bouger l'industrie.",
+      "subtitle": "Des smartphones reconditionnes, testes et garantis. Moins cher, plus responsable.",
+      "subtitlePrefix": "Moins cher et aussi performant que le neuf grace au ",
+      "qualityPactLink": "Pacte Qualite DBC",
+      "cta": "Decouvrir nos telephones",
+      "tagline": "Aujourd'hui, avant demain."
+    },
+    "trust": {
+      "verifiedRefurbishers": "Reconditionneurs verifies",
+      "checkpoints": "Jusqu'a 100 points de controle",
+      "freeReturn": "Retour gratuit sous 30 jours",
+      "warrantyMonths": "12 mois de garantie commerciale",
+      "warranty": "Garantie 12 mois",
+      "shipping": "Livraison rapide",
+      "quality": "Controle qualite"
     },
     "brands": {
       "title": "Nos marques"
     },
-    "trust": {
-      "warranty": "Garantie 12 mois",
-      "shipping": "Livraison rapide",
-      "quality": "Controle qualite"
-    }
+    "values": {
+      "title": "Pourquoi DBC ?",
+      "access": {
+        "title": "Ouvrir les portes a tous",
+        "description": "Offrir a tous la possibilite d'acceder a la technologie, sans compromis sur l'environnement ni sur le budget."
+      },
+      "community": {
+        "title": "Tisser des liens",
+        "description": "Nous ne faisons pas que vendre, nous connectons avec nos communautes, toujours proches et a l'ecoute."
+      },
+      "urban": {
+        "title": "Embrasser l'esprit urbain",
+        "description": "Inspires par la street, nous proposons des solutions modernes, agiles et adaptees au rythme de la vie urbaine."
+      },
+      "future": {
+        "title": "Agir pour demain",
+        "description": "Chaque action, chaque decision est pensee pour laisser une empreinte positive sur la societe et l'environnement."
+      }
+    },
+    "bestDeals": "Nos meilleures offres"
+  },
+  "products": {
+    "title": "Nos produits reconditionnes",
+    "subtitle": "Choisissez une categorie pour trouver l'appareil ideal, teste et garanti.",
+    "refurbished": "reconditionnes",
+    "discoverSelection": "Decouvrez notre selection de {name} reconditionnes, testes et garantis.",
+    "smartphonesTitle": "Smartphones reconditionnes",
+    "smartphonesSubtitle": "Decouvrez notre selection de smartphones reconditionnes, testes et garantis.",
+    "tabletsTitle": "Tablettes reconditionnees",
+    "tabletsSubtitle": "Decouvrez notre selection de tablettes reconditionnees, testees et garanties."
   },
   "catalog": {
     "title": "iPhone reconditionnes",
@@ -68,12 +109,18 @@
     "filters": {
       "price": "Prix",
       "model": "Modele",
-      "year": "Annee de sortie",
+      "year": "Annee",
       "screen": "Taille d'ecran",
-      "storage": "Capacite de stockage (Go)",
+      "storage": "Stockage",
       "filter": "Filtrer",
       "sort": "Trier",
-      "bestSellers": "Meilleures ventes"
+      "bestSellers": "Meilleures ventes",
+      "clear": "Effacer",
+      "priceRange": "Fourchette de prix",
+      "apply": "Appliquer",
+      "noOptions": "Aucune option disponible",
+      "noResults": "Aucun produit ne correspond a vos criteres.",
+      "productsFound": "{count} produit(s) trouve(s)"
     }
   },
   "product": {
@@ -107,6 +154,10 @@
     },
     "qualityPact": "Pacte Qualite",
     "configurator": {
+      "conditionTitle": "Selectionnez la condition",
+      "conditionDesc": "Tous les appareils sont testes et verifies par des pros, garantis 100% fonctionnels.",
+      "storageTitle": "Selectionnez la capacite de stockage",
+      "colorTitle": "Selectionnez la couleur",
       "batteryTitle": "Selectionnez le type de batterie",
       "batteryDesc": "Toutes les batteries sont garanties en excellent etat.",
       "batteryStandardLabel": "Batterie standard",
@@ -116,12 +167,22 @@
       "soldOut": "Deja vendu",
       "alreadySold": "Deja vendu",
       "addedToCart": "Ajoute au panier",
+      "addedToCartBanner": "Produit ajoute au panier !",
       "yourSelection": "Votre selection",
       "beforeTradeIn": "avant reprise",
       "saveAmount": "Economisez",
+      "savingsAmount": "Economisez {amount} €",
       "changeMind": "Vous avez 30 jours pour changer d'avis",
       "includedWith": "Fourni avec",
       "chargingCable": "Cable de chargement compatible",
+      "bestSellerBadge": "Best-seller",
+      "viewCart": "Voir le panier",
+      "freeDelivery": "Livraison standard offerte",
+      "freeReturns": "Retour gratuit sous 30 jours",
+      "warrantyMonths": "Garantie commerciale 12 mois",
+      "qualityPledge": "Pacte Qualite",
+      "payInstallments": "Payez en 4 echeances de {amount}€/mois sans frais avec PayPal",
+      "learnMore": "En savoir plus",
       "conditions": {
         "parfait": "Etat parfait",
         "tres-bon": "Etat tres bon",
@@ -137,6 +198,16 @@
         "desc_ESIM": "2 emplacements SIM virtuels (aucun emplacement SIM physique)",
         "desc_DUAL SIM": "Emplacements SIM : 1 physique + 1 virtuel",
         "desc_SINGLE SIM": "1 emplacement SIM physique"
+      },
+      "conditionBadges": {
+        "noWear": "Aucun signe d'usure",
+        "microScratches": "Micro-rayures invisibles",
+        "lightWear": "Legers signes d'usure",
+        "visibleWear": "Signes visibles d'usure",
+        "verifiedParts": "Pieces verifiees",
+        "optimalBattery": "Batterie optimale",
+        "normalBattery": "Batterie pour usage normal",
+        "caseLabel": "Coque"
       }
     }
   },
@@ -156,8 +227,16 @@
     "total": "Total",
     "checkout": "Passer la commande",
     "remove": "Supprimer",
+    "decreaseQuantity": "Diminuer la quantite",
+    "increaseQuantity": "Augmenter la quantite",
     "newBattery": "Batterie neuve",
-    "standardBattery": "Batterie standard"
+    "standardBattery": "Batterie standard",
+    "grades": {
+      "parfait": "Parfait",
+      "tres-bon": "Tres bon",
+      "correct": "Correct",
+      "imparfait": "Imparfait"
+    }
   },
   "checkout": {
     "emptyCart": "Votre panier est vide",
@@ -183,6 +262,12 @@
       "invalidPhone": "Format telephone invalide",
       "invalidPostalCode": "Code postal invalide",
       "submitFailed": "Erreur lors de la creation de la commande"
+    },
+    "countries": {
+      "FR": "France",
+      "BE": "Belgique",
+      "CH": "Suisse",
+      "LU": "Luxembourg"
     },
     "orderSummary": "Recapitulatif",
     "items": "articles",
@@ -210,6 +295,110 @@
     "questions": "Des questions ?",
     "contactUs": "Contactez-nous"
   },
+  "pages": {
+    "legalNotice": "Mentions legales",
+    "termsOfSale": "Conditions generales de vente",
+    "refundPolicy": "Politique de retours & remboursements",
+    "shippingPolicy": "Politique d'expedition",
+    "faq": "Questions frequentes",
+    "backToHome": "Retour a l'accueil",
+    "lastUpdated": "Derniere mise a jour : {date}",
+    "lastUpdatedDateJuly2025": "juillet 2025",
+    "aboutTitle": "Qui sommes-nous",
+    "qualityTitle": "Notre Pacte Qualite",
+    "contactTitle": "Nous contacter",
+    "privacyTitle": "Politique de confidentialite",
+    "about": {
+      "storesTitle": "11 magasins physiques",
+      "storesDesc": "Avant d'etre un site, DBC c'est 11 boutiques en France ou vous pouvez toucher, tester et repartir avec votre telephone.",
+      "teamTitle": "Une equipe passionnee",
+      "teamDesc": "Des experts du reconditionne qui testent, verifient et preparent chaque appareil avec soin.",
+      "planetTitle": "Aujourd'hui, avant demain",
+      "planetDesc": "Chaque telephone reconditionne, c'est moins de dechets electroniques et un geste concret pour la planete.",
+      "warrantyTitle": "Garantie 24 mois",
+      "warrantyDesc": "Deux fois plus que la concurrence. On assume la qualite de nos produits avec une garantie solide."
+    },
+    "quality": {
+      "checkpointsTitle": "24 points",
+      "checkpointsDesc": "de controle sur chaque appareil",
+      "gradesTitle": "4 grades",
+      "gradesDesc": "cosmetiques transparents",
+      "batteryTitle": "Batterie",
+      "batteryDesc": "neuve ou remplacement possible",
+      "warrantyTitle": "24 mois",
+      "warrantyDesc": "de garantie commerciale"
+    },
+    "contact": {
+      "whatsappTitle": "WhatsApp",
+      "whatsappResponse": "Reponse < 4 h ouvrees",
+      "phoneTitle": "Telephone",
+      "phoneResponse": "Reponse < 1 h ouvree",
+      "emailTitle": "Email",
+      "emailResponse": "Reponse < 24 h ouvrees",
+      "hoursTitle": "Horaires",
+      "hoursDays": "Lundi - Vendredi",
+      "hoursTime": "9 h \u2013 19 h (heure de Paris)"
+    }
+  },
+  "account": {
+    "login": {
+      "title": "Connexion",
+      "subtitle": "Entrez votre email pour recevoir un lien de connexion.",
+      "emailLabel": "Adresse email",
+      "emailPlaceholder": "votre@email.com",
+      "sendLink": "Recevoir le lien",
+      "sending": "Envoi en cours...",
+      "checkEmail": "Verifiez votre boite mail",
+      "checkEmailSubtitle": "Un lien de connexion a ete envoye a {email}. Cliquez dessus pour vous connecter.",
+      "changeEmail": "Changer d'email",
+      "errors": {
+        "invalidEmail": "Format email invalide",
+        "sendFailed": "Erreur lors de l'envoi. Veuillez reessayer."
+      }
+    },
+    "page": {
+      "title": "Mon compte",
+      "email": "Email",
+      "logout": "Se deconnecter",
+      "ordersTitle": "Mes commandes",
+      "noOrders": "Vous n'avez pas encore de commandes.",
+      "browseProducts": "Decouvrir nos produits",
+      "orderNumber": "Commande",
+      "orderDate": "Date",
+      "orderTotal": "Total",
+      "orderStatus": "Statut",
+      "orderItems": "Articles",
+      "loadMore": "Voir plus"
+    },
+    "profile": {
+      "title": "Mon profil",
+      "subtitle": "Ces informations seront utilisees pour pre-remplir vos commandes.",
+      "firstName": "Prenom",
+      "lastName": "Nom",
+      "phone": "Telephone",
+      "address": "Adresse",
+      "postalCode": "Code postal",
+      "city": "Ville",
+      "country": "Pays",
+      "addressTitle": "Mon adresse",
+      "editAddress": "Modifier l'adresse",
+      "addAddress": "Ajouter une adresse",
+      "edit": "Modifier",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "saving": "Enregistrement...",
+      "saved": "Profil mis a jour",
+      "error": "Erreur lors de la mise a jour"
+    },
+    "status": {
+      "pending": "En attente",
+      "confirmed": "Confirmee",
+      "processing": "En preparation",
+      "shipped": "Expediee",
+      "delivered": "Livree",
+      "cancelled": "Annulee"
+    }
+  },
   "footer": {
     "warranty": "Garantie commerciale de 12 mois",
     "qualityCheck": "Jusqu'a 100 points de controle",
@@ -228,6 +417,8 @@
     "privacy": "Politique de confidentialite",
     "legalNotice": "Mentions legales",
     "followUs": "Suivez-nous",
-    "rights": "Tous droits reserves."
+    "rights": "Tous droits reserves.",
+    "tagline": "Le futur, entre vos mains.",
+    "description": "DBC reinvente la consommation de produits electroniques en alliant responsabilite sociale, ecologie et acces equitable pour tous."
   }
 }

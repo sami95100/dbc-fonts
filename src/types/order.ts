@@ -18,8 +18,10 @@ export interface OrderItem {
   grade: string;
   unit_price: number;
   quantity: number;
+  image_url?: string;
   foxway_sku?: string;
   battery_fallback?: boolean;
+  needs_shop_processing?: boolean;
 }
 
 export interface CreateOrderPayload {

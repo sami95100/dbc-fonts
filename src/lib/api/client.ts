@@ -1,7 +1,8 @@
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 const PUBLIC_API_URL =
-  process.env.NEXT_PUBLIC_PUBLIC_API_URL || "http://localhost:5000/api/public/v1";
+  process.env.NEXT_PUBLIC_PUBLIC_API_URL ||
+  "http://localhost:5000/api/public/v1";
 
 export interface ApiError {
   error: string;
@@ -13,14 +14,16 @@ export interface ApiResponse<T> {
   error: ApiError | null;
 }
 
-async function apiRequest<T>(
+// Shared request function for both API clients
+async function request<T>(
+  baseUrl: string,
   endpoint: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
   try {
     const url = endpoint.startsWith("http")
       ? endpoint
-      : `${API_BASE_URL}${endpoint}`;
+      : `${baseUrl}${endpoint}`;
 
     const response = await fetch(url, {
       ...options,
@@ -35,10 +38,7 @@ async function apiRequest<T>(
     if (!response.ok) {
       return {
         data: null,
-        error: {
-          error: data.error || "An error occurred",
-          details: data,
-        },
+        error: { error: data.error || "An error occurred", details: data },
       };
     }
 
@@ -46,84 +46,51 @@ async function apiRequest<T>(
   } catch (error) {
     return {
       data: null,
-      error: {
-        error: "Network error",
-        details: error,
-      },
+      error: { error: "Network error", details: error },
     };
   }
 }
 
-export const api = {
-  get: <T>(endpoint: string, options?: RequestInit) =>
-    apiRequest<T>(endpoint, { ...options, method: "GET" }),
-
-  post: <T>(endpoint: string, body: unknown, options?: RequestInit) =>
-    apiRequest<T>(endpoint, {
+// Build a typed HTTP client for a given base URL + optional default headers
+function createClient(baseUrl: string, defaultHeaders?: HeadersInit) {
+  const req = <T>(endpoint: string, options: RequestInit = {}) =>
+    request<T>(baseUrl, endpoint, {
       ...options,
-      method: "POST",
-      body: JSON.stringify(body),
-    }),
-
-  put: <T>(endpoint: string, body: unknown, options?: RequestInit) =>
-    apiRequest<T>(endpoint, {
-      ...options,
-      method: "PUT",
-      body: JSON.stringify(body),
-    }),
-
-  delete: <T>(endpoint: string, options?: RequestInit) =>
-    apiRequest<T>(endpoint, { ...options, method: "DELETE" }),
-};
-
-// API publique pour le catalogue (sans auth, avec rate limiting)
-async function publicApiRequest<T>(
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<ApiResponse<T>> {
-  try {
-    const url = `${PUBLIC_API_URL}${endpoint}`;
-
-    const response = await fetch(url, {
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        ...options.headers,
-      },
+      headers: { ...defaultHeaders, ...options.headers },
     });
 
-    const data = await response.json();
+  return {
+    get: <T>(endpoint: string, options?: RequestInit) =>
+      req<T>(endpoint, { ...options, method: "GET" }),
 
-    if (!response.ok) {
-      return {
-        data: null,
-        error: {
-          error: data.error || "An error occurred",
-          details: data,
-        },
-      };
-    }
+    post: <T>(endpoint: string, body: unknown, options?: RequestInit) =>
+      req<T>(endpoint, {
+        ...options,
+        method: "POST",
+        body: JSON.stringify(body),
+      }),
 
-    return { data, error: null };
-  } catch (error) {
-    return {
-      data: null,
-      error: {
-        error: "Network error",
-        details: error,
-      },
-    };
-  }
+    put: <T>(endpoint: string, body: unknown, options?: RequestInit) =>
+      req<T>(endpoint, {
+        ...options,
+        method: "PUT",
+        body: JSON.stringify(body),
+      }),
+
+    delete: <T>(endpoint: string, options?: RequestInit) =>
+      req<T>(endpoint, { ...options, method: "DELETE" }),
+  };
 }
 
-export const publicApi = {
-  get: <T>(endpoint: string, options?: RequestInit) =>
-    publicApiRequest<T>(endpoint, { ...options, method: "GET" }),
+// API admin backoffice (sans auth specifique cote front)
+export const api = createClient(API_BASE_URL);
 
-  post: <T>(endpoint: string, body: unknown, options?: RequestInit) =>
-    publicApiRequest<T>(endpoint, {
-      ...options,
-      method: "POST",
-      body: JSON.stringify(body),
-    }),
-};
+// API publique catalogue (sans auth)
+export const publicApi = createClient(PUBLIC_API_URL);
+
+// API publique authentifiee (avec JWT Supabase)
+export function publicApiWithAuth(token: string) {
+  return createClient(PUBLIC_API_URL, {
+    Authorization: `Bearer ${token}`,
+  });
+}
