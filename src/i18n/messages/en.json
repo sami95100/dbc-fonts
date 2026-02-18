@@ -100,7 +100,13 @@
     "smartphonesTitle": "Refurbished smartphones",
     "smartphonesSubtitle": "Discover our selection of refurbished smartphones, tested and guaranteed.",
     "tabletsTitle": "Refurbished tablets",
-    "tabletsSubtitle": "Discover our selection of refurbished tablets, tested and guaranteed."
+    "tabletsSubtitle": "Discover our selection of refurbished tablets, tested and guaranteed.",
+    "laptopsTitle": "Refurbished laptops",
+    "laptopsSubtitle": "Discover our selection of refurbished laptops, tested and guaranteed.",
+    "smartwatchesTitle": "Refurbished smartwatches",
+    "smartwatchesSubtitle": "Discover our selection of refurbished smartwatches, tested and guaranteed.",
+    "audioTitle": "Refurbished audio",
+    "audioSubtitle": "Discover our selection of refurbished audio products, tested and guaranteed."
   },
   "catalog": {
     "title": "Refurbished iPhones",

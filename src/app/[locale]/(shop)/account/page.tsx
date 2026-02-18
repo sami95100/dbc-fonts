@@ -34,7 +34,7 @@ export default function AccountPage() {
       const token = getAccessToken();
       if (!token) return;
       setLoadingOrders(true);
-      const { data } = await getMyOrders(token, page, 10);
+      const { data } = await getMyOrders(token, page, 5);
       if (data) setOrders(data);
       setLoadingOrders(false);
     },

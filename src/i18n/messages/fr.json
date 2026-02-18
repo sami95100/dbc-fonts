@@ -100,7 +100,13 @@
     "smartphonesTitle": "Smartphones reconditionnes",
     "smartphonesSubtitle": "Decouvrez notre selection de smartphones reconditionnes, testes et garantis.",
     "tabletsTitle": "Tablettes reconditionnees",
-    "tabletsSubtitle": "Decouvrez notre selection de tablettes reconditionnees, testees et garanties."
+    "tabletsSubtitle": "Decouvrez notre selection de tablettes reconditionnees, testees et garanties.",
+    "laptopsTitle": "Ordinateurs portables reconditionnes",
+    "laptopsSubtitle": "Decouvrez notre selection d'ordinateurs portables reconditionnes, testes et garantis.",
+    "smartwatchesTitle": "Montres connectees reconditionnees",
+    "smartwatchesSubtitle": "Decouvrez notre selection de montres connectees reconditionnees, testees et garanties.",
+    "audioTitle": "Audio reconditionne",
+    "audioSubtitle": "Decouvrez notre selection de produits audio reconditionnes, testes et garantis."
   },
   "catalog": {
     "title": "iPhone reconditionnes",
