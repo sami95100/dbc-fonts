@@ -10,44 +10,66 @@ Tu dois add, commit et push TOUS les changements sur les deux repos :
 - **Frontend** : `~/dbcfront`
 - **Backend** : `~/dbcback`
 
-## Procédure
+## REGLE ABSOLUE
 
-### 1. Frontend (`~/dbcfront`)
+**INTERDICTION de repondre "done" ou "fait" tant que les deux repos n'ont pas ete verifies.**
+Tu DOIS executer les 4 etapes ci-dessous dans l'ordre. Pas de raccourci.
 
+## Procedure (les 4 etapes sont OBLIGATOIRES)
+
+### Etape 1 — Verifier les deux repos EN PARALLELE
+
+Lance ces deux commandes en parallele :
 ```bash
-cd ~/dbcfront
-git status
+cd ~/dbcfront && git status && git diff --stat
+```
+```bash
+cd ~/dbcback && git status && git diff --stat
 ```
 
-- S'il y a des fichiers modifiés ou untracked :
-  1. `git add -A`
-  2. Crée un commit avec un message descriptif basé sur les changements (format conventionnel : `feat:`, `fix:`, `style:`, `refactor:`, `chore:`)
-  3. `git push`
-- S'il n'y a rien à commit, passe au backend
+### Etape 2 — Frontend (`~/dbcfront`)
 
-### 2. Backend (`~/dbcback`)
+Si des fichiers sont modifies ou untracked :
+1. `git add -A`
+2. Commit avec message descriptif (format : `feat:`, `fix:`, `style:`, `refactor:`, `chore:`)
+3. `git push`
 
+Si clean → note "dbcfront: clean"
+
+### Etape 3 — Backend (`~/dbcback`)
+
+Si des fichiers sont modifies ou untracked :
+1. `git add -A`
+2. Commit avec message descriptif
+3. `git push`
+
+Si clean → note "dbcback: clean"
+
+### Etape 4 — Verification finale (OBLIGATOIRE)
+
+Lance ces deux commandes en parallele pour CONFIRMER que tout est parti :
 ```bash
-cd ~/dbcback
-git status
+cd ~/dbcfront && git status
+```
+```bash
+cd ~/dbcback && git status
 ```
 
-- S'il y a des fichiers modifiés ou untracked :
-  1. `git add -A`
-  2. Crée un commit avec un message descriptif basé sur les changements
-  3. `git push`
-- S'il n'y a rien à commit, confirme que tout est clean
+Les deux doivent afficher "nothing to commit, working tree clean".
+Si ce n'est pas le cas → recommence les etapes 2-3 pour le repo concerne.
 
-### 3. Résumé
+### Etape 5 — Resume
 
-Affiche un résumé clair :
-- Frontend : ce qui a été pushé (ou "already clean")
-- Backend : ce qui a été pushé (ou "already clean")
+Affiche :
+```
+dbcfront: <commit hash> — <message> (ou "clean")
+dbcback:  <commit hash> — <message> (ou "clean")
+```
 
-## Règles
+## Regles
 
-- TOUJOURS utiliser `git add -A` pour ne rien oublier
-- TOUJOURS vérifier le status avant et après
+- TOUJOURS `git add -A` pour ne rien oublier
+- TOUJOURS verifier AVANT et APRES
 - Message de commit en anglais, format conventionnel
-- NE PAS toucher à `~/BACKEND-MVP` — c'est un projet séparé
-- Si un push échoue, affiche l'erreur clairement
+- NE PAS toucher a `~/BACKEND-MVP`
+- Si un push echoue, affiche l'erreur clairement
