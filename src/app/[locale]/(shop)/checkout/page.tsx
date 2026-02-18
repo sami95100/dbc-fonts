@@ -297,137 +297,33 @@ export default function CheckoutPage() {
                 <h2 className="mb-4 text-xl font-semibold text-gray-900">
                   {t("deliveryMethod")}
                 </h2>
-                <div className="grid gap-3 sm:grid-cols-3">
-                  {/* Store pickup */}
-                  <button
-                    type="button"
+                <div className="space-y-3">
+                  <DeliveryOptionCard
+                    selected={deliveryMethod === "pickup"}
                     onClick={() => setDeliveryMethod("pickup")}
-                    className={`flex items-start gap-3 rounded-lg border-2 p-4 text-left transition ${
-                      deliveryMethod === "pickup"
-                        ? "border-green-700 bg-green-50"
-                        : "border-gray-200 hover:border-gray-300"
-                    }`}
-                  >
-                    <div
-                      className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
-                        deliveryMethod === "pickup"
-                          ? "border-green-700"
-                          : "border-gray-300"
-                      }`}
-                    >
-                      {deliveryMethod === "pickup" && (
-                        <div className="h-2.5 w-2.5 rounded-full bg-green-700" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <Store className="h-4 w-4 text-gray-600" />
-                        <span className="font-medium text-gray-900">
-                          {t("deliveryPickup")}
-                        </span>
-                      </div>
-                      <p className="mt-1 text-xs text-gray-500">
-                        {t("deliveryPickupDesc")}
-                      </p>
-                    </div>
-                    <span className="shrink-0 text-sm font-semibold text-green-700">
-                      {t("free")}
-                    </span>
-                  </button>
-
-                  {/* Home delivery */}
-                  <button
-                    type="button"
+                    icon={<Store className="h-4 w-4" />}
+                    title={t("deliveryPickup")}
+                    description={`${STORE_ADDRESS.address}, ${STORE_ADDRESS.postalCode} ${STORE_ADDRESS.city}`}
+                    price={t("free")}
+                    priceClassName="text-green-700"
+                  />
+                  <DeliveryOptionCard
+                    selected={deliveryMethod === "home"}
                     onClick={() => setDeliveryMethod("home")}
-                    className={`flex items-start gap-3 rounded-lg border-2 p-4 text-left transition ${
-                      deliveryMethod === "home"
-                        ? "border-green-700 bg-green-50"
-                        : "border-gray-200 hover:border-gray-300"
-                    }`}
-                  >
-                    <div
-                      className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
-                        deliveryMethod === "home"
-                          ? "border-green-700"
-                          : "border-gray-300"
-                      }`}
-                    >
-                      {deliveryMethod === "home" && (
-                        <div className="h-2.5 w-2.5 rounded-full bg-green-700" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <Truck className="h-4 w-4 text-gray-600" />
-                        <span className="font-medium text-gray-900">
-                          {t("deliveryHome")}
-                        </span>
-                      </div>
-                      <p className="mt-1 text-xs text-gray-500">
-                        {t("deliveryHomeDesc")}
-                      </p>
-                    </div>
-                    <span className="shrink-0 text-sm font-semibold text-gray-900">
-                      20 €
-                    </span>
-                  </button>
-
-                  {/* DPD Parcel Locker */}
-                  <button
-                    type="button"
+                    icon={<Truck className="h-4 w-4" />}
+                    title={t("deliveryHome")}
+                    description={t("deliveryHomeDesc")}
+                    price="20 €"
+                  />
+                  <DeliveryOptionCard
+                    selected={deliveryMethod === "dpd"}
                     onClick={() => setDeliveryMethod("dpd")}
-                    className={`flex items-start gap-3 rounded-lg border-2 p-4 text-left transition ${
-                      deliveryMethod === "dpd"
-                        ? "border-green-700 bg-green-50"
-                        : "border-gray-200 hover:border-gray-300"
-                    }`}
-                  >
-                    <div
-                      className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
-                        deliveryMethod === "dpd"
-                          ? "border-green-700"
-                          : "border-gray-300"
-                      }`}
-                    >
-                      {deliveryMethod === "dpd" && (
-                        <div className="h-2.5 w-2.5 rounded-full bg-green-700" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4 text-gray-600" />
-                        <span className="font-medium text-gray-900">
-                          {t("deliveryDpd")}
-                        </span>
-                      </div>
-                      <p className="mt-1 text-xs text-gray-500">
-                        {t("deliveryDpdDesc")}
-                      </p>
-                    </div>
-                    <span className="shrink-0 text-sm font-semibold text-gray-900">
-                      6 €
-                    </span>
-                  </button>
+                    icon={<MapPin className="h-4 w-4" />}
+                    title={t("deliveryDpd")}
+                    description={t("deliveryDpdDesc")}
+                    price="6 €"
+                  />
                 </div>
-
-                {/* Store pickup address */}
-                {deliveryMethod === "pickup" && (
-                  <div className="mt-4 flex items-start gap-3 rounded-lg border border-green-200 bg-green-50 p-4">
-                    <Store className="mt-0.5 h-5 w-5 shrink-0 text-green-700" />
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">
-                        {STORE_ADDRESS.name}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        {STORE_ADDRESS.address}, {STORE_ADDRESS.postalCode}{" "}
-                        {STORE_ADDRESS.city}
-                      </p>
-                      <p className="mt-1 text-xs text-green-700">
-                        {t("deliveryPickupReady")}
-                      </p>
-                    </div>
-                  </div>
-                )}
 
                 {/* DPD Parcel Shop Picker */}
                 {deliveryMethod === "dpd" && (
@@ -666,5 +562,57 @@ function CheckoutField({
       />
       {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
     </div>
+  );
+}
+
+function DeliveryOptionCard({
+  selected,
+  onClick,
+  icon,
+  title,
+  description,
+  price,
+  priceClassName,
+}: {
+  selected: boolean;
+  onClick: () => void;
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  price: string;
+  priceClassName?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`flex w-full items-start gap-3 rounded-lg border-2 p-4 text-left transition ${
+        selected
+          ? "border-green-700 bg-green-50"
+          : "border-gray-200 hover:border-gray-300"
+      }`}
+    >
+      <div
+        className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
+          selected ? "border-green-700" : "border-gray-300"
+        }`}
+      >
+        {selected && (
+          <div className="h-2.5 w-2.5 rounded-full bg-green-700" />
+        )}
+      </div>
+      <div className="flex-1">
+        <div className="flex items-center gap-2 text-gray-600">
+          {icon}
+          <span className="font-medium text-gray-900">{title}</span>
+        </div>
+        <p className="mt-1 text-xs text-gray-500">{description}</p>
+      </div>
+      <span
+        className={`shrink-0 text-sm font-semibold ${priceClassName || "text-gray-900"}`}
+      >
+        {price}
+      </span>
+    </button>
   );
 }
