@@ -153,6 +153,9 @@
       "warranty": "12-month commercial warranty"
     },
     "qualityPact": "Quality Pact",
+    "illustrationLabel": "Illustration image",
+    "previousImage": "Previous image",
+    "nextImage": "Next image",
     "configurator": {
       "batteryTitle": "Select battery type",
       "batteryDesc": "All batteries are guaranteed in excellent condition.",
@@ -189,6 +192,10 @@
         "correct": "Good condition",
         "imparfait": "Acceptable condition"
       },
+      "conditionDesc_parfait": "Like new",
+      "conditionDesc_tres-bon": "Micro-scratches invisible during use",
+      "conditionDesc_correct": "Light signs of wear",
+      "conditionDesc_imparfait": "Visible signs of wear",
       "sim": {
         "ESIM": "eSIM",
         "DUAL SIM": "Physical SIM + eSIM",
@@ -285,6 +292,13 @@
     "title": "Order confirmed!",
     "subtitle": "Thank you for your order.",
     "orderNumber": "Order number",
+    "yourOrder": "Your order",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "free": "Free",
+    "total": "Total",
+    "newBattery": "New battery",
+    "standardBattery": "Standard battery",
     "emailSent": "Confirmation email sent",
     "emailDescription": "You will receive an email with your order details.",
     "nextSteps": "Next steps",
@@ -368,7 +382,10 @@
       "orderTotal": "Total",
       "orderStatus": "Status",
       "orderItems": "Items",
-      "loadMore": "Load more"
+      "loadMore": "Load more",
+      "previousPage": "Previous",
+      "nextPage": "Next",
+      "pageOf": "Page {current} of {total}"
     },
     "profile": {
       "title": "My profile",

@@ -3,6 +3,7 @@
 import { memo, useState, useEffect } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Info } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import type { ConfigSectionProps, ImageBadge } from "./types";
 
@@ -86,6 +87,7 @@ function ConfigSectionComponent({
   showIllustrationLabel,
   children,
 }: ConfigSectionProps) {
+  const t = useTranslations("product");
   // Combine imageUrl and imageUrls into a single array
   const images = imageUrls?.length ? imageUrls : imageUrl ? [imageUrl] : [];
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -120,7 +122,7 @@ function ConfigSectionComponent({
               {showIllustrationLabel && (
                 <div className="absolute right-3 top-3">
                   <span className="rounded-md bg-white/90 px-2 py-1 text-xs font-medium text-gray-600 shadow-sm backdrop-blur-sm">
-                    Image d&apos;illustration
+                    {t("illustrationLabel")}
                   </span>
                 </div>
               )}
@@ -176,14 +178,14 @@ function ConfigSectionComponent({
               <button
                 onClick={() => setSelectedIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1))}
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-green-700 text-white transition-colors hover:bg-green-800"
-                aria-label="Image precedente"
+                aria-label={t("previousImage")}
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
               <button
                 onClick={() => setSelectedIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0))}
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-green-700 text-white transition-colors hover:bg-green-800"
-                aria-label="Image suivante"
+                aria-label={t("nextImage")}
               >
                 <ChevronRight className="h-5 w-5" />
               </button>

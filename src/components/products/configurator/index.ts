@@ -57,6 +57,9 @@ export {
 // Hooks
 export { useProductConfigurator } from "./hooks";
 
+// Constants
+export { GRADE_ID_TO_API } from "./types";
+
 // Types
 export type {
   ConfigurableProduct,

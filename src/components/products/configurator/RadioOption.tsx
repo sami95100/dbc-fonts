@@ -31,7 +31,7 @@ function RadioOptionComponent({
   badge,
   disabled = false,
   soldOut = false,
-  soldOutLabel = "Déjà vendu",
+  soldOutLabel,
 }: RadioOptionProps) {
   const isDisabled = disabled || soldOut;
 

@@ -16,6 +16,14 @@ import type {
 // Re-export for convenience
 export type { ProductCondition, ProductStorage, ProductColor, ProductSim };
 
+// Mapping grade ID (stored in cart) -> API name (expected by backend)
+export const GRADE_ID_TO_API: Record<string, string> = {
+  parfait: "Parfait",
+  "tres-bon": "Tres bon",
+  correct: "Correct",
+  imparfait: "Imparfait",
+};
+
 // ============================================
 // Product Types
 // ============================================
@@ -55,6 +63,7 @@ export interface ProductSelection {
 
 export interface VariantInfo {
   sku: string | null;
+  foxwaySku: string | null;
   price: number | null;
   quantity: number;
   batteryFallback: boolean;

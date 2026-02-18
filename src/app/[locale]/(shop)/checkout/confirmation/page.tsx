@@ -1,38 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { Check, Mail } from "lucide-react";
+import { Check, Mail, Package } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { getOrder } from "@/lib/api/orders";
-import type { Order, OrderItem } from "@/types/order";
+import { useCartStore } from "@/stores/cart-store";
 
 export default function ConfirmationPage() {
   const locale = useLocale();
   const searchParams = useSearchParams();
   const t = useTranslations("confirmation");
   const orderNumber = searchParams.get("order");
+  const { lastOrder, clearLastOrder } = useCartStore();
 
-  const [order, setOrder] = useState<Order | null>(null);
-  const [items, setItems] = useState<OrderItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
+  // Clean up lastOrder on unmount
   useEffect(() => {
-    if (!orderNumber) {
-      setIsLoading(false);
-      return;
-    }
-
-    const fetchOrder = async () => {
-      // Note: We might need the order ID, not the order number
-      // For now, show confirmation based on order number
-      setIsLoading(false);
+    return () => {
+      clearLastOrder();
     };
-
-    fetchOrder();
-  }, [orderNumber]);
+  }, [clearLastOrder]);
 
   if (!orderNumber) {
     return (
@@ -52,15 +40,17 @@ export default function ConfirmationPage() {
     );
   }
 
+  const subtotal = lastOrder?.subtotal ?? 0;
+
   return (
     <div className="bg-gray-50 py-8">
       <div className="mx-auto max-w-2xl px-4">
         {/* Success header */}
         <div className="mb-8 text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-            <Check className="h-8 w-8 text-green-600" />
+            <Check className="h-8 w-8 text-green-600" aria-hidden="true" />
           </div>
-          <h1 className="mb-2 text-2xl font-bold text-gray-900">
+          <h1 className="mb-2 font-display text-2xl font-bold text-gray-900">
             {t("title")}
           </h1>
           <p className="text-gray-600">{t("subtitle")}</p>
@@ -68,24 +58,102 @@ export default function ConfirmationPage() {
 
         {/* Order details card */}
         <div className="rounded-lg border border-gray-200 bg-white p-6">
+          {/* Order number */}
           <div className="mb-6 border-b border-gray-200 pb-6 text-center">
             <p className="text-sm text-gray-500">{t("orderNumber")}</p>
             <p className="text-xl font-bold text-gray-900">{orderNumber}</p>
           </div>
 
+          {/* Product list with images */}
+          {lastOrder && lastOrder.items.length > 0 && (
+            <div className="mb-6 border-b border-gray-200 pb-6">
+              <h2 className="mb-4 flex items-center gap-2 font-semibold text-gray-900">
+                <Package className="h-4 w-4" aria-hidden="true" />
+                {t("yourOrder")}
+              </h2>
+              <div className="space-y-4">
+                {lastOrder.items.map((item, i) => (
+                  <div key={i} className="flex gap-4">
+                    {item.imageUrl ? (
+                      <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-50">
+                        <Image
+                          src={item.imageUrl}
+                          alt={item.name}
+                          fill
+                          className="object-contain p-1"
+                          sizes="80px"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-lg bg-gray-100">
+                        <Package className="h-8 w-8 text-gray-300" aria-hidden="true" />
+                      </div>
+                    )}
+                    <div className="flex flex-1 items-start justify-between">
+                      <div>
+                        <p className="font-medium text-gray-900">
+                          {item.name}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {item.storage} · {item.color} · {item.grade}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {item.battery === "new"
+                            ? t("newBattery")
+                            : t("standardBattery")}
+                        </p>
+                        {item.quantity > 1 && (
+                          <p className="text-sm text-gray-500">
+                            x{item.quantity}
+                          </p>
+                        )}
+                      </div>
+                      <p className="font-medium text-gray-900">
+                        {(item.price * item.quantity).toLocaleString("fr-FR")} €
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Totals */}
+              <div className="mt-4 space-y-2 border-t border-gray-100 pt-4">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">{t("subtotal")}</span>
+                  <span>{subtotal.toLocaleString("fr-FR")} €</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">{t("shipping")}</span>
+                  <span className="font-medium text-green-700">
+                    {t("free")}
+                  </span>
+                </div>
+                <div className="flex justify-between text-lg font-semibold">
+                  <span>{t("total")}</span>
+                  <span>{subtotal.toLocaleString("fr-FR")} €</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Email notification */}
           <div className="mb-6">
             <div className="flex items-start gap-3 rounded-lg bg-blue-50 p-4">
-              <Mail className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600" />
+              <Mail className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600" aria-hidden="true" />
               <div>
                 <p className="font-medium text-blue-900">{t("emailSent")}</p>
-                <p className="text-sm text-blue-700">{t("emailDescription")}</p>
+                <p className="text-sm text-blue-700">
+                  {t("emailDescription")}
+                </p>
               </div>
             </div>
           </div>
 
           {/* Next steps */}
           <div className="mb-6">
-            <h2 className="mb-3 font-semibold text-gray-900">{t("nextSteps")}</h2>
+            <h2 className="mb-3 font-semibold text-gray-900">
+              {t("nextSteps")}
+            </h2>
             <ol className="space-y-3 text-sm text-gray-600">
               <li className="flex gap-3">
                 <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-medium text-gray-700">
@@ -111,7 +179,7 @@ export default function ConfirmationPage() {
           {/* Actions */}
           <div className="flex flex-col gap-3 sm:flex-row">
             <Link
-              href={`/${locale}/smartphones`}
+              href={`/${locale}/products/smartphones`}
               className="flex-1 rounded-full bg-green-700 py-3 text-center font-medium text-white transition hover:bg-green-800"
             >
               {t("continueShopping")}

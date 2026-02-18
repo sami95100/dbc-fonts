@@ -12,21 +12,14 @@ import { getProductImage } from "@/data/mock/products";
 import { useCartStore } from "@/stores/cart-store";
 import type { CartItem } from "@/types/cart";
 import type { ModelImagesByCondition } from "@/types/product";
-import type {
-  ConfigurableProduct,
-  ProductSelection,
-  VariantInfo,
-  BatteryType,
-  CartConfirmationItem,
+import {
+  GRADE_ID_TO_API,
+  type ConfigurableProduct,
+  type ProductSelection,
+  type VariantInfo,
+  type BatteryType,
+  type CartConfirmationItem,
 } from "../types";
-
-// Mapping grade ID vers nom API
-const GRADE_ID_TO_API: Record<string, string> = {
-  parfait: "Parfait",
-  "tres-bon": "Tres bon",
-  correct: "Correct",
-  imparfait: "Imparfait",
-};
 
 interface UseProductConfiguratorOptions {
   product: ConfigurableProduct;
@@ -160,6 +153,7 @@ export function useProductConfigurator({
         if (!controller.signal.aborted && result.data) {
           setVariantInfo({
             sku: result.data.sku,
+            foxwaySku: result.data.variant?.foxway_sku ?? null,
             price: result.data.price,
             quantity: result.data.quantity,
             batteryFallback: result.data.battery_fallback,
@@ -380,6 +374,7 @@ export function useProductConfigurator({
     const cartItem: Omit<CartItem, "id"> = {
       variantId: variantInfo.sku,
       sku: variantInfo.sku,
+      foxwaySku: variantInfo.foxwaySku || undefined,
       model: product.name,
       modelId: product.id,
       storage: selection.storage,

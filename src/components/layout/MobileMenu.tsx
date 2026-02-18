@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { Menu, Home, ArrowLeftRight, HelpCircle, User } from "lucide-react";
+import { Menu, Home, HelpCircle, User } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -70,14 +70,6 @@ export function MobileMenu() {
 
           {/* Secondary nav */}
           <div className="px-3 py-3">
-            <Link
-              href={`/${locale}/sell`}
-              onClick={close}
-              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-gray-700 transition-colors hover:bg-accent/10 hover:text-accent"
-            >
-              <ArrowLeftRight className="h-4 w-4" aria-hidden="true" />
-              {t("sell")}
-            </Link>
             <Link
               href={`/${locale}/help`}
               onClick={close}

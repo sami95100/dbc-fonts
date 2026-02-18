@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
@@ -11,6 +11,7 @@ import { useAuthStore } from "@/stores/auth-store";
 import { createOrder } from "@/lib/api/orders";
 import { getProfile } from "@/lib/api/profile";
 import { COUNTRY_CODES } from "@/lib/constants";
+import { GRADE_ID_TO_API } from "@/components/products/configurator";
 import type { CreateOrderPayload, OrderItem } from "@/types/order";
 
 interface ShippingFormData {
@@ -40,10 +41,11 @@ export default function CheckoutPage() {
   const router = useRouter();
   const t = useTranslations("checkout");
   const tCart = useTranslations("cart");
-  const { items, getSubtotal, clearCart, hasShopProcessingItems } =
+  const { items, getSubtotal, setLastOrder, clearCart, hasShopProcessingItems } =
     useCartStore();
   const { user, initialized, getAccessToken } = useAuthStore();
 
+  const orderCompleteRef = useRef(false);
   const [formData, setFormData] = useState<ShippingFormData>(INITIAL_FORM);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -74,7 +76,7 @@ export default function CheckoutPage() {
     });
   }, [initialized, user, getAccessToken]);
 
-  if (items.length === 0) {
+  if (items.length === 0 && !orderCompleteRef.current) {
     return (
       <div className="bg-gray-50 py-8">
         <div className="mx-auto max-w-4xl px-4 text-center">
@@ -152,7 +154,8 @@ export default function CheckoutPage() {
         product_name: `${item.model} ${item.storage}`,
         storage: item.storage,
         color: item.color,
-        grade: tCart(`grades.${item.grade}`),
+        grade: GRADE_ID_TO_API[item.grade] || item.grade,
+        battery: item.battery,
         unit_price: item.price,
         quantity: item.quantity,
         image_url: item.imageUrl,
@@ -180,12 +183,30 @@ export default function CheckoutPage() {
         return;
       }
 
-      if (response.data?.success) {
-        clearCart();
-        router.push(
-          `/${locale}/checkout/confirmation?order=${response.data.order.order_number}`
-        );
+      if (!response.data?.success) {
+        setSubmitError(t("errors.submitFailed"));
+        return;
       }
+
+      orderCompleteRef.current = true;
+      setLastOrder({
+        orderNumber: response.data.order.order_number,
+        items: items.map((item) => ({
+          name: item.model,
+          storage: item.storage,
+          color: item.color,
+          grade: tCart(`grades.${item.grade}`),
+          battery: item.battery,
+          price: item.price,
+          quantity: item.quantity,
+          imageUrl: item.imageUrl,
+        })),
+        subtotal: getSubtotal(),
+      });
+      clearCart();
+      router.push(
+        `/${locale}/checkout/confirmation?order=${encodeURIComponent(response.data.order.order_number)}`
+      );
     } catch {
       setSubmitError(t("errors.submitFailed"));
     } finally {

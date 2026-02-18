@@ -4,12 +4,30 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { CartItem } from "@/types/cart";
 
+export interface LastOrder {
+  orderNumber: string;
+  items: {
+    name: string;
+    storage: string;
+    color: string;
+    grade: string;
+    battery: "standard" | "new";
+    price: number;
+    quantity: number;
+    imageUrl?: string;
+  }[];
+  subtotal: number;
+}
+
 interface CartState {
   items: CartItem[];
+  lastOrder: LastOrder | null;
   addItem: (item: Omit<CartItem, "id">) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
+  setLastOrder: (order: LastOrder) => void;
+  clearLastOrder: () => void;
   getItemCount: () => number;
   getSubtotal: () => number;
   hasShopProcessingItems: () => boolean;
@@ -19,6 +37,7 @@ export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
+      lastOrder: null,
 
       addItem: (item) => {
         const id = crypto.randomUUID();
@@ -44,6 +63,10 @@ export const useCartStore = create<CartState>()(
 
       clearCart: () => set({ items: [] }),
 
+      setLastOrder: (order) => set({ lastOrder: order }),
+
+      clearLastOrder: () => set({ lastOrder: null }),
+
       getItemCount: () => {
         return get().items.reduce((sum, item) => sum + item.quantity, 0);
       },
@@ -64,7 +87,7 @@ export const useCartStore = create<CartState>()(
     {
       name: "dbc-cart",
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ items: state.items }),
+      partialize: (state) => ({ items: state.items, lastOrder: state.lastOrder }),
     }
   )
 );

@@ -34,7 +34,7 @@ export default function CartPage() {
             </h2>
             <p className="mb-6 text-gray-500">{t("emptyDescription")}</p>
             <Link
-              href={`/${locale}/smartphones`}
+              href={`/${locale}/products/smartphones`}
               className="inline-flex items-center justify-center rounded-full bg-green-700 px-6 py-3 font-medium text-white transition hover:bg-green-800"
             >
               {t("browseProducts")}
@@ -93,7 +93,7 @@ export default function CartPage() {
                 </Link>
 
                 <Link
-                  href={`/${locale}/smartphones`}
+                  href={`/${locale}/products/smartphones`}
                   className="mt-3 block text-center text-sm text-gray-600 hover:text-gray-900"
                 >
                   {t("continueShopping")}

@@ -94,7 +94,7 @@ function ConditionSectionComponent({
           selected={selectedCondition === condition.id}
           onClick={() => condition.available && onConditionChange(condition.id)}
           label={t(`conditions.${condition.id}`)}
-          sublabel={condition.description}
+          sublabel={t(`conditionDesc_${condition.id}`)}
           price={
             condition.available
               ? `${condition.price} EUR`

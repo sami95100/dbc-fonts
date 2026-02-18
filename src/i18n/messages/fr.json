@@ -153,6 +153,9 @@
       "warranty": "Garantie commerciale 12 mois"
     },
     "qualityPact": "Pacte Qualite",
+    "illustrationLabel": "Image d'illustration",
+    "previousImage": "Image precedente",
+    "nextImage": "Image suivante",
     "configurator": {
       "conditionTitle": "Selectionnez la condition",
       "conditionDesc": "Tous les appareils sont testes et verifies par des pros, garantis 100% fonctionnels.",
@@ -189,6 +192,10 @@
         "correct": "Etat correct",
         "imparfait": "Etat imparfait"
       },
+      "conditionDesc_parfait": "Comme neuf",
+      "conditionDesc_tres-bon": "Micro-rayures invisibles a l'usage",
+      "conditionDesc_correct": "Legers signes d'usure",
+      "conditionDesc_imparfait": "Signes d'usure visibles",
       "sim": {
         "ESIM": "eSIM",
         "DUAL SIM": "SIM physique + eSIM",
@@ -285,6 +292,13 @@
     "title": "Commande confirmee !",
     "subtitle": "Merci pour votre commande.",
     "orderNumber": "Numero de commande",
+    "yourOrder": "Votre commande",
+    "subtotal": "Sous-total",
+    "shipping": "Livraison",
+    "free": "Gratuite",
+    "total": "Total",
+    "newBattery": "Batterie neuve",
+    "standardBattery": "Batterie standard",
     "emailSent": "Email de confirmation envoye",
     "emailDescription": "Vous recevrez un email avec les details de votre commande.",
     "nextSteps": "Prochaines etapes",
@@ -368,7 +382,10 @@
       "orderTotal": "Total",
       "orderStatus": "Statut",
       "orderItems": "Articles",
-      "loadMore": "Voir plus"
+      "loadMore": "Voir plus",
+      "previousPage": "Precedent",
+      "nextPage": "Suivant",
+      "pageOf": "Page {current} sur {total}"
     },
     "profile": {
       "title": "Mon profil",

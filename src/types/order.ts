@@ -16,6 +16,7 @@ export interface OrderItem {
   storage: string;
   color: string;
   grade: string;
+  battery: "standard" | "new";
   unit_price: number;
   quantity: number;
   image_url?: string;

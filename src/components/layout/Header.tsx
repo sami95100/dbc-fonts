@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { ArrowLeftRight, User, ShoppingCart } from "lucide-react";
+import { User, ShoppingCart } from "lucide-react";
 import { DbcLogo } from "@/components/ui/dbc-logo";
 import { SearchBar } from "./SearchBar";
 import { MobileMenu } from "./MobileMenu";
@@ -41,15 +41,6 @@ export function Header() {
 
           {/* Right actions */}
           <div className="flex items-center gap-1 md:gap-2">
-            {/* Sell button - Hidden on mobile */}
-            <Link
-              href={`/${locale}/sell`}
-              className="hidden items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-medium transition-colors hover:border-accent hover:text-accent lg:flex"
-            >
-              <ArrowLeftRight className="h-5 w-5" aria-hidden="true" />
-              {t("sell")}
-            </Link>
-
             {/* Help - Hidden on mobile */}
             <Link
               href={`/${locale}/help`}

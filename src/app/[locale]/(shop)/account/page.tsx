@@ -4,7 +4,13 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { LogOut, ShoppingBag, Loader2 } from "lucide-react";
+import {
+  LogOut,
+  ShoppingBag,
+  Loader2,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/stores/auth-store";
 import { getMyOrders, type MyOrdersResponse } from "@/lib/api/orders";
@@ -21,15 +27,19 @@ export default function AccountPage() {
   const profile = useProfile();
   const [orders, setOrders] = useState<MyOrdersResponse | null>(null);
   const [loadingOrders, setLoadingOrders] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const fetchOrders = useCallback(async () => {
-    const token = getAccessToken();
-    if (!token) return;
-    setLoadingOrders(true);
-    const { data } = await getMyOrders(token);
-    if (data) setOrders(data);
-    setLoadingOrders(false);
-  }, [getAccessToken]);
+  const fetchOrders = useCallback(
+    async (page: number = 1) => {
+      const token = getAccessToken();
+      if (!token) return;
+      setLoadingOrders(true);
+      const { data } = await getMyOrders(token, page, 10);
+      if (data) setOrders(data);
+      setLoadingOrders(false);
+    },
+    [getAccessToken]
+  );
 
   useEffect(() => {
     if (initialized && !user) {
@@ -40,9 +50,14 @@ export default function AccountPage() {
   useEffect(() => {
     if (initialized && user) {
       profile.fetch();
-      fetchOrders();
+      fetchOrders(1);
     }
   }, [initialized, user, profile.fetch, fetchOrders]);
+
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+    fetchOrders(page);
+  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -105,11 +120,43 @@ export default function AccountPage() {
             </Link>
           </div>
         ) : (
-          <div className="space-y-4">
-            {orders.orders.map((order) => (
-              <OrderCard key={order.id} order={order} />
-            ))}
-          </div>
+          <>
+            <div className="space-y-4">
+              {orders.orders.map((order) => (
+                <OrderCard key={order.id} order={order} />
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {orders.pages > 1 && (
+              <div className="mt-6 flex items-center justify-center gap-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={currentPage <= 1}
+                  onClick={() => goToPage(currentPage - 1)}
+                >
+                  <ChevronLeft className="mr-1 h-4 w-4" />
+                  {t("page.previousPage")}
+                </Button>
+                <span className="text-sm text-gray-600">
+                  {t("page.pageOf", {
+                    current: currentPage,
+                    total: orders.pages,
+                  })}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={currentPage >= orders.pages}
+                  onClick={() => goToPage(currentPage + 1)}
+                >
+                  {t("page.nextPage")}
+                  <ChevronRight className="ml-1 h-4 w-4" />
+                </Button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
