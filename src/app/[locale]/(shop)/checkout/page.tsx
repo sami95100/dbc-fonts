@@ -142,17 +142,20 @@ export default function CheckoutPage() {
     ) {
       newErrors.phone = t("errors.invalidPhone");
     }
-    if (!formData.address.trim())
-      newErrors.address = t("errors.required");
-    if (!formData.postalCode.trim()) {
-      newErrors.postalCode = t("errors.required");
-    } else if (
-      formData.country === "FR" &&
-      !/^\d{5}$/.test(formData.postalCode)
-    ) {
-      newErrors.postalCode = t("errors.invalidPostalCode");
+    // Address fields only required for home delivery
+    if (deliveryMethod === "home") {
+      if (!formData.address.trim())
+        newErrors.address = t("errors.required");
+      if (!formData.postalCode.trim()) {
+        newErrors.postalCode = t("errors.required");
+      } else if (
+        formData.country === "FR" &&
+        !/^\d{5}$/.test(formData.postalCode)
+      ) {
+        newErrors.postalCode = t("errors.invalidPostalCode");
+      }
+      if (!formData.city.trim()) newErrors.city = t("errors.required");
     }
-    if (!formData.city.trim()) newErrors.city = t("errors.required");
 
     // DPD: must have selected a parcel shop
     if (deliveryMethod === "dpd" && !dpdShop) {
@@ -377,10 +380,10 @@ export default function CheckoutPage() {
               </div>
             )}
 
-            {/* Shipping / Customer info */}
+            {/* Contact + Address info */}
             <div className="rounded-lg border border-gray-200 bg-white p-6">
               <h2 className="mb-6 text-xl font-semibold text-gray-900">
-                {deliveryMethod === "dpd" ? t("customerAddress") : t("shippingInfo")}
+                {deliveryMethod === "dpd" ? t("contactInfo") : t("shippingInfo")}
               </h2>
 
               {submitError && (
@@ -390,6 +393,7 @@ export default function CheckoutPage() {
               )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Contact fields — always visible */}
                 <div className="grid gap-4 sm:grid-cols-2">
                   <CheckoutField
                     id="firstName"
@@ -427,51 +431,58 @@ export default function CheckoutPage() {
                   />
                 </div>
 
-                <CheckoutField
-                  id="address"
-                  label={`${t("fields.address")} *`}
-                  value={formData.address}
-                  onChange={handleChange}
-                  error={errors.address}
-                />
-
-                <div className="grid gap-4 sm:grid-cols-3">
-                  <CheckoutField
-                    id="postalCode"
-                    label={`${t("fields.postalCode")} *`}
-                    value={formData.postalCode}
+                {/* Country selector — always visible (affects DPD picker) */}
+                <div className="max-w-xs">
+                  <label
+                    htmlFor="country"
+                    className="mb-1 block text-sm font-medium text-gray-700"
+                  >
+                    {t("fields.country")}
+                  </label>
+                  <select
+                    id="country"
+                    name="country"
+                    value={formData.country}
                     onChange={handleChange}
-                    error={errors.postalCode}
-                  />
-                  <CheckoutField
-                    id="city"
-                    label={`${t("fields.city")} *`}
-                    value={formData.city}
-                    onChange={handleChange}
-                    error={errors.city}
-                  />
-                  <div>
-                    <label
-                      htmlFor="country"
-                      className="mb-1 block text-sm font-medium text-gray-700"
-                    >
-                      {t("fields.country")}
-                    </label>
-                    <select
-                      id="country"
-                      name="country"
-                      value={formData.country}
-                      onChange={handleChange}
-                      className="h-9 w-full rounded-lg border border-gray-200 bg-transparent px-3 py-1 text-base shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:border-ring"
-                    >
-                      {COUNTRY_CODES.map((code) => (
-                        <option key={code} value={code}>
-                          {t(`countries.${code}`)}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                    className="h-9 w-full rounded-lg border border-gray-200 bg-transparent px-3 py-1 text-base shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:border-ring"
+                  >
+                    {COUNTRY_CODES.map((code) => (
+                      <option key={code} value={code}>
+                        {t(`countries.${code}`)}
+                      </option>
+                    ))}
+                  </select>
                 </div>
+
+                {/* Address fields — only for home delivery */}
+                {deliveryMethod === "home" && (
+                  <>
+                    <CheckoutField
+                      id="address"
+                      label={`${t("fields.address")} *`}
+                      value={formData.address}
+                      onChange={handleChange}
+                      error={errors.address}
+                    />
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <CheckoutField
+                        id="postalCode"
+                        label={`${t("fields.postalCode")} *`}
+                        value={formData.postalCode}
+                        onChange={handleChange}
+                        error={errors.postalCode}
+                      />
+                      <CheckoutField
+                        id="city"
+                        label={`${t("fields.city")} *`}
+                        value={formData.city}
+                        onChange={handleChange}
+                        error={errors.city}
+                      />
+                    </div>
+                  </>
+                )}
 
                 <Button
                   type="submit"

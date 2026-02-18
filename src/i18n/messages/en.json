@@ -336,6 +336,7 @@
     "changeParcelShop": "Change",
     "selectedParcelShop": "Selected pickup point",
     "parcelShopRequired": "Please select a pickup point",
+    "contactInfo": "Contact information",
     "customerAddress": "Your address",
     "searchPlaceholder": "City or postal code...",
     "searchButton": "Search",

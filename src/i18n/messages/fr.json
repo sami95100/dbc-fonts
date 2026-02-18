@@ -336,6 +336,7 @@
     "changeParcelShop": "Changer",
     "selectedParcelShop": "Point relais selectionne",
     "parcelShopRequired": "Veuillez selectionner un point relais",
+    "contactInfo": "Informations de contact",
     "customerAddress": "Votre adresse",
     "searchPlaceholder": "Ville ou code postal...",
     "searchButton": "Rechercher",
