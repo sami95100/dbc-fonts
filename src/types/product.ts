@@ -18,6 +18,9 @@ export interface PhoneModel {
   price_imparfait?: number | null;
   backmarket_price?: number | null;
   price_from?: number | null;
+  // Review stats (enriched by API)
+  review_avg?: number;
+  review_count?: number;
 }
 
 export interface ModelImage {
