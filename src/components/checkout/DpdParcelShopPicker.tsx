@@ -30,20 +30,37 @@ export function DpdParcelShopPicker({
 
   const handleMessage = useCallback(
     (event: MessageEvent) => {
-      const data = event.data;
-      if (!data || typeof data !== "object") return;
+      let raw = event.data;
 
-      const shop = data.dpdWidget || data;
-      if (!shop.city && !shop.zipCode) return;
+      // DPD widget may send JSON string or object
+      if (typeof raw === "string") {
+        try {
+          raw = JSON.parse(raw);
+        } catch {
+          return;
+        }
+      }
+
+      if (!raw || typeof raw !== "object") return;
+
+      // Handle various DPD widget data formats:
+      // { dpdWidget: {...} }, { parcelshop: {...} }, { pudo: {...} }, or flat object
+      const shop =
+        raw.dpdWidget || raw.parcelshop || raw.parcelShop || raw.pudo || raw;
+
+      // Must have at least some address-like data
+      if (!shop.city && !shop.zipCode && !shop.zip && !shop.postcode) return;
 
       onSelect({
-        parcelShopId: String(shop.id || shop.parcelShopId || shop.pudoId || ""),
-        company: shop.company || shop.name || "",
-        street: shop.street || shop.address || "",
-        houseNo: shop.houseNo || "",
-        zipCode: shop.zipCode || shop.postCode || "",
-        city: shop.city || "",
-        country: shop.isoAlpha2 || shop.country || country,
+        parcelShopId: String(
+          shop.pudoId || shop.id || shop.parcelShopId || shop.pudo_id || ""
+        ),
+        company: shop.company || shop.name || shop.shopName || "",
+        street: shop.street || shop.address || shop.streetName || "",
+        houseNo: shop.houseNo || shop.houseNumber || shop.house_no || "",
+        zipCode: shop.zipCode || shop.zip || shop.postcode || shop.postCode || "",
+        city: shop.city || shop.cityName || "",
+        country: shop.isoAlpha2 || shop.country || shop.countryCode || country,
       });
       setShowModal(false);
     },
