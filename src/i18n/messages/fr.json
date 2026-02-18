@@ -336,7 +336,14 @@
     "changeParcelShop": "Changer",
     "selectedParcelShop": "Point relais selectionne",
     "parcelShopRequired": "Veuillez selectionner un point relais",
-    "customerAddress": "Votre adresse"
+    "customerAddress": "Votre adresse",
+    "searchPlaceholder": "Ville ou code postal...",
+    "searchButton": "Rechercher",
+    "searching": "Recherche en cours...",
+    "noResults": "Aucun point relais trouve. Essayez une autre adresse.",
+    "searchError": "Erreur lors de la recherche. Reessayez.",
+    "pickupPoint": "Point relais",
+    "dpdBox": "Consigne DPD"
   },
   "confirmation": {
     "noOrder": "Aucune commande trouvee",

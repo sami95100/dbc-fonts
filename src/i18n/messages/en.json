@@ -336,7 +336,14 @@
     "changeParcelShop": "Change",
     "selectedParcelShop": "Selected pickup point",
     "parcelShopRequired": "Please select a pickup point",
-    "customerAddress": "Your address"
+    "customerAddress": "Your address",
+    "searchPlaceholder": "City or postal code...",
+    "searchButton": "Search",
+    "searching": "Searching...",
+    "noResults": "No pickup points found. Try another address.",
+    "searchError": "Search error. Please try again.",
+    "pickupPoint": "Pickup point",
+    "dpdBox": "DPD Box"
   },
   "confirmation": {
     "noOrder": "No order found",
