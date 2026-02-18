@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
+import { Truck, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCartStore } from "@/stores/cart-store";
@@ -12,7 +13,10 @@ import { createOrder } from "@/lib/api/orders";
 import { getProfile } from "@/lib/api/profile";
 import { COUNTRY_CODES } from "@/lib/constants";
 import { GRADE_ID_TO_API } from "@/components/products/configurator";
-import type { CreateOrderPayload, OrderItem } from "@/types/order";
+import { DpdParcelShopPicker } from "@/components/checkout/DpdParcelShopPicker";
+import type { CreateOrderPayload, OrderItem, DpdParcelShop } from "@/types/order";
+
+type DeliveryMethod = "home" | "dpd";
 
 interface ShippingFormData {
   firstName: string;
@@ -36,6 +40,9 @@ const INITIAL_FORM: ShippingFormData = {
   country: "FR",
 };
 
+// DPD only available in France for now
+const DPD_SUPPORTED_COUNTRIES = ["FR"];
+
 export default function CheckoutPage() {
   const locale = useLocale();
   const router = useRouter();
@@ -51,7 +58,22 @@ export default function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
+  // Delivery method
+  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("home");
+  const [dpdShop, setDpdShop] = useState<DpdParcelShop | null>(null);
+
   const subtotal = getSubtotal();
+  const isShopOrder = hasShopProcessingItems();
+  const showDeliverySelector = !isShopOrder;
+  const dpdAvailable = DPD_SUPPORTED_COUNTRIES.includes(formData.country);
+
+  // Reset DPD when country changes to unsupported
+  useEffect(() => {
+    if (!dpdAvailable && deliveryMethod === "dpd") {
+      setDeliveryMethod("home");
+      setDpdShop(null);
+    }
+  }, [dpdAvailable, deliveryMethod]);
 
   // Pre-fill from saved profile
   useEffect(() => {
@@ -135,6 +157,11 @@ export default function CheckoutPage() {
     }
     if (!formData.city.trim()) newErrors.city = t("errors.required");
 
+    // DPD: must have selected a parcel shop
+    if (deliveryMethod === "dpd" && !dpdShop) {
+      newErrors.dpdShop = t("parcelShopRequired");
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -173,8 +200,18 @@ export default function CheckoutPage() {
         shipping_city: formData.city,
         shipping_country: formData.country,
         shipping_cost: 0,
+        carrier_id: deliveryMethod === "dpd" ? 3 : 1,
         items: orderItems,
       };
+
+      // DPD: add parcel locker address
+      if (deliveryMethod === "dpd" && dpdShop) {
+        payload.dpd_parcel_shop_id = dpdShop.parcelShopId;
+        payload.dpd_shipping_address = `${dpdShop.company}, ${dpdShop.street} ${dpdShop.houseNo}`.trim();
+        payload.dpd_shipping_postal_code = dpdShop.zipCode;
+        payload.dpd_shipping_city = dpdShop.city;
+        payload.dpd_shipping_country = dpdShop.country;
+      }
 
       const response = await createOrder(payload);
 
@@ -239,9 +276,117 @@ export default function CheckoutPage() {
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Form */}
           <div className="lg:col-span-2">
+            {/* Delivery method selector */}
+            {showDeliverySelector && (
+              <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6">
+                <h2 className="mb-4 text-xl font-semibold text-gray-900">
+                  {t("deliveryMethod")}
+                </h2>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {/* Home delivery */}
+                  <button
+                    type="button"
+                    onClick={() => setDeliveryMethod("home")}
+                    className={`flex items-start gap-3 rounded-lg border-2 p-4 text-left transition ${
+                      deliveryMethod === "home"
+                        ? "border-green-700 bg-green-50"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    <div
+                      className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
+                        deliveryMethod === "home"
+                          ? "border-green-700"
+                          : "border-gray-300"
+                      }`}
+                    >
+                      {deliveryMethod === "home" && (
+                        <div className="h-2.5 w-2.5 rounded-full bg-green-700" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <Truck className="h-4 w-4 text-gray-600" />
+                        <span className="font-medium text-gray-900">
+                          {t("deliveryHome")}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-xs text-gray-500">
+                        {t("deliveryHomeDesc")}
+                      </p>
+                    </div>
+                    <span className="shrink-0 text-sm font-medium text-green-700">
+                      {t("free")}
+                    </span>
+                  </button>
+
+                  {/* DPD Parcel Locker */}
+                  <button
+                    type="button"
+                    onClick={() => dpdAvailable && setDeliveryMethod("dpd")}
+                    disabled={!dpdAvailable}
+                    className={`flex items-start gap-3 rounded-lg border-2 p-4 text-left transition ${
+                      deliveryMethod === "dpd"
+                        ? "border-green-700 bg-green-50"
+                        : dpdAvailable
+                          ? "border-gray-200 hover:border-gray-300"
+                          : "cursor-not-allowed border-gray-100 bg-gray-50 opacity-50"
+                    }`}
+                  >
+                    <div
+                      className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
+                        deliveryMethod === "dpd"
+                          ? "border-green-700"
+                          : "border-gray-300"
+                      }`}
+                    >
+                      {deliveryMethod === "dpd" && (
+                        <div className="h-2.5 w-2.5 rounded-full bg-green-700" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-gray-600" />
+                        <span className="font-medium text-gray-900">
+                          {t("deliveryDpd")}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-xs text-gray-500">
+                        {t("deliveryDpdDesc")}
+                      </p>
+                    </div>
+                    <span className="shrink-0 text-sm font-medium text-green-700">
+                      {t("free")}
+                    </span>
+                  </button>
+                </div>
+
+                {/* DPD Parcel Shop Picker */}
+                {deliveryMethod === "dpd" && (
+                  <div className="mt-4">
+                    <DpdParcelShopPicker
+                      locale={locale}
+                      country={formData.country}
+                      onSelect={(shop) => {
+                        setDpdShop(shop);
+                        if (errors.dpdShop) {
+                          setErrors((prev) => ({ ...prev, dpdShop: "" }));
+                        }
+                      }}
+                      selectedShop={dpdShop}
+                    />
+                    {errors.dpdShop && (
+                      <p className="mt-2 text-sm text-red-600">{errors.dpdShop}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Shipping / Customer info */}
             <div className="rounded-lg border border-gray-200 bg-white p-6">
               <h2 className="mb-6 text-xl font-semibold text-gray-900">
-                {t("shippingInfo")}
+                {deliveryMethod === "dpd" ? t("customerAddress") : t("shippingInfo")}
               </h2>
 
               {submitError && (
@@ -388,7 +533,7 @@ export default function CheckoutPage() {
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">{tCart("delivery")}</span>
                   <span className="text-gray-700">
-                    {hasShopProcessingItems()
+                    {isShopOrder
                       ? tCart("deliveryExtended")
                       : tCart("deliveryStandard")}
                   </span>

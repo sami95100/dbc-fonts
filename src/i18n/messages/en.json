@@ -326,7 +326,17 @@
     "free": "Free",
     "total": "Total",
     "confirmOrder": "Confirm order",
-    "submitting": "Creating order..."
+    "submitting": "Creating order...",
+    "deliveryMethod": "Delivery method",
+    "deliveryHome": "Home delivery",
+    "deliveryHomeDesc": "FedEx - Free delivery in 2-4 days",
+    "deliveryDpd": "DPD Parcel Locker",
+    "deliveryDpdDesc": "Free delivery to a pickup point in 3-5 days",
+    "selectParcelShop": "Select a pickup point",
+    "changeParcelShop": "Change",
+    "selectedParcelShop": "Selected pickup point",
+    "parcelShopRequired": "Please select a pickup point",
+    "customerAddress": "Your address"
   },
   "confirmation": {
     "noOrder": "No order found",

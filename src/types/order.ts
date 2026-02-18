@@ -35,8 +35,23 @@ export interface CreateOrderPayload {
   shipping_country: string;
   shipping_cost: number;
   carrier_id?: number;
+  dpd_parcel_shop_id?: string;
+  dpd_shipping_address?: string;
+  dpd_shipping_postal_code?: string;
+  dpd_shipping_city?: string;
+  dpd_shipping_country?: string;
   notes?: string;
   items: OrderItem[];
+}
+
+export interface DpdParcelShop {
+  parcelShopId: string;
+  company: string;
+  street: string;
+  houseNo: string;
+  zipCode: string;
+  city: string;
+  country: string;
 }
 
 export interface Order {

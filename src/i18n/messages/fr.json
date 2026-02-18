@@ -326,7 +326,17 @@
     "free": "Gratuite",
     "total": "Total",
     "confirmOrder": "Confirmer la commande",
-    "submitting": "Creation en cours..."
+    "submitting": "Creation en cours...",
+    "deliveryMethod": "Mode de livraison",
+    "deliveryHome": "Livraison a domicile",
+    "deliveryHomeDesc": "FedEx - Livraison gratuite sous 2-4 jours",
+    "deliveryDpd": "Point relais DPD",
+    "deliveryDpdDesc": "Livraison gratuite en point relais sous 3-5 jours",
+    "selectParcelShop": "Choisir un point relais",
+    "changeParcelShop": "Changer",
+    "selectedParcelShop": "Point relais selectionne",
+    "parcelShopRequired": "Veuillez selectionner un point relais",
+    "customerAddress": "Votre adresse"
   },
   "confirmation": {
     "noOrder": "Aucune commande trouvee",
