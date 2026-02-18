@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { Truck, MapPin } from "lucide-react";
+import { Truck, MapPin, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCartStore } from "@/stores/cart-store";
@@ -16,7 +16,15 @@ import { GRADE_ID_TO_API } from "@/components/products/configurator";
 import { DpdParcelShopPicker } from "@/components/checkout/DpdParcelShopPicker";
 import type { CreateOrderPayload, OrderItem, DpdParcelShop } from "@/types/order";
 
-type DeliveryMethod = "home" | "dpd";
+type DeliveryMethod = "home" | "dpd" | "pickup";
+
+const STORE_ADDRESS = {
+  name: "DBC 17",
+  address: "110 Av. de Villiers",
+  postalCode: "75017",
+  city: "Paris",
+  country: "FR",
+};
 
 interface ShippingFormData {
   firstName: string;
@@ -65,7 +73,7 @@ export default function CheckoutPage() {
   const subtotal = getSubtotal();
   const isShopOrder = hasShopProcessingItems();
   const showDeliverySelector = !isShopOrder;
-  const shippingCost = deliveryMethod === "dpd" ? 6 : 20;
+  const shippingCost = deliveryMethod === "pickup" ? 0 : deliveryMethod === "dpd" ? 6 : 20;
 
   // Reset DPD shop when country changes (widget shows different shops per country)
   useEffect(() => {
@@ -191,21 +199,28 @@ export default function CheckoutPage() {
         needs_shop_processing: item.needsShopProcessing,
       }));
 
+      const isPickup = deliveryMethod === "pickup";
+      const isDpd = deliveryMethod === "dpd";
+
       const payload: CreateOrderPayload = {
         customer_name: `${formData.firstName} ${formData.lastName}`,
         customer_email: formData.email,
         customer_phone: formData.phone,
-        shipping_address: formData.address,
-        shipping_postal_code: formData.postalCode,
-        shipping_city: formData.city,
-        shipping_country: formData.country,
+        shipping_address: isPickup
+          ? `${STORE_ADDRESS.name}, ${STORE_ADDRESS.address}`
+          : formData.address,
+        shipping_postal_code: isPickup
+          ? STORE_ADDRESS.postalCode
+          : formData.postalCode,
+        shipping_city: isPickup ? STORE_ADDRESS.city : formData.city,
+        shipping_country: isPickup ? STORE_ADDRESS.country : formData.country,
         shipping_cost: shippingCost,
-        carrier_id: deliveryMethod === "dpd" ? 3 : 1,
+        carrier_id: isPickup ? 0 : isDpd ? 3 : 1,
         items: orderItems,
       };
 
       // DPD: add parcel locker address
-      if (deliveryMethod === "dpd" && dpdShop) {
+      if (isDpd && dpdShop) {
         payload.dpd_parcel_shop_id = dpdShop.parcelShopId;
         payload.dpd_shipping_address = `${dpdShop.company}, ${dpdShop.street} ${dpdShop.houseNo}`.trim();
         payload.dpd_shipping_postal_code = dpdShop.zipCode;
@@ -282,7 +297,44 @@ export default function CheckoutPage() {
                 <h2 className="mb-4 text-xl font-semibold text-gray-900">
                   {t("deliveryMethod")}
                 </h2>
-                <div className="grid gap-3 sm:grid-cols-2">
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {/* Store pickup */}
+                  <button
+                    type="button"
+                    onClick={() => setDeliveryMethod("pickup")}
+                    className={`flex items-start gap-3 rounded-lg border-2 p-4 text-left transition ${
+                      deliveryMethod === "pickup"
+                        ? "border-green-700 bg-green-50"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    <div
+                      className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
+                        deliveryMethod === "pickup"
+                          ? "border-green-700"
+                          : "border-gray-300"
+                      }`}
+                    >
+                      {deliveryMethod === "pickup" && (
+                        <div className="h-2.5 w-2.5 rounded-full bg-green-700" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <Store className="h-4 w-4 text-gray-600" />
+                        <span className="font-medium text-gray-900">
+                          {t("deliveryPickup")}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-xs text-gray-500">
+                        {t("deliveryPickupDesc")}
+                      </p>
+                    </div>
+                    <span className="shrink-0 text-sm font-semibold text-green-700">
+                      {t("free")}
+                    </span>
+                  </button>
+
                   {/* Home delivery */}
                   <button
                     type="button"
@@ -358,6 +410,25 @@ export default function CheckoutPage() {
                   </button>
                 </div>
 
+                {/* Store pickup address */}
+                {deliveryMethod === "pickup" && (
+                  <div className="mt-4 flex items-start gap-3 rounded-lg border border-green-200 bg-green-50 p-4">
+                    <Store className="mt-0.5 h-5 w-5 shrink-0 text-green-700" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">
+                        {STORE_ADDRESS.name}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        {STORE_ADDRESS.address}, {STORE_ADDRESS.postalCode}{" "}
+                        {STORE_ADDRESS.city}
+                      </p>
+                      <p className="mt-1 text-xs text-green-700">
+                        {t("deliveryPickupReady")}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 {/* DPD Parcel Shop Picker */}
                 {deliveryMethod === "dpd" && (
                   <div className="mt-4">
@@ -383,7 +454,7 @@ export default function CheckoutPage() {
             {/* Contact + Address info */}
             <div className="rounded-lg border border-gray-200 bg-white p-6">
               <h2 className="mb-6 text-xl font-semibold text-gray-900">
-                {deliveryMethod === "dpd" ? t("contactInfo") : t("shippingInfo")}
+                {deliveryMethod === "home" ? t("shippingInfo") : t("contactInfo")}
               </h2>
 
               {submitError && (
@@ -531,7 +602,11 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">{t("shipping")}</span>
-                  <span>{shippingCost.toLocaleString("fr-FR")} €</span>
+                  <span className={shippingCost === 0 ? "font-medium text-green-700" : ""}>
+                    {shippingCost === 0
+                      ? t("free")
+                      : `${shippingCost.toLocaleString("fr-FR")} €`}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">{tCart("delivery")}</span>
