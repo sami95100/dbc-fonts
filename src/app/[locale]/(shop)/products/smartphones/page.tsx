@@ -16,6 +16,7 @@ interface SmartphonesPageProps {
 export default async function SmartphonesPage({ params }: SmartphonesPageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "products" });
+  const tCat = await getTranslations({ locale, namespace: "categories" });
 
   const category = getCategoryBySlug("smartphones");
 
@@ -67,7 +68,7 @@ export default async function SmartphonesPage({ params }: SmartphonesPageProps) 
       <div className="mx-auto max-w-7xl px-4 py-6">
         <Breadcrumb
           items={[
-            { label: "Smartphones" },
+            { label: tCat("smartphones") },
           ]}
         />
 
@@ -89,7 +90,7 @@ export default async function SmartphonesPage({ params }: SmartphonesPageProps) 
                 href={`/${locale}/products/smartphones/${sub.slug}`}
                 className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:border-green-700 hover:bg-green-700 hover:text-white"
               >
-                {sub.name}
+                {tCat(`sub.smartphones.${sub.slug}`)}
               </a>
             ))}
           </div>

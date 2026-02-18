@@ -1,12 +1,12 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { Star, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Loader2, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageGallery } from "../ImageGallery";
 import { TrustBadges, DeliveryIcon, ReturnIcon, ShieldIcon } from "../TrustBadges";
+import { getModelReviews } from "@/lib/api/products";
 import type { HeroSectionProps } from "../types";
 
 /**
@@ -40,7 +40,21 @@ function HeroSectionComponent({
 }: HeroSectionProps) {
   const t = useTranslations("product");
   const tCommon = useTranslations("common");
+  const tReviews = useTranslations("reviews");
   const locale = useLocale();
+
+  // Fetch review stats
+  const [reviewAvg, setReviewAvg] = useState<number | null>(null);
+  const [reviewCount, setReviewCount] = useState(0);
+
+  useEffect(() => {
+    getModelReviews(product.id, 1, 1).then(({ data }) => {
+      if (data && data.stats.total > 0) {
+        setReviewAvg(data.stats.average);
+        setReviewCount(data.stats.total);
+      }
+    });
+  }, [product.id]);
 
   // Calculate prices
   const currentCondition = product.conditions.find((c) => c.id === selection.condition);
@@ -79,25 +93,45 @@ function HeroSectionComponent({
 
       {/* Right: Product Info */}
       <div>
-        {/* Title & Rating */}
+        {/* Review stars (above title, clickable to scroll to reviews) */}
+        {reviewAvg !== null && (
+          <button
+            type="button"
+            onClick={() => {
+              document.getElementById("reviews-section")?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="mb-2 flex items-center gap-2 transition-opacity hover:opacity-70"
+          >
+            <div className="flex items-center gap-0.5">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  className={
+                    star <= Math.round(reviewAvg)
+                      ? "h-4 w-4 fill-highlight text-highlight"
+                      : "h-4 w-4 fill-gray-200 text-gray-200"
+                  }
+                />
+              ))}
+            </div>
+            <span className="text-sm font-medium text-gray-900">{reviewAvg}</span>
+            <span className="text-sm text-gray-500 underline">({reviewCount} {tReviews("reviewCount")})</span>
+          </button>
+        )}
+
+        {/* Title */}
         <h1 className="text-2xl font-bold text-gray-900 md:text-3xl">
           {product.name}
         </h1>
-        <div className="mt-2 flex items-center gap-2">
-          <StarRating rating={product.rating} />
-          <span className="text-sm text-gray-600">
-            {product.rating}/5 ({product.reviewCount.toLocaleString(locale)} {t("reviews")})
-          </span>
-        </div>
 
         {/* Price & CTA */}
         <div className="mt-6 flex items-center gap-4">
           <div>
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-bold text-gray-900">{totalPrice} EUR</span>
+              <span className="text-3xl font-bold text-gray-900">{totalPrice.toLocaleString(locale)} €</span>
               {product.priceNew > 0 && (
                 <span className="text-lg text-gray-400 line-through">
-                  {product.priceNew} EUR {tCommon("new")}
+                  {product.priceNew.toLocaleString(locale)} € {tCommon("new")}
                 </span>
               )}
             </div>
@@ -148,21 +182,6 @@ function HeroSectionComponent({
         </div>
       </div>
     </section>
-  );
-}
-
-// Star rating component
-function StarRating({ rating }: { rating: number }) {
-  return (
-    <div className="flex items-center" aria-label={`Rating: ${rating} out of 5`}>
-      {[...Array(5)].map((_, i) => (
-        <Star
-          key={i}
-          className={cn("h-4 w-4", i < Math.floor(rating) ? "fill-current text-highlight" : "text-gray-300")}
-          aria-hidden="true"
-        />
-      ))}
-    </div>
   );
 }
 

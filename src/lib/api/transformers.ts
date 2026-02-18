@@ -232,8 +232,8 @@ export function apiModelToProduct(params: TransformModelParams): Product {
     category,
     priceFrom,
     priceNew,
-    rating: 4.5, // Par defaut - a integrer plus tard
-    reviewCount: Math.floor(Math.random() * 10000) + 1000, // Par defaut
+    rating: 0,
+    reviewCount: 0,
     colors,
     storages,
     sims,

@@ -19,6 +19,7 @@ interface SmartphonesBrandPageProps {
 export default async function SmartphonesBrandPage({ params }: SmartphonesBrandPageProps) {
   const { locale, brand } = await params;
   const t = await getTranslations({ locale, namespace: "products" });
+  const tCat = await getTranslations({ locale, namespace: "categories" });
 
   const category = getCategoryBySlug("smartphones");
   const subcategory = getSubcategoryBySlug("smartphones", brand);
@@ -26,7 +27,7 @@ export default async function SmartphonesBrandPage({ params }: SmartphonesBrandP
   const brandData = BRANDS.find((b) => b.slug === brand);
   const brandName = brandData?.name || brand.charAt(0).toUpperCase() + brand.slice(1);
 
-  const subcategoryName = subcategory?.name;
+  const subcategoryName = subcategory ? tCat(`sub.smartphones.${subcategory.slug}`) : undefined;
   const pageTitle = subcategoryName || brandName;
 
   // Charger les smartphones de cette marque
@@ -77,7 +78,7 @@ export default async function SmartphonesBrandPage({ params }: SmartphonesBrandP
       <div className="mx-auto max-w-7xl px-4 py-6">
         <Breadcrumb
           items={[
-            { label: "Smartphones", href: `/${locale}/products/smartphones` },
+            { label: tCat("smartphones"), href: `/${locale}/products/smartphones` },
             { label: pageTitle },
           ]}
         />
@@ -104,7 +105,7 @@ export default async function SmartphonesBrandPage({ params }: SmartphonesBrandP
                     : "border-gray-200 bg-white text-gray-700 hover:border-green-700 hover:bg-green-700 hover:text-white"
                 )}
               >
-                {sub.name}
+                {tCat(`sub.smartphones.${sub.slug}`)}
               </a>
             ))}
           </div>

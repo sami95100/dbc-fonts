@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useLocale } from "next-intl";
 import { Package } from "lucide-react";
 import type { OrderItem } from "@/types/order";
 
@@ -7,6 +8,8 @@ interface OrderItemRowProps {
 }
 
 export default function OrderItemRow({ item }: OrderItemRowProps) {
+  const locale = useLocale();
+
   return (
     <div className="flex items-center gap-3">
       <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
@@ -38,7 +41,7 @@ export default function OrderItemRow({ item }: OrderItemRowProps) {
           </p>
         </div>
         <span className="flex-shrink-0 font-semibold text-gray-900 text-sm">
-          {(item.unit_price * item.quantity).toLocaleString("fr-FR")} &euro;
+          {(item.unit_price * item.quantity).toLocaleString(locale)} &euro;
         </span>
       </div>
     </div>

@@ -168,7 +168,7 @@ function ConfigSectionComponent({
                   className={cn("h-2.5 w-2.5 rounded-full transition-colors",
                     selectedIndex === index ? "bg-green-700" : "bg-gray-300"
                   )}
-                  aria-label={`Image ${index + 1}`}
+                  aria-label={t("imageNumber", { index: index + 1 })}
                 />
               ))}
             </div>

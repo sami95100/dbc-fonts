@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { Menu, Home, HelpCircle, User } from "lucide-react";
+import { Menu, Home, HelpCircle, User, Globe } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -12,6 +13,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { DbcLogo } from "@/components/ui/dbc-logo";
+import { cn } from "@/lib/utils";
 import { CATEGORIES } from "@/data/mock/categories";
 
 export function MobileMenu() {
@@ -20,7 +22,17 @@ export function MobileMenu() {
   const t = useTranslations("nav");
   const tc = useTranslations("categories");
 
+  const router = useRouter();
+  const pathname = usePathname();
+  const tTopBar = useTranslations("topBar");
+
   const close = () => setOpen(false);
+
+  const switchLanguage = (langCode: string) => {
+    const newPathname = pathname.replace(`/${locale}`, `/${langCode}`);
+    router.push(newPathname);
+    close();
+  };
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -86,6 +98,39 @@ export function MobileMenu() {
               <User className="h-4 w-4" aria-hidden="true" />
               {t("account")}
             </Link>
+          </div>
+
+          {/* Language switcher */}
+          <div className="border-t border-gray-100 px-3 py-3">
+            <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-accent">
+              {tTopBar("chooseLanguage")}
+            </p>
+            <div className="flex gap-2 px-3">
+              <button
+                type="button"
+                onClick={() => switchLanguage("fr")}
+                className={cn(
+                  "flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
+                  locale === "fr"
+                    ? "bg-accent/10 text-accent"
+                    : "text-gray-700 hover:bg-gray-100"
+                )}
+              >
+                <span>🇫🇷</span> FR
+              </button>
+              <button
+                type="button"
+                onClick={() => switchLanguage("en")}
+                className={cn(
+                  "flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
+                  locale === "en"
+                    ? "bg-accent/10 text-accent"
+                    : "text-gray-700 hover:bg-gray-100"
+                )}
+              >
+                <span>🇬🇧</span> EN
+              </button>
+            </div>
           </div>
 
           {/* Social */}

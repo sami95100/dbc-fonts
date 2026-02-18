@@ -2,6 +2,7 @@
 
 import { useState, useEffect, memo } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import type { ImageGalleryProps } from "./types";
 
@@ -24,6 +25,7 @@ function ImageGalleryComponent({
   productName,
   fallbackImage,
 }: ImageGalleryProps) {
+  const t = useTranslations("product");
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Reset to first image when images change
@@ -40,14 +42,14 @@ function ImageGalleryComponent({
       <div className="flex gap-4">
         {/* Vertical thumbnails */}
         {showThumbnails && (
-          <div className="flex flex-col gap-2" role="tablist" aria-label="Product images">
+          <div className="flex flex-col gap-2" role="tablist" aria-label={t("productImages")}>
             {displayImages.map((img, idx) => (
               <button
                 key={`${img}-${idx}`}
                 type="button"
                 role="tab"
                 aria-selected={currentIndex === idx}
-                aria-label={`View image ${idx + 1} of ${displayImages.length}`}
+                aria-label={t("viewImage", { current: idx + 1, total: displayImages.length })}
                 onClick={() => setCurrentIndex(idx)}
                 className={cn(
                   "relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-150",
@@ -95,7 +97,7 @@ function ImageGalleryComponent({
               type="button"
               role="tab"
               aria-selected={currentIndex === idx}
-              aria-label={`Go to image ${idx + 1}`}
+              aria-label={t("goToImage", { index: idx + 1 })}
               onClick={() => setCurrentIndex(idx)}
               className={cn(
                 "h-2 w-2 rounded-full transition-colors",

@@ -1,6 +1,7 @@
 import { Breadcrumb } from "@/components/products/Breadcrumb";
 import { TrustBar } from "@/components/products/TrustBar";
 import { ProductConfigurator } from "@/components/products/ProductConfigurator";
+import ReviewsSection from "@/components/products/ReviewsSection";
 import {
   getModelBySlug,
   getModelOptions,
@@ -80,6 +81,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
           batteryImageUrl={batteryImageUrl}
           conditionImageUrl={conditionImageUrl}
         />
+
+        <ReviewsSection modelId={modelData.id} />
       </div>
     </>
   );

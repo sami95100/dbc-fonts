@@ -27,7 +27,7 @@ export default async function LaptopsBrandPage({ params }: LaptopsBrandPageProps
   const brandData = BRANDS.find((b) => b.slug === brand);
   const brandName = brandData?.name || brand.charAt(0).toUpperCase() + brand.slice(1);
 
-  const subcategoryName = subcategory?.name;
+  const subcategoryName = subcategory ? tCat(`sub.laptops.${subcategory.slug}`) : undefined;
   const pageTitle = subcategoryName || brandName;
 
   const [modelsResponse, filtersResponse] = await Promise.all([
@@ -103,7 +103,7 @@ export default async function LaptopsBrandPage({ params }: LaptopsBrandPageProps
                     : "border-gray-200 bg-white text-gray-700 hover:border-green-700 hover:bg-green-700 hover:text-white"
                 )}
               >
-                {sub.name}
+                {tCat(`sub.laptops.${sub.slug}`)}
               </a>
             ))}
           </div>

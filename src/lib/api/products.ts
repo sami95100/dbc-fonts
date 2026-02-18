@@ -351,3 +351,36 @@ export async function getCategoryImages(category: string, type?: string) {
 export async function getAllCategoryImages() {
   return publicApi.get<CategoryImagesByCategory>(`/categories/images`);
 }
+
+// ==================================
+// Reviews
+// ==================================
+
+export interface ReviewData {
+  id: number;
+  author_name: string;
+  rating: number;
+  title: string | null;
+  content: string | null;
+  source_date: string | null;
+  image_url: string | null;
+  verified_purchase: boolean;
+}
+
+export interface ReviewStats {
+  average: number;
+  total: number;
+  distribution: Record<number, number>;
+}
+
+export interface ReviewsResponse {
+  reviews: ReviewData[];
+  stats: ReviewStats;
+  page: number;
+  pages: number;
+  per_page: number;
+}
+
+export async function getModelReviews(modelId: string, page: number = 1, perPage: number = 5) {
+  return publicApi.get<ReviewsResponse>(`/models/${modelId}/reviews?page=${page}&per_page=${perPage}`);
+}

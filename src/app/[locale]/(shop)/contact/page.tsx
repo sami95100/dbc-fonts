@@ -10,6 +10,8 @@ export default async function ContactPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "pages" });
 
+  const strong = (chunks: React.ReactNode) => <strong>{chunks}</strong>;
+
   return (
     <PolicyPage locale={locale} title={t("contactTitle")} backLabel={t("backToHome")}>
       {/* Contact cards */}
@@ -59,30 +61,15 @@ export default async function ContactPage({ params }: Props) {
         </div>
       </div>
 
-      <h2>Nos magasins</h2>
-      <p>
-        Retrouvez-nous dans l&apos;un de nos <strong>11 magasins physiques</strong> en
-        France. Nos equipes sont disponibles pour vous conseiller, vous faire
-        tester les produits et repondre a toutes vos questions.
-      </p>
+      <h2>{t("contact.storesTitle")}</h2>
+      <p>{t.rich("contact.storesDesc", { strong })}</p>
 
-      <h2>Service apres-vente</h2>
-      <p>
-        Un probleme avec votre commande ? Notre equipe SAV est disponible du
-        lundi au vendredi, de 9 h a 19 h. Le moyen le plus rapide de nous
-        joindre est par <strong>WhatsApp</strong> ou par <strong>telephone</strong>.
-      </p>
-      <p>
-        Pour toute demande concernant une commande existante, merci de nous
-        communiquer votre <strong>numero de commande</strong> afin que nous
-        puissions traiter votre demande le plus rapidement possible.
-      </p>
+      <h2>{t("contact.afterSalesTitle")}</h2>
+      <p>{t.rich("contact.afterSalesP1", { strong })}</p>
+      <p>{t.rich("contact.afterSalesP2", { strong })}</p>
 
-      <h2>Presse &amp; partenariats</h2>
-      <p>
-        Pour toute demande presse ou partenariat, contactez-nous par email a
-        l&apos;adresse <a href="mailto:contact@dbcstore.fr">contact@dbcstore.fr</a>.
-      </p>
+      <h2>{t("contact.pressTitle")}</h2>
+      <p>{t.rich("contact.pressDesc", { link: (chunks) => <a href="mailto:contact@dbcstore.fr">{chunks}</a> })}</p>
     </PolicyPage>
   );
 }

@@ -10,6 +10,8 @@ export default async function AboutPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "pages" });
 
+  const strong = (chunks: React.ReactNode) => <strong>{chunks}</strong>;
+
   return (
     <PolicyPage locale={locale} title={t("aboutTitle")} backLabel={t("backToHome")}>
       {/* Mission cards */}
@@ -44,52 +46,22 @@ export default async function AboutPage({ params }: Props) {
         </div>
       </div>
 
-      <h2>Notre histoire</h2>
-      <p>
-        DBC est ne d&apos;un constat simple : acheter un smartphone reconditionne
-        de qualite ne devrait pas etre complique. Trop souvent, les clients font
-        face a des descriptions vagues, des etats cosmetiques trompeurs et un SAV
-        inexistant.
-      </p>
-      <p>
-        C&apos;est pourquoi nous avons cree DBC : une marque qui place la
-        transparence et la qualite au centre de tout. Chaque appareil passe par
-        notre processus de controle en 24 points avant d&apos;arriver entre vos
-        mains.
-      </p>
+      <h2>{t("about.historyTitle")}</h2>
+      <p>{t("about.historyP1")}</p>
+      <p>{t("about.historyP2")}</p>
 
-      <h2>Notre mission</h2>
-      <p>
-        <strong>On fait bouger l&apos;industrie.</strong> Notre objectif est de
-        rendre le reconditionne accessible a tous, sans compromis sur la qualite.
-        Nous croyons qu&apos;il est possible de proposer des smartphones premium a
-        des prix justes, tout en ayant un impact positif sur l&apos;environnement.
-      </p>
+      <h2>{t("about.missionTitle")}</h2>
+      <p>{t.rich("about.missionP1", { strong })}</p>
 
-      <h2>Nos valeurs</h2>
+      <h2>{t("about.valuesTitle")}</h2>
       <ul>
-        <li>
-          <strong>Simple</strong> &mdash; Pas de jargon, pas de surprise. On vous
-          dit exactement ce que vous achetez.
-        </li>
-        <li>
-          <strong>Inspirant</strong> &mdash; Le futur, entre vos mains. Choisir le
-          reconditionne, c&apos;est choisir un mode de consommation plus
-          intelligent.
-        </li>
-        <li>
-          <strong>Fort</strong> &mdash; 24 mois de garantie, 30 jours pour
-          changer d&apos;avis, et un SAV qui repond vraiment.
-        </li>
+        <li>{t.rich("about.valueSimple", { strong })}</li>
+        <li>{t.rich("about.valueInspiring", { strong })}</li>
+        <li>{t.rich("about.valueStrong", { strong })}</li>
       </ul>
 
-      <h2>Nos magasins</h2>
-      <p>
-        DBC, c&apos;est 11 magasins physiques en France. Vous pouvez venir
-        decouvrir nos produits, les tester sur place et repartir avec votre
-        nouveau telephone le jour meme. Nos equipes en boutique sont la pour vous
-        conseiller et repondre a toutes vos questions.
-      </p>
+      <h2>{t("about.storesContentTitle")}</h2>
+      <p>{t("about.storesContentP1")}</p>
     </PolicyPage>
   );
 }

@@ -30,8 +30,8 @@ export default async function TabletsBrandPage({ params }: TabletsBrandPageProps
   const brandName = brandData?.name || brand.charAt(0).toUpperCase() + brand.slice(1);
 
   // Titre de la page
-  const subcategoryName = subcategory?.name;
-  const pageTitle = subcategoryName || `${brandName} tablets`;
+  const subcategoryName = subcategory ? tCat(`sub.tablets.${subcategory.slug}`) : undefined;
+  const pageTitle = subcategoryName || brandName;
 
   // Charger les modeles tablettes de cette marque
   const [modelsResponse, filtersResponse] = await Promise.all([
@@ -110,7 +110,7 @@ export default async function TabletsBrandPage({ params }: TabletsBrandPageProps
                     : "border-gray-200 bg-white text-gray-700 hover:border-green-700 hover:bg-green-700 hover:text-white"
                 )}
               >
-                {sub.name}
+                {tCat(`sub.tablets.${sub.slug}`)}
               </a>
             ))}
           </div>

@@ -9,6 +9,8 @@ export default async function RefundPolicyPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "pages" });
 
+  const strong = (chunks: React.ReactNode) => <strong>{chunks}</strong>;
+
   return (
     <PolicyPage
       locale={locale}
@@ -16,134 +18,102 @@ export default async function RefundPolicyPage({ params }: Props) {
       backLabel={t("backToHome")}
       lastUpdated={t("lastUpdated", { date: t("lastUpdatedDateJuly2025") })}
     >
-      <p className="text-lg font-medium">
-        Chez DBC, nous voulons offrir une experience plus simple et plus flexible
-        que ce que proposent la plupart des places de marche du reconditionne.
-        Si un appareil ne vous convient pas, nous mettons tout en oeuvre pour que
-        le retour, l&apos;echange ou le remboursement se fasse sans friction.
-      </p>
+      <p className="text-lg font-medium">{t("refund.intro")}</p>
 
-      <h2>1. Droit de retractation &mdash; 30 jours pour changer d&apos;avis</h2>
-      <p>
-        Vous disposez de <strong>30 jours calendaires</strong> a compter de la reception
-        de votre produit pour exercer votre droit de retractation, sans avoir a motiver
-        votre decision.
-      </p>
+      <h2>{t("refund.s1Title")}</h2>
+      <p>{t.rich("refund.s1P1", { strong })}</p>
       <ul>
-        <li>Le jour de livraison n&apos;est pas compte.</li>
-        <li>Si l&apos;echeance tombe un samedi, dimanche ou jour ferie, elle est reportee au jour ouvre suivant.</li>
-        <li>Aucun frais ne vous sera facture : l&apos;etiquette de transport retour et l&apos;assurance sont integralement prises en charge par DBC Store.</li>
+        <li>{t("refund.s1Li1")}</li>
+        <li>{t("refund.s1Li2")}</li>
+        <li>{t("refund.s1Li3")}</li>
       </ul>
 
-      <h2>2. Comment declencher un retour ?</h2>
-      <p>Inutile de remplir un long formulaire &mdash; deux solutions rapides :</p>
+      <h2>{t("refund.s2Title")}</h2>
+      <p>{t("refund.s2P1")}</p>
       <ul>
-        <li><strong>WhatsApp</strong> : cliquez sur l&apos;icone verte presente dans le coin inferieur droit de chaque page, puis envoyez simplement votre numero de commande.</li>
-        <li><strong>Appel</strong> : appelez-nous au 07 43 39 66 69.</li>
-        <li><strong>E-mail</strong> : ecrivez-nous a contact@dbcstore.fr avec en objet &laquo; Retour &ndash; N&deg; de commande XXXX &raquo;.</li>
+        <li>{t.rich("refund.s2Li1", { strong })}</li>
+        <li>{t.rich("refund.s2Li2", { strong })}</li>
+        <li>{t.rich("refund.s2Li3", { strong })}</li>
       </ul>
-      <p>
-        Nous repondons sous <strong>4 heures ouvrees</strong> avec : votre etiquette
-        pre-payee (Colissimo ou Mondial Relay, selon votre preference), le guide de
-        preparation colis, et la date d&apos;enlevement proposee.
-      </p>
+      <p>{t.rich("refund.s2P2", { strong })}</p>
 
-      <h2>3. Preparation de l&apos;appareil avant expedition</h2>
+      <h2>{t("refund.s3Title")}</h2>
       <ul>
-        <li><strong>Sauvegardez</strong> vos donnees et <strong>reinitialisez</strong> l&apos;appareil.</li>
-        <li><strong>Dissociez</strong> tout compte (iCloud, Google, Samsung) et <strong>supprimez l&apos;eSIM</strong>.</li>
-        <li>Glissez dans le colis : numero de commande, date, nom, prenom (ou la facture imprimee).</li>
-        <li>Utilisez un carton rigide, du papier bulle ou de la mousse. Les enveloppes a bulles sont refusees.</li>
-        <li>Photographiez l&apos;appareil et le colis ferme ; conservez les cliches jusqu&apos;a la cloture du dossier.</li>
+        <li>{t.rich("refund.s3Li1", { strong })}</li>
+        <li>{t.rich("refund.s3Li2", { strong })}</li>
+        <li>{t("refund.s3Li3")}</li>
+        <li>{t("refund.s3Li4")}</li>
+        <li>{t("refund.s3Li5")}</li>
       </ul>
 
-      <h2>4. Remboursements : modalites et delais</h2>
+      <h2>{t("refund.s4Title")}</h2>
       <table>
-        <caption className="sr-only">Modalites et delais de remboursement</caption>
+        <caption className="sr-only">{t("refund.s4Caption")}</caption>
         <thead>
           <tr>
-            <th>Mode de paiement</th>
-            <th>Declenchement DBC</th>
-            <th>Delai bancaire</th>
-            <th>Support</th>
+            <th>{t("refund.s4ThMethod")}</th>
+            <th>{t("refund.s4ThTrigger")}</th>
+            <th>{t("refund.s4ThBank")}</th>
+            <th>{t("refund.s4ThSupport")}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Carte bancaire</td>
-            <td>&le; 2 jours ouvres</td>
-            <td>~5 jours ouvres</td>
-            <td>Meme carte</td>
+            <td>{t("refund.s4Row1Method")}</td>
+            <td>{t("refund.s4Row1Trigger")}</td>
+            <td>{t("refund.s4Row1Bank")}</td>
+            <td>{t("refund.s4Row1Support")}</td>
           </tr>
           <tr>
-            <td>PayPal</td>
-            <td>&le; 2 jours ouvres</td>
-            <td>~5 jours ouvres</td>
-            <td>Meme compte</td>
+            <td>{t("refund.s4Row2Method")}</td>
+            <td>{t("refund.s4Row2Trigger")}</td>
+            <td>{t("refund.s4Row2Bank")}</td>
+            <td>{t("refund.s4Row2Support")}</td>
           </tr>
           <tr>
-            <td>Virement SEPA</td>
-            <td>&le; 2 jours ouvres</td>
-            <td>~3 jours ouvres</td>
-            <td>IBAN fourni</td>
+            <td>{t("refund.s4Row3Method")}</td>
+            <td>{t("refund.s4Row3Trigger")}</td>
+            <td>{t("refund.s4Row3Bank")}</td>
+            <td>{t("refund.s4Row3Support")}</td>
           </tr>
         </tbody>
       </table>
-      <p>
-        Le delai commence des la confirmation de reception dans notre entrepot.
-        Vous recevrez un e-mail de confirmation et la mise a jour dans &laquo; Mon compte &raquo;.
-      </p>
+      <p>{t("refund.s4P1")}</p>
 
-      <h2>5. Garantie commerciale &mdash; 24 mois</h2>
-      <p>
-        Tous les produits reconditionnes vendus par DBC Store sont couverts par une
-        <strong> garantie commerciale de 24 mois</strong>, soit 12 mois de plus que
-        la majorite des acteurs du secteur.
-      </p>
-      <h3>Sont couverts</h3>
+      <h2>{t("refund.s5Title")}</h2>
+      <p>{t.rich("refund.s5P1", { strong })}</p>
+      <h3>{t("refund.s5CoveredTitle")}</h3>
       <ul>
-        <li>Defauts techniques internes</li>
-        <li>Dysfonctionnements soudains et imprevisibles</li>
-        <li>Pieces et main-d&apos;oeuvre</li>
+        <li>{t("refund.s5CoveredLi1")}</li>
+        <li>{t("refund.s5CoveredLi2")}</li>
+        <li>{t("refund.s5CoveredLi3")}</li>
       </ul>
-      <h3>Exclusions</h3>
+      <h3>{t("refund.s5ExcludedTitle")}</h3>
       <ul>
-        <li>Usure normale (batterie)</li>
-        <li>Oxydation ou dommages liquides</li>
-        <li>Casse ou choc physique</li>
+        <li>{t("refund.s5ExcludedLi1")}</li>
+        <li>{t("refund.s5ExcludedLi2")}</li>
+        <li>{t("refund.s5ExcludedLi3")}</li>
       </ul>
-      <p>
-        Nous privilegions la reparation rapide (&le; 3 jours ouvres pour smartphones/tablettes,
-        &le; 5 jours ouvres pour ordinateurs). Si la reparation est impossible ou depasse
-        10 jours ouvres, vous pouvez choisir entre un remplacement equivalent, un avoir
-        valable 12 mois, ou un remboursement integral.
-      </p>
-      <p>
-        Les frais de transport lies aux interventions sous garantie sont entierement
-        pris en charge par DBC.
-      </p>
+      <p>{t("refund.s5P2")}</p>
+      <p>{t("refund.s5P3")}</p>
 
-      <h2>6. Exceptions &amp; ajustements de remboursement</h2>
+      <h2>{t("refund.s6Title")}</h2>
       <ul>
-        <li><strong>Accessoires manquants</strong> : retenue du montant catalogue.</li>
-        <li><strong>Depreciation suite a mauvaise manipulation</strong> : devis de remise en etat envoye avant deduction.</li>
-        <li><strong>Produits personnalises</strong> (gravure, configuration logicielle specifique) : droit de retractation limite a la valeur du materiel brut.</li>
+        <li>{t.rich("refund.s6Li1", { strong })}</li>
+        <li>{t.rich("refund.s6Li2", { strong })}</li>
+        <li>{t.rich("refund.s6Li3", { strong })}</li>
       </ul>
 
-      <h2>7. Colis perdu ou retarde</h2>
-      <p>
-        Si le transporteur n&apos;a pas scanne votre retour dans les 10 jours ouvres,
-        contactez-nous ; nous lancerons soit un nouvel envoi, soit votre remboursement
-        integral apres enquete.
-      </p>
+      <h2>{t("refund.s7Title")}</h2>
+      <p>{t("refund.s7P1")}</p>
 
-      <h2>8. Service client</h2>
+      <h2>{t("refund.s8Title")}</h2>
       <ul>
-        <li><strong>WhatsApp</strong> : icone verte sur le site (reponse &lt; 4 h ouvrees)</li>
-        <li><strong>Appel</strong> : 07 43 39 66 69 (reponse &lt; 1 h ouvrees)</li>
-        <li><strong>E-mail</strong> : contact@dbcstore.fr (reponse &lt; 24 h ouvrees)</li>
+        <li>{t.rich("refund.s8Li1", { strong })}</li>
+        <li>{t.rich("refund.s8Li2", { strong })}</li>
+        <li>{t.rich("refund.s8Li3", { strong })}</li>
       </ul>
-      <p>Notre equipe est disponible du lundi au vendredi, 9 h &ndash; 19 h (heure de Paris).</p>
+      <p>{t("refund.s8P1")}</p>
     </PolicyPage>
   );
 }

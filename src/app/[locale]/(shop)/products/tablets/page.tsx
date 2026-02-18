@@ -95,7 +95,7 @@ export default async function TabletsPage({ params }: TabletsPageProps) {
                 href={`/${locale}/products/tablets/${sub.slug}`}
                 className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:border-green-700 hover:bg-green-700 hover:text-white"
               >
-                {sub.name}
+                {tCat(`sub.tablets.${sub.slug}`)}
               </a>
             ))}
           </div>

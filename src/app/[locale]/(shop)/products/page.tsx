@@ -11,6 +11,7 @@ interface ProductsPageProps {
 export default async function ProductsPage({ params }: ProductsPageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "products" });
+  const tCat = await getTranslations({ locale, namespace: "categories" });
 
   return (
     <>
@@ -36,7 +37,7 @@ export default async function ProductsPage({ params }: ProductsPageProps) {
             >
               <div className="mb-4">
                 <h2 className="text-xl font-bold text-gray-900 group-hover:text-gray-700">
-                  {category.nameFr}
+                  {tCat(category.slug)}
                 </h2>
               </div>
 
@@ -48,7 +49,7 @@ export default async function ProductsPage({ params }: ProductsPageProps) {
                       key={sub.id}
                       className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600"
                     >
-                      {sub.name}
+                      {tCat(`sub.${category.slug}.${sub.slug}`)}
                     </span>
                   ))}
                   {category.subcategories.length > 4 && (

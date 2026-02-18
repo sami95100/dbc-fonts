@@ -1,9 +1,7 @@
 import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Star } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { cn } from "@/lib/utils";
 import type { Product } from "@/data/mock/products";
 import { getProductImage } from "@/data/mock/products";
 
@@ -45,38 +43,18 @@ function ProductCardComponent({ product }: ProductCardProps) {
             {product.name}
           </h3>
 
-          {/* Rating */}
-          <div className="mb-2 flex items-center gap-1">
-            <div className="flex items-center">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={cn(
-                    "h-3.5 w-3.5",
-                    i < Math.floor(product.rating)
-                      ? "fill-current text-highlight"
-                      : "text-gray-200"
-                  )}
-                />
-              ))}
-            </div>
-            <span className="text-xs text-gray-500">
-              {product.rating}/5 ({product.reviewCount.toLocaleString("fr-FR")})
-            </span>
-          </div>
-
           {/* Price */}
           <div className="flex items-baseline gap-2">
             <span className="text-xs text-gray-500">{t("from")}</span>
             <span className="text-lg font-bold text-gray-900">
-              {product.priceFrom.toLocaleString("fr-FR")} €
+              {product.priceFrom.toLocaleString(locale)} €
             </span>
           </div>
 
           {/* Original price */}
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-400 line-through">
-              {product.priceNew.toLocaleString("fr-FR")} € {t("new")}
+              {product.priceNew.toLocaleString(locale)} € {t("new")}
             </span>
           </div>
 

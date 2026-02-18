@@ -10,6 +10,8 @@ export default async function QualityPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "pages" });
 
+  const strong = (chunks: React.ReactNode) => <strong>{chunks}</strong>;
+
   return (
     <PolicyPage locale={locale} title={t("qualityTitle")} backLabel={t("backToHome")}>
       {/* Quality pillars */}
@@ -44,84 +46,46 @@ export default async function QualityPage({ params }: Props) {
         </div>
       </div>
 
-      <h2>Notre processus de controle</h2>
-      <p>
-        Chaque appareil qui entre dans notre atelier passe par un processus
-        rigoureux de <strong>24 points de controle</strong>. Ce n&apos;est pas un
-        simple test d&apos;allumage : nous verifions chaque composant, chaque
-        fonctionnalite, chaque detail.
-      </p>
+      <h2>{t("quality.processTitle")}</h2>
+      <p>{t.rich("quality.processIntro", { strong })}</p>
       <ul>
-        <li>Test complet de l&apos;ecran (tactile, affichage, pixels)</li>
-        <li>Verification des capteurs (Face ID, Touch ID, accelerometre, gyroscope)</li>
-        <li>Test audio (haut-parleur, micro, ecouteur)</li>
-        <li>Verification camera (avant, arriere, autofocus, stabilisation)</li>
-        <li>Test de connectivite (Wi-Fi, Bluetooth, reseau cellulaire, GPS)</li>
-        <li>Verification de la batterie (capacite, cycles de charge)</li>
-        <li>Test des boutons physiques et du vibreur</li>
-        <li>Verification du chassis et de l&apos;etancheite</li>
-        <li>Reinitialisation complete et mise a jour logicielle</li>
-        <li>Controle final et mise en boite</li>
+        <li>{t("quality.processScreen")}</li>
+        <li>{t("quality.processSensors")}</li>
+        <li>{t("quality.processAudio")}</li>
+        <li>{t("quality.processCamera")}</li>
+        <li>{t("quality.processConnectivity")}</li>
+        <li>{t("quality.processBattery")}</li>
+        <li>{t("quality.processButtons")}</li>
+        <li>{t("quality.processChassis")}</li>
+        <li>{t("quality.processReset")}</li>
+        <li>{t("quality.processFinal")}</li>
       </ul>
 
-      <h2>Nos grades cosmetiques</h2>
-      <p>
-        Chez DBC, pas de surprise. Chaque appareil est classe selon son etat
-        cosmetique reel, avec des photos du produit que vous recevrez.
-      </p>
+      <h2>{t("quality.gradesContentTitle")}</h2>
+      <p>{t("quality.gradesContentIntro")}</p>
 
-      <h3>Parfait</h3>
-      <p>
-        Aucune trace visible a l&apos;oeil nu. L&apos;appareil est dans un etat
-        quasi neuf. Ideal si l&apos;esthetique est votre priorite.
-      </p>
+      <h3>{t("quality.gradePerfectTitle")}</h3>
+      <p>{t("quality.gradePerfectDesc")}</p>
 
-      <h3>Tres bon</h3>
-      <p>
-        De legeres micro-rayures visibles uniquement sous un certain angle de
-        lumiere. L&apos;appareil reste en excellent etat general.
-      </p>
+      <h3>{t("quality.gradeVeryGoodTitle")}</h3>
+      <p>{t("quality.gradeVeryGoodDesc")}</p>
 
-      <h3>Correct</h3>
-      <p>
-        Des traces d&apos;utilisation visibles (rayures legeres sur l&apos;ecran
-        ou le chassis). Le meilleur rapport qualite-prix, avec un fonctionnement
-        parfait.
-      </p>
+      <h3>{t("quality.gradeGoodTitle")}</h3>
+      <p>{t("quality.gradeGoodDesc")}</p>
 
-      <h3>Imparfait</h3>
-      <p>
-        Des marques d&apos;usure plus prononcees (rayures, petits impacts). Le
-        prix le plus bas pour un appareil 100 % fonctionnel.
-      </p>
+      <h3>{t("quality.gradeImperfectTitle")}</h3>
+      <p>{t("quality.gradeImperfectDesc")}</p>
 
-      <h2>La batterie</h2>
-      <p>
-        La batterie est un element cle de l&apos;experience utilisateur. C&apos;est
-        pourquoi nous vous donnons le choix :
-      </p>
+      <h2>{t("quality.batteryContentTitle")}</h2>
+      <p>{t("quality.batteryContentIntro")}</p>
       <ul>
-        <li>
-          <strong>Batterie d&apos;origine</strong> &mdash; Testee et certifiee avec
-          une capacite minimale de 80 %.
-        </li>
-        <li>
-          <strong>Batterie neuve</strong> &mdash; Remplacement par une batterie
-          neuve pour une autonomie maximale (option disponible sur chaque produit).
-        </li>
+        <li>{t.rich("quality.batteryOriginal", { strong })}</li>
+        <li>{t.rich("quality.batteryNewOption", { strong })}</li>
       </ul>
 
-      <h2>Garantie 24 mois</h2>
-      <p>
-        Tous nos produits beneficient d&apos;une <strong>garantie commerciale de
-        24 mois</strong>, soit 12 mois de plus que la majorite du marche. Cette
-        garantie couvre les defauts techniques internes, les dysfonctionnements
-        soudains et imprevisibles, pieces et main-d&apos;oeuvre incluses.
-      </p>
-      <p>
-        En cas de probleme, notre SAV repond sous 4 h ouvrees et prend en charge
-        l&apos;integralite de la reparation ou du remplacement.
-      </p>
+      <h2>{t("quality.warrantyContentTitle")}</h2>
+      <p>{t.rich("quality.warrantyContentP1", { strong })}</p>
+      <p>{t("quality.warrantyContentP2")}</p>
     </PolicyPage>
   );
 }

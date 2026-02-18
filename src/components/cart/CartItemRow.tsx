@@ -3,7 +3,7 @@
 import { memo } from "react";
 import Image from "next/image";
 import { ImageIcon, Minus, Plus } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { CartItem } from "@/types/cart";
 
 interface CartItemRowProps {
@@ -18,6 +18,7 @@ function CartItemRowComponent({
   onUpdateQuantity,
   onRemove,
 }: CartItemRowProps) {
+  const locale = useLocale();
   const t = useTranslations("cart");
   const gradeLabel = t(`grades.${item.grade}`);
 
@@ -89,7 +90,7 @@ function CartItemRowComponent({
           </div>
 
           <span className="font-semibold text-gray-900">
-            {(item.price * item.quantity).toLocaleString("fr-FR")} €
+            {(item.price * item.quantity).toLocaleString(locale)} €
           </span>
 
           <button

@@ -48,7 +48,7 @@ export default function OrderCard({ order }: OrderCardProps) {
           </p>
         </div>
         <p className="text-lg font-semibold text-gray-900">
-          {order.total.toLocaleString("fr-FR")} &euro;
+          {order.total.toLocaleString(locale)} &euro;
         </p>
       </div>
 

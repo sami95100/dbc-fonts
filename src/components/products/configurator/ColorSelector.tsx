@@ -46,7 +46,7 @@ function ColorSelectorComponent({
     <div
       className="grid grid-cols-2 gap-3"
       role="radiogroup"
-      aria-label="Color selection"
+      aria-label={t("colorSelection")}
     >
       {colors.map((color) => {
         const isSelected = selectedColor === color.name;
