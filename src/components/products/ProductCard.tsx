@@ -1,6 +1,7 @@
 import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Star } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import type { Product } from "@/data/mock/products";
 import { getProductImage } from "@/data/mock/products";
@@ -9,14 +10,22 @@ interface ProductCardProps {
   product: Product;
 }
 
+const CATEGORY_SLUG_MAP: Record<string, string> = {
+  smartphones: "smartphones",
+  tablets: "tablets",
+  laptops: "laptops",
+  smartwatches: "smartwatches",
+  audio: "audio",
+};
+
 function ProductCardComponent({ product }: ProductCardProps) {
   const locale = useLocale();
   const t = useTranslations("common");
+  const tReviews = useTranslations("reviews");
 
   const imagePath = getProductImage(product);
 
-  // Determiner la categorie pour l'URL
-  const categorySlug = product.category === "tablets" ? "tablets" : "smartphones";
+  const categorySlug = CATEGORY_SLUG_MAP[product.category] || "smartphones";
 
   return (
     <Link
@@ -38,6 +47,27 @@ function ProductCardComponent({ product }: ProductCardProps) {
 
         {/* Product Info */}
         <div className="flex min-w-0 flex-1 flex-col sm:block">
+          {/* Review stars (fixed height to keep titles aligned) */}
+          <div className="mb-1 h-4">
+            {product.reviewCount > 0 && (
+              <div className="flex items-center gap-1">
+                <div className="flex items-center gap-0.5">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={
+                        star <= Math.round(product.rating)
+                          ? "h-3 w-3 fill-highlight text-highlight"
+                          : "h-3 w-3 fill-gray-200 text-gray-200"
+                      }
+                    />
+                  ))}
+                </div>
+                <span className="text-xs text-gray-500">({product.reviewCount})</span>
+              </div>
+            )}
+          </div>
+
           {/* Product name */}
           <h3 className="mb-1 font-semibold text-gray-900 group-hover:text-gray-700">
             {product.name}
