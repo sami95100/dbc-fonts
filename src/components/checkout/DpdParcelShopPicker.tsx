@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
 import { MapPin, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -21,15 +22,17 @@ export function DpdParcelShopPicker({
 }: DpdParcelShopPickerProps) {
   const t = useTranslations("checkout");
   const [showModal, setShowModal] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  // Portal needs document.body — only available after mount
+  useEffect(() => setMounted(true), []);
 
   const handleMessage = useCallback(
     (event: MessageEvent) => {
-      // DPD widget sends data via postMessage
       const data = event.data;
       if (!data || typeof data !== "object") return;
 
-      // The widget can send different formats depending on version
       const shop = data.dpdWidget || data;
       if (!shop.city && !shop.zipCode) return;
 
@@ -53,14 +56,31 @@ export function DpdParcelShopPicker({
     return () => window.removeEventListener("message", handleMessage);
   }, [showModal, handleMessage]);
 
-  // Close on Escape
+  // Lock body scroll + close on Escape
   useEffect(() => {
     if (!showModal) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setShowModal(false);
     };
     window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", handleKey);
+    };
+  }, [showModal]);
+
+  // Focus iframe once loaded so the DPD widget is interactive
+  useEffect(() => {
+    if (!showModal || !iframeRef.current) return;
+    const iframe = iframeRef.current;
+    const handleLoad = () => iframe.focus();
+    iframe.addEventListener("load", handleLoad);
+    return () => iframe.removeEventListener("load", handleLoad);
   }, [showModal]);
 
   const widgetLang = locale === "fr" ? "fr" : "en";
@@ -105,40 +125,50 @@ export function DpdParcelShopPicker({
         </Button>
       )}
 
-      {/* Modal with DPD iframe */}
-      {showModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setShowModal(false);
-          }}
-        >
-          <div className="relative h-[85vh] w-full max-w-2xl overflow-hidden rounded-xl bg-white shadow-xl">
-            {/* Header */}
-            <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
-              <h3 className="font-semibold text-gray-900">
-                {t("selectParcelShop")}
-              </h3>
-              <button
-                type="button"
-                onClick={() => setShowModal(false)}
-                className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
+      {/* Modal via portal — rendered outside the component tree */}
+      {showModal &&
+        mounted &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setShowModal(false);
+            }}
+            onMouseDown={(e) => {
+              // Prevent any interaction from reaching elements behind
+              if (e.target === e.currentTarget) e.preventDefault();
+            }}
+          >
+            <div
+              className="relative h-[90vh] w-full max-w-2xl overflow-hidden rounded-xl bg-white shadow-2xl sm:h-[85vh]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
+                <h3 className="font-semibold text-gray-900">
+                  {t("selectParcelShop")}
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
 
-            {/* Iframe */}
-            <iframe
-              ref={iframeRef}
-              src={widgetUrl}
-              className="h-[calc(85vh-52px)] w-full border-0"
-              title="DPD Parcel Shop Finder"
-              allow="geolocation"
-            />
-          </div>
-        </div>
-      )}
+              {/* Iframe */}
+              <iframe
+                ref={iframeRef}
+                src={widgetUrl}
+                className="h-[calc(90vh-52px)] w-full border-0 sm:h-[calc(85vh-52px)]"
+                title="DPD Parcel Shop Finder"
+                allow="geolocation"
+              />
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

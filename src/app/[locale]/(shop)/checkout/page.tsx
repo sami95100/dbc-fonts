@@ -40,8 +40,8 @@ const INITIAL_FORM: ShippingFormData = {
   country: "FR",
 };
 
-// DPD only available in France for now
-const DPD_SUPPORTED_COUNTRIES = ["FR"];
+// DPD available in all supported countries (FR, BE, CH, LU)
+// The widget filters parcel shops by country automatically
 
 export default function CheckoutPage() {
   const locale = useLocale();
@@ -65,15 +65,12 @@ export default function CheckoutPage() {
   const subtotal = getSubtotal();
   const isShopOrder = hasShopProcessingItems();
   const showDeliverySelector = !isShopOrder;
-  const dpdAvailable = DPD_SUPPORTED_COUNTRIES.includes(formData.country);
+  const shippingCost = deliveryMethod === "dpd" ? 6 : 20;
 
-  // Reset DPD when country changes to unsupported
+  // Reset DPD shop when country changes (widget shows different shops per country)
   useEffect(() => {
-    if (!dpdAvailable && deliveryMethod === "dpd") {
-      setDeliveryMethod("home");
-      setDpdShop(null);
-    }
-  }, [dpdAvailable, deliveryMethod]);
+    setDpdShop(null);
+  }, [formData.country]);
 
   // Pre-fill from saved profile
   useEffect(() => {
@@ -199,7 +196,7 @@ export default function CheckoutPage() {
         shipping_postal_code: formData.postalCode,
         shipping_city: formData.city,
         shipping_country: formData.country,
-        shipping_cost: 0,
+        shipping_cost: shippingCost,
         carrier_id: deliveryMethod === "dpd" ? 3 : 1,
         items: orderItems,
       };
@@ -315,22 +312,19 @@ export default function CheckoutPage() {
                         {t("deliveryHomeDesc")}
                       </p>
                     </div>
-                    <span className="shrink-0 text-sm font-medium text-green-700">
-                      {t("free")}
+                    <span className="shrink-0 text-sm font-semibold text-gray-900">
+                      20 €
                     </span>
                   </button>
 
                   {/* DPD Parcel Locker */}
                   <button
                     type="button"
-                    onClick={() => dpdAvailable && setDeliveryMethod("dpd")}
-                    disabled={!dpdAvailable}
+                    onClick={() => setDeliveryMethod("dpd")}
                     className={`flex items-start gap-3 rounded-lg border-2 p-4 text-left transition ${
                       deliveryMethod === "dpd"
                         ? "border-green-700 bg-green-50"
-                        : dpdAvailable
-                          ? "border-gray-200 hover:border-gray-300"
-                          : "cursor-not-allowed border-gray-100 bg-gray-50 opacity-50"
+                        : "border-gray-200 hover:border-gray-300"
                     }`}
                   >
                     <div
@@ -355,8 +349,8 @@ export default function CheckoutPage() {
                         {t("deliveryDpdDesc")}
                       </p>
                     </div>
-                    <span className="shrink-0 text-sm font-medium text-green-700">
-                      {t("free")}
+                    <span className="shrink-0 text-sm font-semibold text-gray-900">
+                      6 €
                     </span>
                   </button>
                 </div>
@@ -526,9 +520,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">{t("shipping")}</span>
-                  <span className="font-medium text-green-700">
-                    {t("free")}
-                  </span>
+                  <span>{shippingCost.toLocaleString("fr-FR")} €</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">{tCart("delivery")}</span>
@@ -542,7 +534,7 @@ export default function CheckoutPage() {
 
               <div className="mt-4 flex justify-between border-t border-gray-200 pt-4 text-lg font-semibold">
                 <span>{t("total")}</span>
-                <span>{subtotal.toLocaleString("fr-FR")} €</span>
+                <span>{(subtotal + shippingCost).toLocaleString("fr-FR")} €</span>
               </div>
             </div>
           </div>
