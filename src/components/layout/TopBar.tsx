@@ -84,7 +84,7 @@ export function TopBar() {
                   <span className="text-base">{lang.flag}</span>
                   <span className="text-gray-700">{lang.label}</span>
                   {lang.code === locale && (
-                    <Check className="ml-auto h-4 w-4 text-green-500" />
+                    <Check className="ml-auto h-4 w-4 text-accent" />
                   )}
                 </button>
               ))}

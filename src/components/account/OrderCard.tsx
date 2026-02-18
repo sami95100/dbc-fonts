@@ -5,12 +5,12 @@ import type { Order, OrderItem, OrderStatus } from "@/types/order";
 import OrderItemRow from "./OrderItemRow";
 
 const STATUS_STYLES: Record<OrderStatus, string> = {
-  pending: "bg-yellow-100 text-yellow-800",
-  confirmed: "bg-blue-100 text-blue-800",
-  processing: "bg-blue-100 text-blue-800",
-  shipped: "bg-purple-100 text-purple-800",
-  delivered: "bg-green-100 text-green-800",
-  cancelled: "bg-red-100 text-red-800",
+  pending: "bg-highlight/10 text-highlight-foreground",
+  confirmed: "bg-blue-50 text-blue-700",
+  processing: "bg-blue-50 text-blue-700",
+  shipped: "bg-purple-50 text-purple-700",
+  delivered: "bg-green-50 text-green-700",
+  cancelled: "bg-red-50 text-red-700",
 };
 
 interface OrderCardProps {

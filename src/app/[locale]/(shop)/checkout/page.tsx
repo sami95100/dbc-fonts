@@ -323,7 +323,7 @@ export default function CheckoutPage() {
                       name="country"
                       value={formData.country}
                       onChange={handleChange}
-                      className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500"
+                      className="h-9 w-full rounded-lg border border-gray-200 bg-transparent px-3 py-1 text-base shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:border-ring"
                     >
                       {COUNTRY_CODES.map((code) => (
                         <option key={code} value={code}>

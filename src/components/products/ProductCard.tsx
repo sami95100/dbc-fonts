@@ -54,7 +54,7 @@ function ProductCardComponent({ product }: ProductCardProps) {
                   className={cn(
                     "h-3.5 w-3.5",
                     i < Math.floor(product.rating)
-                      ? "fill-current text-yellow-400"
+                      ? "fill-current text-highlight"
                       : "text-gray-200"
                   )}
                 />

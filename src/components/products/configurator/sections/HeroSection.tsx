@@ -158,7 +158,7 @@ function StarRating({ rating }: { rating: number }) {
       {[...Array(5)].map((_, i) => (
         <Star
           key={i}
-          className={cn("h-4 w-4", i < Math.floor(rating) ? "fill-current text-yellow-400" : "text-gray-300")}
+          className={cn("h-4 w-4", i < Math.floor(rating) ? "fill-current text-highlight" : "text-gray-300")}
           aria-hidden="true"
         />
       ))}

@@ -72,7 +72,7 @@ function RadioOptionComponent({
               {label}
             </span>
             {badge && !soldOut && (
-              <span className="inline-flex rounded bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">
+              <span className="inline-flex rounded bg-highlight/10 px-2 py-0.5 text-xs font-medium text-highlight-foreground">
                 {badge}
               </span>
             )}

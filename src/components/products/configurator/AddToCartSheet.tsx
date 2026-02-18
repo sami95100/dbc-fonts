@@ -150,7 +150,7 @@ function AddToCartSheetComponent({ item, onClose }: AddToCartSheetProps) {
               </Button>
               <Button
                 asChild
-                className="flex-1 rounded-full bg-gray-900 py-6 text-base font-semibold text-white hover:bg-gray-800"
+                className="flex-1 rounded-full border border-gray-200 bg-white py-6 text-base font-semibold text-gray-900 hover:bg-gray-50"
               >
                 <Link href={`/${locale}/checkout`} onClick={handleClose}>
                   {tNav("checkout")}
