@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { Truck, MapPin, Store } from "lucide-react";
+import { Truck, MapPin, Store, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCartStore } from "@/stores/cart-store";
@@ -48,9 +49,6 @@ const INITIAL_FORM: ShippingFormData = {
   country: "FR",
 };
 
-// DPD available in all supported countries (FR, BE, CH, LU)
-// The widget filters parcel shops by country automatically
-
 export default function CheckoutPage() {
   const locale = useLocale();
   const router = useRouter();
@@ -65,20 +63,36 @@ export default function CheckoutPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   // Delivery method
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("home");
   const [dpdShop, setDpdShop] = useState<DpdParcelShop | null>(null);
+  const [showAddressSheet, setShowAddressSheet] = useState(false);
 
   const subtotal = getSubtotal();
   const isShopOrder = hasShopProcessingItems();
   const showDeliverySelector = !isShopOrder;
   const shippingCost = deliveryMethod === "pickup" ? 0 : deliveryMethod === "dpd" ? 6 : 20;
 
-  // Reset DPD shop when country changes (widget shows different shops per country)
+  const hasHomeAddress = formData.address.trim() && formData.city.trim();
+
+  useEffect(() => setMounted(true), []);
+
+  // Reset DPD shop when country changes
   useEffect(() => {
     setDpdShop(null);
   }, [formData.country]);
+
+  // Lock body scroll when address sheet is open
+  useEffect(() => {
+    if (!showAddressSheet) return;
+    const original = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, [showAddressSheet]);
 
   // Pre-fill from saved profile
   useEffect(() => {
@@ -150,7 +164,8 @@ export default function CheckoutPage() {
     ) {
       newErrors.phone = t("errors.invalidPhone");
     }
-    // Address fields only required for home delivery
+
+    // Address required for home delivery
     if (deliveryMethod === "home") {
       if (!formData.address.trim())
         newErrors.address = t("errors.required");
@@ -171,6 +186,15 @@ export default function CheckoutPage() {
     }
 
     setErrors(newErrors);
+
+    // If home delivery has address errors, open the sheet
+    if (
+      deliveryMethod === "home" &&
+      (newErrors.address || newErrors.postalCode || newErrors.city)
+    ) {
+      setShowAddressSheet(true);
+    }
+
     return Object.keys(newErrors).length === 0;
   };
 
@@ -266,6 +290,62 @@ export default function CheckoutPage() {
     }
   };
 
+  // Build the address summary for the selected delivery method
+  const renderAddressCard = () => {
+    if (deliveryMethod === "pickup") {
+      return (
+        <AddressCard
+          icon={<Store className="h-5 w-5" />}
+          title={STORE_ADDRESS.name}
+          line1={STORE_ADDRESS.address}
+          line2={`${STORE_ADDRESS.postalCode} ${STORE_ADDRESS.city}`}
+          subtitle={t("deliveryPickupReady")}
+        />
+      );
+    }
+
+    if (deliveryMethod === "dpd") {
+      if (!dpdShop) return null;
+      return (
+        <AddressCard
+          icon={<MapPin className="h-5 w-5" />}
+          title={dpdShop.company}
+          line1={`${dpdShop.street} ${dpdShop.houseNo}`}
+          line2={`${dpdShop.zipCode} ${dpdShop.city}`}
+          onEdit={() => {
+            setDpdShop(null);
+          }}
+          editLabel={t("changeParcelShop")}
+        />
+      );
+    }
+
+    // Home delivery
+    if (!hasHomeAddress) {
+      return (
+        <button
+          type="button"
+          onClick={() => setShowAddressSheet(true)}
+          className="flex w-full items-center gap-3 rounded-lg border-2 border-dashed border-gray-300 p-4 text-left transition hover:border-green-700 hover:text-green-700"
+        >
+          <MapPin className="h-5 w-5 text-gray-400" />
+          <span className="text-sm text-gray-500">{t("addAddress")}</span>
+        </button>
+      );
+    }
+
+    return (
+      <AddressCard
+        icon={<Truck className="h-5 w-5" />}
+        title={formData.address}
+        line1={`${formData.postalCode} ${formData.city}`}
+        line2={t(`countries.${formData.country}`)}
+        onEdit={() => setShowAddressSheet(true)}
+        editLabel={t("editAddress")}
+      />
+    );
+  };
+
   return (
     <div className="bg-gray-50 py-8">
       <div className="mx-auto max-w-6xl px-4">
@@ -303,7 +383,7 @@ export default function CheckoutPage() {
                     onClick={() => setDeliveryMethod("pickup")}
                     icon={<Store className="h-4 w-4" />}
                     title={t("deliveryPickup")}
-                    description={`${STORE_ADDRESS.address}, ${STORE_ADDRESS.postalCode} ${STORE_ADDRESS.city}`}
+                    description={t("deliveryPickupDesc")}
                     price={t("free")}
                     priceClassName="text-green-700"
                   />
@@ -325,8 +405,8 @@ export default function CheckoutPage() {
                   />
                 </div>
 
-                {/* DPD Parcel Shop Picker */}
-                {deliveryMethod === "dpd" && (
+                {/* DPD Parcel Shop Picker (only when no shop selected yet) */}
+                {deliveryMethod === "dpd" && !dpdShop && (
                   <div className="mt-4">
                     <DpdParcelShopPicker
                       locale={locale}
@@ -344,13 +424,21 @@ export default function CheckoutPage() {
                     )}
                   </div>
                 )}
+
+                {/* Unified address card below delivery options */}
+                <div className="mt-4">
+                  {renderAddressCard()}
+                  {deliveryMethod === "home" && errors.address && !hasHomeAddress && (
+                    <p className="mt-2 text-sm text-red-600">{t("errors.required")}</p>
+                  )}
+                </div>
               </div>
             )}
 
-            {/* Contact + Address info */}
+            {/* Contact info */}
             <div className="rounded-lg border border-gray-200 bg-white p-6">
               <h2 className="mb-6 text-xl font-semibold text-gray-900">
-                {deliveryMethod === "home" ? t("shippingInfo") : t("contactInfo")}
+                {t("contactInfo")}
               </h2>
 
               {submitError && (
@@ -360,7 +448,6 @@ export default function CheckoutPage() {
               )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Contact fields — always visible */}
                 <div className="grid gap-4 sm:grid-cols-2">
                   <CheckoutField
                     id="firstName"
@@ -397,59 +484,6 @@ export default function CheckoutPage() {
                     placeholder="+33 6 12 34 56 78"
                   />
                 </div>
-
-                {/* Country selector — always visible (affects DPD picker) */}
-                <div className="max-w-xs">
-                  <label
-                    htmlFor="country"
-                    className="mb-1 block text-sm font-medium text-gray-700"
-                  >
-                    {t("fields.country")}
-                  </label>
-                  <select
-                    id="country"
-                    name="country"
-                    value={formData.country}
-                    onChange={handleChange}
-                    className="h-9 w-full rounded-lg border border-gray-200 bg-transparent px-3 py-1 text-base shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:border-ring"
-                  >
-                    {COUNTRY_CODES.map((code) => (
-                      <option key={code} value={code}>
-                        {t(`countries.${code}`)}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Address fields — only for home delivery */}
-                {deliveryMethod === "home" && (
-                  <>
-                    <CheckoutField
-                      id="address"
-                      label={`${t("fields.address")} *`}
-                      value={formData.address}
-                      onChange={handleChange}
-                      error={errors.address}
-                    />
-
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <CheckoutField
-                        id="postalCode"
-                        label={`${t("fields.postalCode")} *`}
-                        value={formData.postalCode}
-                        onChange={handleChange}
-                        error={errors.postalCode}
-                      />
-                      <CheckoutField
-                        id="city"
-                        label={`${t("fields.city")} *`}
-                        value={formData.city}
-                        onChange={handleChange}
-                        error={errors.city}
-                      />
-                    </div>
-                  </>
-                )}
 
                 <Button
                   type="submit"
@@ -522,9 +556,98 @@ export default function CheckoutPage() {
           </div>
         </div>
       </div>
+
+      {/* Address bottom sheet for home delivery */}
+      {showAddressSheet &&
+        mounted &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[9999] flex items-end justify-center bg-black/60 sm:items-center sm:p-4"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setShowAddressSheet(false);
+            }}
+          >
+            <div className="w-full max-w-lg animate-in slide-in-from-bottom rounded-t-xl bg-white shadow-2xl sm:rounded-xl">
+              {/* Header */}
+              <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {t("shippingInfo")}
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowAddressSheet(false)}
+                  className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* Form */}
+              <div className="space-y-4 p-5">
+                <CheckoutField
+                  id="address"
+                  label={`${t("fields.address")} *`}
+                  value={formData.address}
+                  onChange={handleChange}
+                  error={errors.address}
+                />
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <CheckoutField
+                    id="postalCode"
+                    label={`${t("fields.postalCode")} *`}
+                    value={formData.postalCode}
+                    onChange={handleChange}
+                    error={errors.postalCode}
+                  />
+                  <CheckoutField
+                    id="city"
+                    label={`${t("fields.city")} *`}
+                    value={formData.city}
+                    onChange={handleChange}
+                    error={errors.city}
+                  />
+                </div>
+
+                <div className="max-w-xs">
+                  <label
+                    htmlFor="sheet-country"
+                    className="mb-1 block text-sm font-medium text-gray-700"
+                  >
+                    {t("fields.country")}
+                  </label>
+                  <select
+                    id="sheet-country"
+                    name="country"
+                    value={formData.country}
+                    onChange={handleChange}
+                    className="h-9 w-full rounded-lg border border-gray-200 bg-transparent px-3 py-1 text-base shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:border-ring"
+                  >
+                    {COUNTRY_CODES.map((code) => (
+                      <option key={code} value={code}>
+                        {t(`countries.${code}`)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <Button
+                  type="button"
+                  onClick={() => setShowAddressSheet(false)}
+                  className="mt-2 w-full rounded-full bg-green-700 py-3 font-medium text-white transition hover:bg-green-800"
+                >
+                  {t("saveAddress")}
+                </Button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
+
+/* ─── Sub-components ─── */
 
 function CheckoutField({
   id,
@@ -614,5 +737,46 @@ function DeliveryOptionCard({
         {price}
       </span>
     </button>
+  );
+}
+
+function AddressCard({
+  icon,
+  title,
+  line1,
+  line2,
+  subtitle,
+  onEdit,
+  editLabel,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  line1: string;
+  line2: string;
+  subtitle?: string;
+  onEdit?: () => void;
+  editLabel?: string;
+}) {
+  return (
+    <div className="flex items-start gap-3 rounded-lg border border-green-200 bg-green-50 p-4">
+      <div className="mt-0.5 shrink-0 text-green-700">{icon}</div>
+      <div className="flex-1">
+        <p className="text-sm font-medium text-gray-900">{title}</p>
+        <p className="text-sm text-gray-600">{line1}</p>
+        <p className="text-sm text-gray-600">{line2}</p>
+        {subtitle && (
+          <p className="mt-1 text-xs text-green-700">{subtitle}</p>
+        )}
+      </div>
+      {onEdit && editLabel && (
+        <button
+          type="button"
+          onClick={onEdit}
+          className="shrink-0 text-sm font-medium text-green-700 underline hover:text-green-800"
+        >
+          {editLabel}
+        </button>
+      )}
+    </div>
   );
 }
