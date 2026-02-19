@@ -148,16 +148,18 @@ function OrderSummaryComponent({
               {t("beforeTradeIn")}
             </span>
           </div>
-          <div className="mt-1 flex items-center gap-2">
-            <span className="text-sm text-gray-400 line-through">
-              {priceNew.toLocaleString("fr-FR", { minimumFractionDigits: 2 })} € {tCommon("new")}
-            </span>
-            {savings > 0 && (
-              <span className="rounded bg-green-100 px-2 py-0.5 text-sm font-medium text-green-700">
-                {t("saveAmount")} {savings.toLocaleString("fr-FR", { minimumFractionDigits: 2 })} €
+          {priceNew > 0 && (
+            <div className="mt-1 flex items-center gap-2">
+              <span className="text-sm text-gray-400 line-through">
+                {priceNew.toLocaleString("fr-FR", { minimumFractionDigits: 2 })} € {tCommon("new")}
               </span>
-            )}
-          </div>
+              {savings > 0 && (
+                <span className="rounded bg-green-100 px-2 py-0.5 text-sm font-medium text-green-700">
+                  {t("saveAmount")} {savings.toLocaleString("fr-FR", { minimumFractionDigits: 2 })} €
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Add to cart button */}

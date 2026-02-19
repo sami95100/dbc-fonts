@@ -152,16 +152,18 @@ function StickyHeaderComponent({
                   {t("beforeTradeIn")}
                 </span>
               </p>
-              <div className="flex items-center justify-end gap-2 text-xs">
-                <span className="text-gray-400 line-through">
-                  {priceNew.toLocaleString("fr-FR")} € {tCommon("new")}
-                </span>
-                {savings > 0 && (
-                  <span className="rounded bg-green-100 px-1.5 py-0.5 font-medium text-green-700">
-                    {t("savingsAmount", { amount: savings.toLocaleString("fr-FR") })}
+              {priceNew > 0 && (
+                <div className="flex items-center justify-end gap-2 text-xs">
+                  <span className="text-gray-400 line-through">
+                    {priceNew.toLocaleString("fr-FR")} € {tCommon("new")}
                   </span>
-                )}
-              </div>
+                  {savings > 0 && (
+                    <span className="rounded bg-green-100 px-1.5 py-0.5 font-medium text-green-700">
+                      {t("savingsAmount", { amount: savings.toLocaleString("fr-FR") })}
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Mobile price */}

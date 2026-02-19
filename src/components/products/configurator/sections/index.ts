@@ -19,3 +19,4 @@ export { StorageSection } from "./StorageSection";
 export { SimSection } from "./SimSection";
 export { ColorSection } from "./ColorSection";
 export { OrderSummary } from "./OrderSummary";
+export { DescriptionSection } from "./DescriptionSection";

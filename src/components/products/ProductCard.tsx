@@ -82,11 +82,13 @@ function ProductCardComponent({ product }: ProductCardProps) {
           </div>
 
           {/* Original price */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-400 line-through">
-              {product.priceNew.toLocaleString(locale)} € {t("new")}
-            </span>
-          </div>
+          {product.priceNew > 0 && (
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-400 line-through">
+                {product.priceNew.toLocaleString(locale)} € {t("new")}
+              </span>
+            </div>
+          )}
 
           {/* Color dots - at bottom on mobile, after image on desktop */}
           <div className="mt-auto flex items-center gap-1 pt-2 sm:mt-0 sm:pt-0 sm:order-first sm:mb-3">

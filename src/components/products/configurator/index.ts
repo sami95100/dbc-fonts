@@ -52,6 +52,7 @@ export {
   SimSection,
   ColorSection,
   OrderSummary,
+  DescriptionSection,
 } from "./sections";
 
 // Hooks

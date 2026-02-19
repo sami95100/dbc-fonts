@@ -72,7 +72,7 @@ export default function CheckoutPage() {
 
   const subtotal = getSubtotal();
   const isShopOrder = hasShopProcessingItems();
-  const showDeliverySelector = !isShopOrder;
+  const showDeliverySelector = true;
   const shippingCost = deliveryMethod === "pickup" ? 0 : deliveryMethod === "dpd" ? 6 : 20;
 
   const hasHomeAddress = formData.address.trim() && formData.city.trim();

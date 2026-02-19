@@ -17,10 +17,12 @@ export interface PhoneModel {
   price_correct?: number | null;
   price_imparfait?: number | null;
   backmarket_price?: number | null;
+  new_price?: number | null;
   price_from?: number | null;
   // Review stats (enriched by API)
   review_avg?: number;
   review_count?: number;
+  description?: string;
 }
 
 export interface ModelImage {

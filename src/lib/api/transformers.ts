@@ -185,8 +185,8 @@ export function apiModelToProduct(params: TransformModelParams): Product {
     model.price_from ||
     (availablePrices.length > 0 ? Math.min(...availablePrices) : 0);
 
-  // Prix neuf approximatif (BackMarket price ou estimation)
-  const priceNew = model.backmarket_price || Math.round(priceFrom * 1.8);
+  // Prix neuf officiel (MSRP)
+  const priceNew = model.new_price || 0;
 
   // Options de batterie
   const batteryStandardOption = options.batteries.find(
@@ -242,6 +242,7 @@ export function apiModelToProduct(params: TransformModelParams): Product {
     imageFolder: model.slug,
     inStock: conditions.length > 0,
     primaryImageUrl: primaryImageUrl || undefined,
+    description: model.description || undefined,
     // Champs additionnels pour images dynamiques
     _images: images,
   } as Product & { _images?: ModelImagesByColor };
@@ -270,7 +271,7 @@ export function apiModelsToProductList(
     brandSlug: model.brand.toLowerCase(),
     category: (model.category ? categoryMap[model.category] : undefined) || "smartphones",
     priceFrom: model.price_from || model.price_imparfait || 0,
-    priceNew: model.backmarket_price || 0,
+    priceNew: model.new_price || 0,
     rating: model.review_avg || 0,
     reviewCount: model.review_count || 0,
     imageFolder: model.slug,

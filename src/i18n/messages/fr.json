@@ -211,6 +211,7 @@
       "batteryNewSublabel": "Pour un usage intensif",
       "soldOut": "Deja vendu",
       "alreadySold": "Deja vendu",
+      "descriptionTitle": "Description du produit",
       "addedToCart": "Ajoute au panier",
       "addedToCartBanner": "Produit ajoute au panier !",
       "yourSelection": "Votre selection",

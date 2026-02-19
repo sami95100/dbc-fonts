@@ -11,6 +11,7 @@ import {
   StorageSection,
   SimSection,
   ColorSection,
+  DescriptionSection,
   OrderSummary,
   StickyBottomBar,
   StickyHeader,
@@ -193,6 +194,11 @@ export function ProductConfigurator({
           colorImages={product._images}
           availableColors={availableOptions?.colors}
         />
+      )}
+
+      {/* Description Section (accordion) */}
+      {product.description && (
+        <DescriptionSection description={product.description} />
       )}
 
       {/* Order Summary - Recap with Add to Cart */}
