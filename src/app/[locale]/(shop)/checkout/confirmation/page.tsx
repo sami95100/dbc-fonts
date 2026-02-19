@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Check, Mail, Package } from "lucide-react";
@@ -13,14 +12,7 @@ export default function ConfirmationPage() {
   const searchParams = useSearchParams();
   const t = useTranslations("confirmation");
   const orderNumber = searchParams.get("order");
-  const { lastOrder, clearLastOrder } = useCartStore();
-
-  // Clean up lastOrder on unmount
-  useEffect(() => {
-    return () => {
-      clearLastOrder();
-    };
-  }, [clearLastOrder]);
+  const lastOrder = useCartStore((state) => state.lastOrder);
 
   if (!orderNumber) {
     return (
@@ -41,6 +33,8 @@ export default function ConfirmationPage() {
   }
 
   const subtotal = lastOrder?.subtotal ?? 0;
+  const shippingCost = lastOrder?.shippingCost ?? 0;
+  const total = subtotal + shippingCost;
 
   return (
     <div className="bg-gray-50 py-8">
@@ -124,13 +118,15 @@ export default function ConfirmationPage() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">{t("shipping")}</span>
-                  <span className="font-medium text-green-700">
-                    {t("free")}
+                  <span className={shippingCost === 0 ? "font-medium text-green-700" : ""}>
+                    {shippingCost === 0
+                      ? t("free")
+                      : `${shippingCost.toLocaleString("fr-FR")} €`}
                   </span>
                 </div>
                 <div className="flex justify-between text-lg font-semibold">
                   <span>{t("total")}</span>
-                  <span>{subtotal.toLocaleString("fr-FR")} €</span>
+                  <span>{total.toLocaleString("fr-FR")} €</span>
                 </div>
               </div>
             </div>

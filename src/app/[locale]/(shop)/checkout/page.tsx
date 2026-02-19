@@ -54,7 +54,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const t = useTranslations("checkout");
   const tCart = useTranslations("cart");
-  const { items, getSubtotal, setLastOrder, clearCart, hasShopProcessingItems } =
+  const { items, getSubtotal, setLastOrder, clearLastOrder, clearCart, hasShopProcessingItems } =
     useCartStore();
   const { user, initialized, getAccessToken } = useAuthStore();
 
@@ -77,7 +77,10 @@ export default function CheckoutPage() {
 
   const hasHomeAddress = formData.address.trim() && formData.city.trim();
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+    clearLastOrder();
+  }, [clearLastOrder]);
 
   // Reset DPD shop when country changes
   useEffect(() => {
@@ -278,6 +281,8 @@ export default function CheckoutPage() {
           imageUrl: item.imageUrl,
         })),
         subtotal: getSubtotal(),
+        shippingCost,
+        deliveryMethod,
       });
       clearCart();
       router.push(

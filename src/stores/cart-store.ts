@@ -17,6 +17,8 @@ export interface LastOrder {
     imageUrl?: string;
   }[];
   subtotal: number;
+  shippingCost: number;
+  deliveryMethod: "home" | "dpd" | "pickup";
 }
 
 interface CartState {
