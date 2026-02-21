@@ -163,6 +163,7 @@ export function useProductConfigurator({
             needsShopProcessing: result.data.needs_shop_processing,
             hasNewBattery: result.data.variant?.is_brand_new_battery ?? false,
             fulfillmentType: result.data.fulfillment_type ?? null,
+            isPromo: result.data.variant?.is_promo ?? false,
           });
         } else if (!controller.signal.aborted) {
           setVariantInfo(null);
@@ -451,6 +452,7 @@ export function useProductConfigurator({
       price: totalPrice,
       quantity: 1,
       imageUrl: colorImages[0] || fallbackImage,
+      isPromo: variantInfo.isPromo || false,
     };
 
     addItem(cartItem);

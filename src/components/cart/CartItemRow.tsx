@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 import Image from "next/image";
-import { ImageIcon, Minus, Plus } from "lucide-react";
+import { ImageIcon, Minus, Plus, Zap } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { formatPrice } from "@/lib/utils";
 import type { CartItem } from "@/types/cart";
@@ -57,6 +57,12 @@ function CartItemRowComponent({
         <div>
           <h3 className="font-medium text-gray-900">
             {item.model} {item.storage}
+            {item.isPromo && (
+              <span className="ml-1.5 inline-flex items-center gap-0.5 rounded-full bg-accent px-1.5 py-0.5 align-middle text-[10px] font-bold text-white">
+                <Zap className="h-2.5 w-2.5 fill-current" />
+                Promo
+              </span>
+            )}
           </h3>
           <p className="mt-1 text-sm text-gray-500">
             {item.color} &bull; {gradeLabel}

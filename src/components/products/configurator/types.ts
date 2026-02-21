@@ -77,6 +77,8 @@ export interface VariantInfo {
   hasNewBattery: boolean;
   /** Fulfillment type: foxway_direct, foxway_shop, or shop_stock */
   fulfillmentType: string | null;
+  /** True if the variant is flagged as promo */
+  isPromo: boolean;
 }
 
 // ============================================

@@ -78,7 +78,8 @@
   "promo": {
     "flashSale": "FLASH SALE",
     "message": "3 days: -35€ on EliteBook 840 G7",
-    "cta": "Shop now"
+    "cta": "Shop now",
+    "badge": "Promo"
   },
   "home": {
     "hero": {

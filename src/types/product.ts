@@ -23,6 +23,7 @@ export interface PhoneModel {
   review_avg?: number;
   review_count?: number;
   description?: string;
+  has_promo?: boolean;
 }
 
 export interface ModelImage {
@@ -58,6 +59,7 @@ export interface PhoneVariant {
   sell_priority: number | null;
   is_active: boolean;
   foxway_sku?: string;
+  is_promo?: boolean;
 }
 
 export interface ModelOption {

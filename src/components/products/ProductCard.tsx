@@ -1,7 +1,7 @@
 import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Star } from "lucide-react";
+import { Star, Zap } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import type { Product } from "@/data/mock/products";
 import { getProductImage } from "@/data/mock/products";
@@ -21,7 +21,7 @@ const CATEGORY_SLUG_MAP: Record<string, string> = {
 function ProductCardComponent({ product }: ProductCardProps) {
   const locale = useLocale();
   const t = useTranslations("common");
-  const tReviews = useTranslations("reviews");
+  const tPromo = useTranslations("promo");
 
   const imagePath = getProductImage(product);
 
@@ -43,6 +43,12 @@ function ProductCardComponent({ product }: ProductCardProps) {
             className="object-contain"
             sizes="(max-width: 640px) 112px, (max-width: 1024px) 33vw, 25vw"
           />
+          {product.isPromo && (
+            <span className="absolute left-1.5 top-1.5 inline-flex items-center gap-0.5 rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-white shadow-sm">
+              <Zap className="h-2.5 w-2.5 fill-current" />
+              {tPromo("badge")}
+            </span>
+          )}
         </div>
 
         {/* Product Info */}

@@ -78,7 +78,8 @@
   "promo": {
     "flashSale": "VENTE FLASH",
     "message": "3 jours : -35€ sur l'EliteBook 840 G7",
-    "cta": "J'y vais"
+    "cta": "J'y vais",
+    "badge": "Promo"
   },
   "home": {
     "hero": {

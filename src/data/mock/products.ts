@@ -50,6 +50,7 @@ export interface Product {
   // Image primaire depuis l'API (couleur par defaut)
   primaryImageUrl?: string | null;
   description?: string;
+  isPromo?: boolean;
 }
 
 // Helper to get image path - priorite: API primary_image_url, puis fallback local

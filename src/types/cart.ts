@@ -15,6 +15,7 @@ export interface CartItem {
   price: number;
   quantity: number;
   imageUrl?: string;
+  isPromo?: boolean;
 }
 
 export interface CartState {

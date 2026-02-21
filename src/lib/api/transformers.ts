@@ -243,6 +243,7 @@ export function apiModelToProduct(params: TransformModelParams): Product {
     inStock: conditions.length > 0,
     primaryImageUrl: primaryImageUrl || undefined,
     description: model.description || undefined,
+    isPromo: model.has_promo || false,
     // Champs additionnels pour images dynamiques
     _images: images,
   } as Product & { _images?: ModelImagesByColor };
@@ -277,6 +278,7 @@ export function apiModelsToProductList(
     imageFolder: model.slug,
     inStock: true,
     primaryImageUrl: model.primary_image_url || undefined,
+    isPromo: model.has_promo || false,
   }));
 }
 
