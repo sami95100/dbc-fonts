@@ -2,19 +2,41 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Check, Mail, Package } from "lucide-react";
+import { Check, Mail, Package, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useCartStore } from "@/stores/cart-store";
+import { useStripeConfirmation } from "@/hooks/useStripeConfirmation";
+import { formatPrice } from "@/lib/utils";
 
 export default function ConfirmationPage() {
   const locale = useLocale();
   const searchParams = useSearchParams();
   const t = useTranslations("confirmation");
-  const orderNumber = searchParams.get("order");
   const lastOrder = useCartStore((state) => state.lastOrder);
 
-  if (!orderNumber) {
+  // Support both: ?session_id=xxx (Stripe) and ?order=xxx (legacy)
+  const sessionId = searchParams.get("session_id");
+  const orderParam = searchParams.get("order");
+  const { orderNumber: stripeOrderNumber, isVerifying, verifyError } =
+    useStripeConfirmation(sessionId);
+  const orderNumber = stripeOrderNumber || orderParam;
+
+  // Loading state while verifying Stripe session
+  if (isVerifying) {
+    return (
+      <div className="bg-gray-50 py-16">
+        <div className="mx-auto max-w-2xl px-4 text-center">
+          <Loader2 className="mx-auto mb-4 h-8 w-8 animate-spin text-green-700" />
+          <p className="text-gray-600">{t("verifyingPayment")}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error or no order
+  if (verifyError || !orderNumber) {
     return (
       <div className="bg-gray-50 py-8">
         <div className="mx-auto max-w-2xl px-4 text-center">
@@ -103,7 +125,7 @@ export default function ConfirmationPage() {
                         )}
                       </div>
                       <p className="font-medium text-gray-900">
-                        {(item.price * item.quantity).toLocaleString("fr-FR")} €
+                        {formatPrice(item.price * item.quantity, locale)}
                       </p>
                     </div>
                   </div>
@@ -114,19 +136,19 @@ export default function ConfirmationPage() {
               <div className="mt-4 space-y-2 border-t border-gray-100 pt-4">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">{t("subtotal")}</span>
-                  <span>{subtotal.toLocaleString("fr-FR")} €</span>
+                  <span>{formatPrice(subtotal, locale)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">{t("shipping")}</span>
                   <span className={shippingCost === 0 ? "font-medium text-green-700" : ""}>
                     {shippingCost === 0
                       ? t("free")
-                      : `${shippingCost.toLocaleString("fr-FR")} €`}
+                      : formatPrice(shippingCost, locale)}
                   </span>
                 </div>
                 <div className="flex justify-between text-lg font-semibold">
                   <span>{t("total")}</span>
-                  <span>{total.toLocaleString("fr-FR")} €</span>
+                  <span>{formatPrice(total, locale)}</span>
                 </div>
               </div>
             </div>
@@ -174,18 +196,16 @@ export default function ConfirmationPage() {
 
           {/* Actions */}
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Link
-              href={`/${locale}/products/smartphones`}
-              className="flex-1 rounded-full bg-green-700 py-3 text-center font-medium text-white transition hover:bg-green-800"
-            >
-              {t("continueShopping")}
-            </Link>
-            <Link
-              href={`/${locale}`}
-              className="flex-1 rounded-full border border-gray-300 py-3 text-center font-medium text-gray-700 transition hover:bg-gray-50"
-            >
-              {t("backToHome")}
-            </Link>
+            <Button asChild className="flex-1 rounded-full bg-green-700 py-3 font-medium text-white transition hover:bg-green-800 active:scale-[0.98]">
+              <Link href={`/${locale}/products/smartphones`}>
+                {t("continueShopping")}
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="flex-1 rounded-full border-gray-300 py-3 font-medium text-gray-700 transition hover:bg-gray-50">
+              <Link href={`/${locale}`}>
+                {t("backToHome")}
+              </Link>
+            </Button>
           </div>
         </div>
 

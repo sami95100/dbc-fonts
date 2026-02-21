@@ -5,15 +5,8 @@ import { useTranslations } from "next-intl";
 import { ConfigSection } from "../ConfigSection";
 import { RadioOption } from "../RadioOption";
 import { getConditionImageUrls } from "@/lib/api/transformers";
+import { GRADE_ID_TO_API } from "../types";
 import type { ConditionSectionProps, ImageBadge } from "../types";
-
-// Mapping condition ID -> API condition name
-const CONDITION_ID_TO_API: Record<string, string> = {
-  parfait: "Parfait",
-  "tres-bon": "Tres bon",
-  correct: "Correct",
-  imparfait: "Imparfait",
-};
 
 // Badges per condition (keys resolved via useTranslations)
 const CONDITION_BADGE_KEYS: Record<string, { icon: ImageBadge["icon"]; labelKey: string }[]> = {
@@ -52,13 +45,24 @@ function ConditionSectionComponent({
   onConditionChange,
   conditionImages,
   fallbackImageUrl,
+  availableConditions,
 }: ConditionSectionProps) {
   const t = useTranslations("product.configurator");
+
+  // Build a map of condition availability from stock check
+  const conditionAvailabilityMap = useMemo(() => {
+    if (!availableConditions) return null;
+    const map = new Map<string, boolean>();
+    for (const cond of availableConditions) {
+      map.set(cond.value, cond.available);
+    }
+    return map;
+  }, [availableConditions]);
 
   // Get all image URLs for selected condition
   const selectedConditionImages = useMemo(() => {
     if (!conditionImages) return [];
-    const apiCondition = CONDITION_ID_TO_API[selectedCondition] || selectedCondition;
+    const apiCondition = GRADE_ID_TO_API[selectedCondition] || selectedCondition;
     return getConditionImageUrls(conditionImages, apiCondition);
   }, [conditionImages, selectedCondition]);
 
@@ -88,28 +92,36 @@ function ConditionSectionComponent({
       imageBadges={imageBadges}
       showIllustrationLabel
     >
-      {conditions.map((condition) => (
-        <RadioOption
-          key={condition.id}
-          selected={selectedCondition === condition.id}
-          onClick={() => condition.available && onConditionChange(condition.id)}
-          label={t(`conditions.${condition.id}`)}
-          sublabel={t(`conditionDesc_${condition.id}`)}
-          price={
-            condition.available
-              ? `${condition.price} EUR`
-              : undefined
-          }
-          soldOut={!condition.available}
-          soldOutLabel={t("soldOut")}
-          badge={
-            condition.isBestSeller && condition.available
-              ? t("bestSellerBadge")
-              : undefined
-          }
-          disabled={!condition.available}
-        />
-      ))}
+      {conditions.map((condition) => {
+        // Use stock-based availability if available, otherwise fall back to product data
+        const apiName = GRADE_ID_TO_API[condition.id] || condition.id;
+        const isAvailable = conditionAvailabilityMap
+          ? conditionAvailabilityMap.get(apiName) ?? condition.available
+          : condition.available;
+
+        return (
+          <RadioOption
+            key={condition.id}
+            selected={selectedCondition === condition.id}
+            onClick={() => isAvailable && onConditionChange(condition.id)}
+            label={t(`conditions.${condition.id}`)}
+            sublabel={t(`conditionDesc_${condition.id}`)}
+            price={
+              isAvailable
+                ? `${condition.price} EUR`
+                : undefined
+            }
+            soldOut={!isAvailable}
+            soldOutLabel={t("soldOut")}
+            badge={
+              condition.isBestSeller && isAvailable
+                ? t("bestSellerBadge")
+                : undefined
+            }
+            disabled={!isAvailable}
+          />
+        );
+      })}
     </ConfigSection>
   );
 }

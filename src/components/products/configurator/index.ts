@@ -59,7 +59,7 @@ export {
 export { useProductConfigurator } from "./hooks";
 
 // Constants
-export { GRADE_ID_TO_API } from "./types";
+export { GRADE_ID_TO_API, API_TO_GRADE_ID } from "./types";
 
 // Types
 export type {

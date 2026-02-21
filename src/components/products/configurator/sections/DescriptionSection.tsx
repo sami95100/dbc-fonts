@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
 
 interface DescriptionSectionProps {
   description: string;
@@ -23,15 +24,17 @@ export function DescriptionSection({ description }: DescriptionSectionProps) {
           {t("descriptionTitle")}
         </span>
         <ChevronDown
-          className={`h-5 w-5 text-gray-500 transition-transform duration-200 ${
-            open ? "rotate-180" : ""
-          }`}
+          className={cn(
+            "h-5 w-5 text-gray-500 transition-transform duration-200",
+            open && "rotate-180"
+          )}
         />
       </button>
       <div
-        className={`grid transition-[grid-template-rows] duration-200 ${
+        className={cn(
+          "grid transition-[grid-template-rows] duration-200",
           open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-        }`}
+        )}
       >
         <div className="overflow-hidden">
           <div className="px-4 pb-5 md:px-0">

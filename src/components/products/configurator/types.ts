@@ -24,6 +24,11 @@ export const GRADE_ID_TO_API: Record<string, string> = {
   imparfait: "Imparfait",
 };
 
+// Reverse mapping: API name -> grade ID (for converting backend responses to frontend IDs)
+export const API_TO_GRADE_ID: Record<string, string> = Object.fromEntries(
+  Object.entries(GRADE_ID_TO_API).map(([id, api]) => [api, id])
+);
+
 // ============================================
 // Product Types
 // ============================================
@@ -70,6 +75,8 @@ export interface VariantInfo {
   needsShopProcessing: boolean;
   /** True if the variant in stock already has a new battery installed */
   hasNewBattery: boolean;
+  /** Fulfillment type: foxway_direct, foxway_shop, or shop_stock */
+  fulfillmentType: string | null;
 }
 
 // ============================================
@@ -165,6 +172,8 @@ export interface ConditionSectionProps {
   conditionImages?: ModelImagesByCondition;
   /** Fallback image URL from category images (condition slot) - used when no model-specific images */
   fallbackImageUrl?: string;
+  /** Available grade options from stock check (to show soldOut state) */
+  availableConditions?: AvailableOption[];
 }
 
 export interface BatterySectionProps {

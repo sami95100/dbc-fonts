@@ -6,6 +6,7 @@ import {
   getModelConditionImages,
   getAvailableOptions,
   type AvailableOptions,
+  type AvailableOption,
 } from "@/lib/api/products";
 import { getImageUrls } from "@/lib/api/transformers";
 import { getProductImage } from "@/data/mock/products";
@@ -14,6 +15,7 @@ import type { CartItem } from "@/types/cart";
 import type { ModelImagesByCondition } from "@/types/product";
 import {
   GRADE_ID_TO_API,
+  API_TO_GRADE_ID,
   type ConfigurableProduct,
   type ProductSelection,
   type VariantInfo,
@@ -52,6 +54,7 @@ interface UseProductConfiguratorReturn {
   batteryExtra: number;
   savings: number;
   isOutOfStock: boolean;
+  noStockAtAll: boolean;
 
   // Actions
   handleAddToCart: () => boolean;
@@ -159,6 +162,7 @@ export function useProductConfigurator({
             batteryFallback: result.data.battery_fallback,
             needsShopProcessing: result.data.needs_shop_processing,
             hasNewBattery: result.data.variant?.is_brand_new_battery ?? false,
+            fulfillmentType: result.data.fulfillment_type ?? null,
           });
         } else if (!controller.signal.aborted) {
           setVariantInfo(null);
@@ -226,6 +230,60 @@ export function useProductConfigurator({
       controller.abort();
     };
   }, [product.id, selection.condition]);
+
+  // ============================================
+  // Initial grade availability (called ONCE without grade filter)
+  // ============================================
+
+  const [initialGradeOptions, setInitialGradeOptions] = useState<AvailableOption[] | null>(null);
+
+  useEffect(() => {
+    if (!product.id || product.id.length < 32) return;
+
+    const controller = new AbortController();
+
+    const fetchInitialGrades = async () => {
+      try {
+        const result = await getAvailableOptions(product.id, {});
+        if (!controller.signal.aborted && result.data?.grades) {
+          setInitialGradeOptions(result.data.grades);
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          console.error("Error fetching initial grade options:", error);
+        }
+      }
+    };
+
+    fetchInitialGrades();
+
+    return () => {
+      controller.abort();
+    };
+  }, [product.id]);
+
+  // Auto-select first available grade if current is out of stock
+  useEffect(() => {
+    if (!initialGradeOptions) return;
+
+    setSelection((prev) => {
+      const apiGrade = GRADE_ID_TO_API[prev.condition] || prev.condition;
+      const currentAvailable = initialGradeOptions.find(
+        (g) => g.value === apiGrade && g.available
+      );
+      if (currentAvailable) return prev;
+
+      // Find first available grade
+      const firstAvailable = initialGradeOptions.find((g) => g.available);
+      if (!firstAvailable) return prev;
+
+      // Convert API name back to grade ID
+      const newCondition = API_TO_GRADE_ID[firstAvailable.value];
+      if (!newCondition) return prev;
+
+      return { ...prev, condition: newCondition };
+    });
+  }, [initialGradeOptions]);
 
   // ============================================
   // Auto-select first available option when availability changes
@@ -359,6 +417,12 @@ export function useProductConfigurator({
 
   const isOutOfStock = variantInfo ? variantInfo.quantity === 0 : false;
 
+  // True when NO grade has stock at all (entire product unavailable)
+  const noStockAtAll = useMemo(() => {
+    if (!initialGradeOptions) return false;
+    return initialGradeOptions.every((g) => !g.available);
+  }, [initialGradeOptions]);
+
   // ============================================
   // Actions
   // ============================================
@@ -383,6 +447,7 @@ export function useProductConfigurator({
       battery: selection.battery,
       batteryFallback: variantInfo.batteryFallback,
       needsShopProcessing: variantInfo.needsShopProcessing,
+      fulfillmentType: variantInfo.fulfillmentType || undefined,
       price: totalPrice,
       quantity: 1,
       imageUrl: colorImages[0] || fallbackImage,
@@ -433,6 +498,7 @@ export function useProductConfigurator({
     batteryExtra,
     savings,
     isOutOfStock,
+    noStockAtAll,
     handleAddToCart,
     lastAddedItem,
     clearLastAdded,

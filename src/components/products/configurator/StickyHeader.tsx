@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, memo } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getImageUrls } from "@/lib/api/transformers";
@@ -36,6 +36,7 @@ function StickyHeaderComponent({
   onAddToCart,
   colorImages,
 }: StickyHeaderProps) {
+  const locale = useLocale();
   const t = useTranslations("product.configurator");
   const tCommon = useTranslations("common");
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -147,7 +148,7 @@ function StickyHeaderComponent({
             {/* Price */}
             <div className="hidden text-right sm:block">
               <p className="text-lg font-bold text-gray-900">
-                {totalPrice.toLocaleString("fr-FR")} €
+                {totalPrice.toLocaleString(locale)} €
                 <span className="ml-1 text-xs font-normal text-gray-500">
                   {t("beforeTradeIn")}
                 </span>
@@ -155,11 +156,11 @@ function StickyHeaderComponent({
               {priceNew > 0 && (
                 <div className="flex items-center justify-end gap-2 text-xs">
                   <span className="text-gray-400 line-through">
-                    {priceNew.toLocaleString("fr-FR")} € {tCommon("new")}
+                    {priceNew.toLocaleString(locale)} € {tCommon("new")}
                   </span>
                   {savings > 0 && (
                     <span className="rounded bg-green-100 px-1.5 py-0.5 font-medium text-green-700">
-                      {t("savingsAmount", { amount: savings.toLocaleString("fr-FR") })}
+                      {t("savingsAmount", { amount: savings.toLocaleString(locale) })}
                     </span>
                   )}
                 </div>
@@ -168,7 +169,7 @@ function StickyHeaderComponent({
 
             {/* Mobile price */}
             <p className="text-lg font-bold text-gray-900 sm:hidden">
-              {totalPrice.toLocaleString("fr-FR")} €
+              {totalPrice.toLocaleString(locale)} €
             </p>
 
             {/* CTA Button */}

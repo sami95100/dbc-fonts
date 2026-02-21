@@ -4,6 +4,7 @@ import { memo } from "react";
 import Image from "next/image";
 import { ImageIcon, Minus, Plus } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { formatPrice } from "@/lib/utils";
 import type { CartItem } from "@/types/cart";
 
 interface CartItemRowProps {
@@ -90,7 +91,7 @@ function CartItemRowComponent({
           </div>
 
           <span className="font-semibold text-gray-900">
-            {(item.price * item.quantity).toLocaleString(locale)} €
+            {formatPrice(item.price * item.quantity, locale)}
           </span>
 
           <button

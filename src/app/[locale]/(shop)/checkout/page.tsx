@@ -1,91 +1,59 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useLocale, useTranslations } from "next-intl";
-import { Truck, MapPin, Store, X } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Truck, MapPin, Store, X, Loader2, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useCartStore } from "@/stores/cart-store";
-import { useAuthStore } from "@/stores/auth-store";
-import { createOrder } from "@/lib/api/orders";
-import { getProfile } from "@/lib/api/profile";
-import { COUNTRY_CODES } from "@/lib/constants";
-import { GRADE_ID_TO_API } from "@/components/products/configurator";
+import { COUNTRY_CODES, STORE_ADDRESS } from "@/lib/constants";
+import type { DeliveryMethod } from "@/lib/constants";
+import { cn, formatPrice } from "@/lib/utils";
 import { DpdParcelShopPicker } from "@/components/checkout/DpdParcelShopPicker";
-import type { CreateOrderPayload, OrderItem, DpdParcelShop } from "@/types/order";
-
-type DeliveryMethod = "home" | "dpd" | "pickup";
-
-const STORE_ADDRESS = {
-  name: "DBC 17",
-  address: "110 Av. de Villiers",
-  postalCode: "75017",
-  city: "Paris",
-  country: "FR",
-};
-
-interface ShippingFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  address: string;
-  postalCode: string;
-  city: string;
-  country: string;
-}
-
-const INITIAL_FORM: ShippingFormData = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  address: "",
-  postalCode: "",
-  city: "",
-  country: "FR",
-};
+import { useCheckout } from "@/hooks/useCheckout";
 
 export default function CheckoutPage() {
-  const locale = useLocale();
-  const router = useRouter();
   const t = useTranslations("checkout");
   const tCart = useTranslations("cart");
-  const { items, getSubtotal, setLastOrder, clearLastOrder, clearCart, hasShopProcessingItems } =
-    useCartStore();
-  const { user, initialized, getAccessToken } = useAuthStore();
 
-  const orderCompleteRef = useRef(false);
-  const [formData, setFormData] = useState<ShippingFormData>(INITIAL_FORM);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
+  const {
+    items,
+    locale,
+    subtotal,
+    formData,
+    errors,
+    handleChange,
+    deliveryMethod,
+    setDeliveryMethod,
+    dpdShop,
+    setDpdShop,
+    clearDpdError,
+    shippingCost,
+    shippingMethods,
+    isLoadingShipping,
+    showAddressSheet,
+    setShowAddressSheet,
+    hasHomeAddress,
+    isSubmitting,
+    submitError,
+    handleSubmit,
+    uberQuote,
+    isLoadingQuote,
+    quoteError,
+    orderCompleteRef,
+  } = useCheckout();
+
   const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
-  // Delivery method
-  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("home");
-  const [dpdShop, setDpdShop] = useState<DpdParcelShop | null>(null);
-  const [showAddressSheet, setShowAddressSheet] = useState(false);
-
-  const subtotal = getSubtotal();
-  const isShopOrder = hasShopProcessingItems();
-  const showDeliverySelector = true;
-  const shippingCost = deliveryMethod === "pickup" ? 0 : deliveryMethod === "dpd" ? 6 : 20;
-
-  const hasHomeAddress = formData.address.trim() && formData.city.trim();
-
-  useEffect(() => {
-    setMounted(true);
-    clearLastOrder();
-  }, [clearLastOrder]);
-
-  // Reset DPD shop when country changes
-  useEffect(() => {
-    setDpdShop(null);
-  }, [formData.country]);
+  // Compute delivery time text from API data
+  const currentSm = shippingMethods.find((m) => m.method === deliveryMethod);
+  const currentDeliveryTime = currentSm
+    ? currentSm.min_days === 0 && currentSm.max_days === 0
+      ? t("deliveryPickupDesc")
+      : `${currentSm.min_days}-${currentSm.max_days} ${t("days")}`
+    : null;
 
   // Lock body scroll when address sheet is open
   useEffect(() => {
@@ -96,29 +64,6 @@ export default function CheckoutPage() {
       document.body.style.overflow = original;
     };
   }, [showAddressSheet]);
-
-  // Pre-fill from saved profile
-  useEffect(() => {
-    if (!initialized || !user) return;
-
-    const token = getAccessToken();
-    if (!token) return;
-
-    getProfile(token).then(({ data }) => {
-      if (!data) return;
-      setFormData((prev) => ({
-        ...prev,
-        firstName: data.first_name || prev.firstName,
-        lastName: data.last_name || prev.lastName,
-        email: user.email || prev.email,
-        phone: data.phone || prev.phone,
-        address: data.address || prev.address,
-        postalCode: data.postal_code || prev.postalCode,
-        city: data.city || prev.city,
-        country: data.country || prev.country,
-      }));
-    });
-  }, [initialized, user, getAccessToken]);
 
   if (items.length === 0 && !orderCompleteRef.current) {
     return (
@@ -138,164 +83,6 @@ export default function CheckoutPage() {
     );
   }
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const validateForm = (): boolean => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.firstName.trim())
-      newErrors.firstName = t("errors.required");
-    if (!formData.lastName.trim())
-      newErrors.lastName = t("errors.required");
-    if (!formData.email.trim()) {
-      newErrors.email = t("errors.required");
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = t("errors.invalidEmail");
-    }
-    if (!formData.phone.trim()) {
-      newErrors.phone = t("errors.required");
-    } else if (
-      !/^[\d\s+.-]{10,}$/.test(formData.phone.replace(/\s/g, ""))
-    ) {
-      newErrors.phone = t("errors.invalidPhone");
-    }
-
-    // Address required for home delivery
-    if (deliveryMethod === "home") {
-      if (!formData.address.trim())
-        newErrors.address = t("errors.required");
-      if (!formData.postalCode.trim()) {
-        newErrors.postalCode = t("errors.required");
-      } else if (
-        formData.country === "FR" &&
-        !/^\d{5}$/.test(formData.postalCode)
-      ) {
-        newErrors.postalCode = t("errors.invalidPostalCode");
-      }
-      if (!formData.city.trim()) newErrors.city = t("errors.required");
-    }
-
-    // DPD: must have selected a parcel shop
-    if (deliveryMethod === "dpd" && !dpdShop) {
-      newErrors.dpdShop = t("parcelShopRequired");
-    }
-
-    setErrors(newErrors);
-
-    // If home delivery has address errors, open the sheet
-    if (
-      deliveryMethod === "home" &&
-      (newErrors.address || newErrors.postalCode || newErrors.city)
-    ) {
-      setShowAddressSheet(true);
-    }
-
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitError(null);
-
-    if (!validateForm()) return;
-
-    setIsSubmitting(true);
-
-    try {
-      const orderItems: OrderItem[] = items.map((item) => ({
-        variant_id: item.variantId,
-        sku: item.sku,
-        product_name: `${item.model} ${item.storage}`,
-        storage: item.storage,
-        color: item.color,
-        grade: GRADE_ID_TO_API[item.grade] || item.grade,
-        battery: item.battery,
-        unit_price: item.price,
-        quantity: item.quantity,
-        image_url: item.imageUrl,
-        foxway_sku: item.foxwaySku,
-        battery_fallback: item.batteryFallback,
-        needs_shop_processing: item.needsShopProcessing,
-      }));
-
-      const isPickup = deliveryMethod === "pickup";
-      const isDpd = deliveryMethod === "dpd";
-
-      const payload: CreateOrderPayload = {
-        customer_name: `${formData.firstName} ${formData.lastName}`,
-        customer_email: formData.email,
-        customer_phone: formData.phone,
-        shipping_address: isPickup
-          ? `${STORE_ADDRESS.name}, ${STORE_ADDRESS.address}`
-          : formData.address,
-        shipping_postal_code: isPickup
-          ? STORE_ADDRESS.postalCode
-          : formData.postalCode,
-        shipping_city: isPickup ? STORE_ADDRESS.city : formData.city,
-        shipping_country: isPickup ? STORE_ADDRESS.country : formData.country,
-        shipping_cost: shippingCost,
-        carrier_id: isPickup ? 0 : isDpd ? 3 : 1,
-        items: orderItems,
-      };
-
-      // DPD: add parcel locker address
-      if (isDpd && dpdShop) {
-        payload.dpd_parcel_shop_id = dpdShop.parcelShopId;
-        payload.dpd_shipping_address = `${dpdShop.company}, ${dpdShop.street} ${dpdShop.houseNo}`.trim();
-        payload.dpd_shipping_postal_code = dpdShop.zipCode;
-        payload.dpd_shipping_city = dpdShop.city;
-        payload.dpd_shipping_country = dpdShop.country;
-      }
-
-      const response = await createOrder(payload);
-
-      if (response.error) {
-        setSubmitError(response.error.error || t("errors.submitFailed"));
-        return;
-      }
-
-      if (!response.data?.success) {
-        setSubmitError(t("errors.submitFailed"));
-        return;
-      }
-
-      orderCompleteRef.current = true;
-      setLastOrder({
-        orderNumber: response.data.order.order_number,
-        items: items.map((item) => ({
-          name: item.model,
-          storage: item.storage,
-          color: item.color,
-          grade: tCart(`grades.${item.grade}`),
-          battery: item.battery,
-          price: item.price,
-          quantity: item.quantity,
-          imageUrl: item.imageUrl,
-        })),
-        subtotal: getSubtotal(),
-        shippingCost,
-        deliveryMethod,
-      });
-      clearCart();
-      router.push(
-        `/${locale}/checkout/confirmation?order=${encodeURIComponent(response.data.order.order_number)}`
-      );
-    } catch {
-      setSubmitError(t("errors.submitFailed"));
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  // Build the address summary for the selected delivery method
   const renderAddressCard = () => {
     if (deliveryMethod === "pickup") {
       return (
@@ -317,15 +104,12 @@ export default function CheckoutPage() {
           title={dpdShop.company}
           line1={`${dpdShop.street} ${dpdShop.houseNo}`}
           line2={`${dpdShop.zipCode} ${dpdShop.city}`}
-          onEdit={() => {
-            setDpdShop(null);
-          }}
+          onEdit={() => setDpdShop(null)}
           editLabel={t("changeParcelShop")}
         />
       );
     }
 
-    // Home delivery
     if (!hasHomeAddress) {
       return (
         <button
@@ -343,8 +127,9 @@ export default function CheckoutPage() {
       <AddressCard
         icon={<Truck className="h-5 w-5" />}
         title={formData.address}
-        line1={`${formData.postalCode} ${formData.city}`}
-        line2={t(`countries.${formData.country}`)}
+        line1={formData.addressLine2 || `${formData.postalCode} ${formData.city}`}
+        line2={formData.addressLine2 ? `${formData.postalCode} ${formData.city}` : t(`countries.${formData.country}`)}
+        subtitle={formData.accessCode ? `Code: ${formData.accessCode}` : undefined}
         onEdit={() => setShowAddressSheet(true)}
         editLabel={t("editAddress")}
       />
@@ -360,9 +145,7 @@ export default function CheckoutPage() {
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-700 text-sm font-medium text-white">
               1
             </div>
-            <span className="font-medium text-gray-900">
-              {t("steps.address")}
-            </span>
+            <span className="font-medium text-gray-900">{t("steps.address")}</span>
           </div>
           <div className="h-px w-16 bg-gray-300" />
           <div className="flex items-center gap-2">
@@ -377,68 +160,121 @@ export default function CheckoutPage() {
           {/* Form */}
           <div className="lg:col-span-2">
             {/* Delivery method selector */}
-            {showDeliverySelector && (
-              <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6">
-                <h2 className="mb-4 text-xl font-semibold text-gray-900">
-                  {t("deliveryMethod")}
-                </h2>
-                <div className="space-y-3">
-                  <DeliveryOptionCard
-                    selected={deliveryMethod === "pickup"}
-                    onClick={() => setDeliveryMethod("pickup")}
-                    icon={<Store className="h-4 w-4" />}
-                    title={t("deliveryPickup")}
-                    description={t("deliveryPickupDesc")}
-                    price={t("free")}
-                    priceClassName="text-green-700"
-                  />
-                  <DeliveryOptionCard
-                    selected={deliveryMethod === "home"}
-                    onClick={() => setDeliveryMethod("home")}
-                    icon={<Truck className="h-4 w-4" />}
-                    title={t("deliveryHome")}
-                    description={t("deliveryHomeDesc")}
-                    price="20 €"
-                  />
-                  <DeliveryOptionCard
-                    selected={deliveryMethod === "dpd"}
-                    onClick={() => setDeliveryMethod("dpd")}
-                    icon={<MapPin className="h-4 w-4" />}
-                    title={t("deliveryDpd")}
-                    description={t("deliveryDpdDesc")}
-                    price="6 €"
-                  />
-                </div>
-
-                {/* DPD Parcel Shop Picker (only when no shop selected yet) */}
-                {deliveryMethod === "dpd" && !dpdShop && (
-                  <div className="mt-4">
-                    <DpdParcelShopPicker
-                      locale={locale}
-                      country={formData.country}
-                      onSelect={(shop) => {
-                        setDpdShop(shop);
-                        if (errors.dpdShop) {
-                          setErrors((prev) => ({ ...prev, dpdShop: "" }));
-                        }
-                      }}
-                      selectedShop={dpdShop}
-                    />
-                    {errors.dpdShop && (
-                      <p className="mt-2 text-sm text-red-600">{errors.dpdShop}</p>
-                    )}
+            <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6">
+              <h2 className="mb-4 text-xl font-semibold text-gray-900">
+                {t("deliveryMethod")}
+              </h2>
+              <div className="space-y-3">
+                {isLoadingShipping ? (
+                  <div className="flex items-center justify-center py-4">
+                    <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
                   </div>
-                )}
+                ) : (
+                  shippingMethods.map((sm) => {
+                    const method = sm.method as DeliveryMethod;
+                    const iconMap: Record<string, React.ReactNode> = {
+                      pickup: <Store className="h-4 w-4" />,
+                      dpd: <MapPin className="h-4 w-4" />,
+                      uber: <Zap className="h-4 w-4" />,
+                    };
+                    const titleKeyMap: Record<string, string> = {
+                      pickup: "deliveryPickup",
+                      dpd: "deliveryDpd",
+                      uber: "deliveryUber",
+                    };
+                    const descKeyMap: Record<string, string> = {
+                      pickup: "deliveryPickupDesc",
+                      dpd: "deliveryDpdDesc",
+                      uber: "deliveryUberDesc",
+                    };
+                    const icon = iconMap[method] ?? <Truck className="h-4 w-4" />;
+                    const title = t(titleKeyMap[method] ?? "deliveryHome");
+                    const descKey = descKeyMap[method] ?? "deliveryHomeDesc";
 
-                {/* Unified address card below delivery options */}
+                    // Build description: carrier name + base desc + delivery time
+                    const carrierPrefix = sm.carrier_name ? `${sm.carrier_name} - ` : "";
+                    const hasTime = !(sm.min_days === 0 && sm.max_days === 0);
+                    const timeSuffix = hasTime
+                      ? ` - ${sm.min_days}-${sm.max_days} ${t("days")}`
+                      : "";
+
+                    // Uber: dynamic price from quote (no DB price — always calculated)
+                    const isUber = method === "uber";
+                    let displayPrice: string;
+                    let displayPriceClassName: string | undefined;
+                    if (isUber) {
+                      if (isLoadingQuote) {
+                        displayPrice = "...";
+                      } else if (uberQuote) {
+                        displayPrice = formatPrice(uberQuote.fee, locale);
+                      } else {
+                        displayPrice = "—";
+                        displayPriceClassName = "text-gray-400";
+                      }
+                    } else if (sm.price === 0) {
+                      displayPrice = t("free");
+                      displayPriceClassName = "text-green-700";
+                    } else {
+                      displayPrice = formatPrice(sm.price, locale);
+                    }
+
+                    // Uber: show estimated time from quote or "enter address" hint
+                    let uberExtra = "";
+                    if (isUber && uberQuote) {
+                      uberExtra = ` - ~${uberQuote.duration_minutes} min`;
+                    }
+
+                    return (
+                      <div key={method}>
+                        <DeliveryOptionCard
+                          selected={deliveryMethod === method}
+                          onClick={() => setDeliveryMethod(method)}
+                          icon={icon}
+                          title={title}
+                          description={`${carrierPrefix}${t(descKey)}${timeSuffix}${uberExtra}`}
+                          price={displayPrice}
+                          priceClassName={displayPriceClassName}
+                        />
+                        {isUber && deliveryMethod === "uber" && !hasHomeAddress && (
+                          <p className="mt-1 ml-10 text-xs text-gray-500">
+                            {t("uberEnterAddress")}
+                          </p>
+                        )}
+                        {isUber && deliveryMethod === "uber" && quoteError && (
+                          <p className="mt-1 ml-10 text-xs text-red-500">
+                            {quoteError}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              {deliveryMethod === "dpd" && !dpdShop && (
                 <div className="mt-4">
-                  {renderAddressCard()}
-                  {deliveryMethod === "home" && errors.address && !hasHomeAddress && (
-                    <p className="mt-2 text-sm text-red-600">{t("errors.required")}</p>
+                  <DpdParcelShopPicker
+                    locale={locale}
+                    country={formData.country}
+                    onSelect={(shop) => {
+                      setDpdShop(shop);
+                      clearDpdError();
+                    }}
+                    selectedShop={dpdShop}
+                  />
+                  {errors.dpdShop && (
+                    <p className="mt-2 text-sm text-red-600">{errors.dpdShop}</p>
                   )}
                 </div>
+              )}
+
+              <div className="mt-4">
+                {renderAddressCard()}
+                {(deliveryMethod === "home" || deliveryMethod === "uber") && errors.address && !hasHomeAddress && (
+                  <p className="mt-2 text-sm text-red-600">{t("errors.required")}</p>
+                )}
               </div>
-            )}
+            </div>
 
             {/* Contact info */}
             <div className="rounded-lg border border-gray-200 bg-white p-6">
@@ -493,9 +329,11 @@ export default function CheckoutPage() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="mt-6 w-full rounded-full bg-green-700 py-3 font-medium text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="mt-6 w-full rounded-full bg-green-700 py-3 font-medium text-white transition hover:bg-green-800 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {isSubmitting ? t("submitting") : t("confirmOrder")}
+                  {isSubmitting
+                    ? t("redirectingToPayment")
+                    : t("payButton", { amount: formatPrice(subtotal + shippingCost, locale).replace(" €", "") })}
                 </Button>
               </form>
             </div>
@@ -524,7 +362,7 @@ export default function CheckoutPage() {
                       </p>
                     </div>
                     <span className="font-medium">
-                      {(item.price * item.quantity).toLocaleString("fr-FR")} €
+                      {formatPrice(item.price * item.quantity, locale)}
                     </span>
                   </div>
                 ))}
@@ -533,29 +371,35 @@ export default function CheckoutPage() {
               <div className="mt-4 space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">{t("subtotal")}</span>
-                  <span>{subtotal.toLocaleString("fr-FR")} €</span>
+                  <span>{formatPrice(subtotal, locale)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">{t("shipping")}</span>
-                  <span className={shippingCost === 0 ? "font-medium text-green-700" : ""}>
-                    {shippingCost === 0
-                      ? t("free")
-                      : `${shippingCost.toLocaleString("fr-FR")} €`}
+                  <span className={cn(
+                    deliveryMethod === "uber" && !uberQuote
+                      ? "text-gray-400"
+                      : shippingCost === 0
+                        ? "font-medium text-green-700"
+                        : ""
+                  )}>
+                    {deliveryMethod === "uber" && !uberQuote
+                      ? isLoadingQuote ? "..." : "—"
+                      : shippingCost === 0
+                        ? t("free")
+                        : formatPrice(shippingCost, locale)}
                   </span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">{tCart("delivery")}</span>
-                  <span className="text-gray-700">
-                    {isShopOrder
-                      ? tCart("deliveryExtended")
-                      : tCart("deliveryStandard")}
-                  </span>
-                </div>
+                {currentDeliveryTime && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">{tCart("delivery")}</span>
+                    <span className="text-gray-700">{currentDeliveryTime}</span>
+                  </div>
+                )}
               </div>
 
               <div className="mt-4 flex justify-between border-t border-gray-200 pt-4 text-lg font-semibold">
                 <span>{t("total")}</span>
-                <span>{(subtotal + shippingCost).toLocaleString("fr-FR")} €</span>
+                <span>{formatPrice(subtotal + shippingCost, locale)}</span>
               </div>
             </div>
           </div>
@@ -573,7 +417,6 @@ export default function CheckoutPage() {
             }}
           >
             <div className="w-full max-w-lg animate-in slide-in-from-bottom rounded-t-xl bg-white shadow-2xl sm:rounded-xl">
-              {/* Header */}
               <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4">
                 <h3 className="text-lg font-semibold text-gray-900">
                   {t("shippingInfo")}
@@ -587,7 +430,6 @@ export default function CheckoutPage() {
                 </button>
               </div>
 
-              {/* Form */}
               <div className="space-y-4 p-5">
                 <CheckoutField
                   id="address"
@@ -595,6 +437,14 @@ export default function CheckoutPage() {
                   value={formData.address}
                   onChange={handleChange}
                   error={errors.address}
+                />
+
+                <CheckoutField
+                  id="addressLine2"
+                  label={t("fields.addressLine2")}
+                  value={formData.addressLine2}
+                  onChange={handleChange}
+                  placeholder={t("fields.addressLine2Placeholder")}
                 />
 
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -614,7 +464,15 @@ export default function CheckoutPage() {
                   />
                 </div>
 
-                <div className="max-w-xs">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <CheckoutField
+                    id="accessCode"
+                    label={t("fields.accessCode")}
+                    value={formData.accessCode}
+                    onChange={handleChange}
+                    placeholder={t("fields.accessCodePlaceholder")}
+                  />
+                  <div className="max-w-xs">
                   <label
                     htmlFor="sheet-country"
                     className="mb-1 block text-sm font-medium text-gray-700"
@@ -634,12 +492,21 @@ export default function CheckoutPage() {
                       </option>
                     ))}
                   </select>
+                  </div>
                 </div>
+
+                <CheckoutField
+                  id="deliveryInstructions"
+                  label={t("fields.deliveryInstructions")}
+                  value={formData.deliveryInstructions}
+                  onChange={handleChange}
+                  placeholder={t("fields.deliveryInstructionsPlaceholder")}
+                />
 
                 <Button
                   type="button"
                   onClick={() => setShowAddressSheet(false)}
-                  className="mt-2 w-full rounded-full bg-green-700 py-3 font-medium text-white transition hover:bg-green-800"
+                  className="mt-2 w-full rounded-full bg-green-700 py-3 font-medium text-white transition hover:bg-green-800 active:scale-[0.98]"
                 >
                   {t("saveAddress")}
                 </Button>
@@ -652,7 +519,7 @@ export default function CheckoutPage() {
   );
 }
 
-/* ─── Sub-components ─── */
+/* --- Sub-components --- */
 
 function CheckoutField({
   id,
@@ -673,10 +540,7 @@ function CheckoutField({
 }) {
   return (
     <div>
-      <label
-        htmlFor={id}
-        className="mb-1 block text-sm font-medium text-gray-700"
-      >
+      <label htmlFor={id} className="mb-1 block text-sm font-medium text-gray-700">
         {label}
       </label>
       <Input
@@ -714,20 +578,20 @@ function DeliveryOptionCard({
     <button
       type="button"
       onClick={onClick}
-      className={`flex w-full items-start gap-3 rounded-lg border-2 p-4 text-left transition ${
+      className={cn(
+        "flex w-full items-start gap-3 rounded-lg border-2 p-4 text-left transition",
         selected
           ? "border-green-700 bg-green-50"
           : "border-gray-200 hover:border-gray-300"
-      }`}
+      )}
     >
       <div
-        className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
+        className={cn(
+          "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2",
           selected ? "border-green-700" : "border-gray-300"
-        }`}
-      >
-        {selected && (
-          <div className="h-2.5 w-2.5 rounded-full bg-green-700" />
         )}
+      >
+        {selected && <div className="h-2.5 w-2.5 rounded-full bg-green-700" />}
       </div>
       <div className="flex-1">
         <div className="flex items-center gap-2 text-gray-600">
@@ -736,9 +600,7 @@ function DeliveryOptionCard({
         </div>
         <p className="mt-1 text-xs text-gray-500">{description}</p>
       </div>
-      <span
-        className={`shrink-0 text-sm font-semibold ${priceClassName || "text-gray-900"}`}
-      >
+      <span className={cn("shrink-0 text-sm font-semibold", priceClassName || "text-gray-900")}>
         {price}
       </span>
     </button>
@@ -769,9 +631,7 @@ function AddressCard({
         <p className="text-sm font-medium text-gray-900">{title}</p>
         <p className="text-sm text-gray-600">{line1}</p>
         <p className="text-sm text-gray-600">{line2}</p>
-        {subtitle && (
-          <p className="mt-1 text-xs text-green-700">{subtitle}</p>
-        )}
+        {subtitle && <p className="mt-1 text-xs text-green-700">{subtitle}</p>}
       </div>
       {onEdit && editLabel && (
         <button

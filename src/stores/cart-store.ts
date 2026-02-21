@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { CartItem } from "@/types/cart";
+import type { DeliveryMethod } from "@/lib/constants";
 
 export interface LastOrder {
   orderNumber: string;
@@ -18,7 +19,7 @@ export interface LastOrder {
   }[];
   subtotal: number;
   shippingCost: number;
-  deliveryMethod: "home" | "dpd" | "pickup";
+  deliveryMethod: DeliveryMethod;
 }
 
 interface CartState {
@@ -32,7 +33,7 @@ interface CartState {
   clearLastOrder: () => void;
   getItemCount: () => number;
   getSubtotal: () => number;
-  hasShopProcessingItems: () => boolean;
+  getCartFulfillmentType: () => string;
 }
 
 export const useCartStore = create<CartState>()(
@@ -80,10 +81,25 @@ export const useCartStore = create<CartState>()(
         );
       },
 
-      hasShopProcessingItems: () => {
-        return get().items.some(
-          (item) => item.needsShopProcessing || item.batteryFallback
+      getCartFulfillmentType: () => {
+        const items = get().items;
+        if (items.length === 0) return "foxway_direct";
+        // If any item needs shop processing, the whole cart is shop-based
+        const hasShop = items.some(
+          (item) =>
+            item.fulfillmentType === "foxway_shop" ||
+            item.fulfillmentType === "shop_stock" ||
+            item.needsShopProcessing ||
+            item.batteryFallback
         );
+        if (hasShop) {
+          // If any item is from shop_stock, use shop_stock; otherwise foxway_shop
+          const hasShopStock = items.some(
+            (item) => item.fulfillmentType === "shop_stock"
+          );
+          return hasShopStock ? "shop_stock" : "foxway_shop";
+        }
+        return "foxway_direct";
       },
     }),
     {

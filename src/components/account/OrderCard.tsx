@@ -5,6 +5,7 @@ import type { Order, OrderItem, OrderStatus } from "@/types/order";
 import OrderItemRow from "./OrderItemRow";
 
 const STATUS_STYLES: Record<OrderStatus, string> = {
+  pending_payment: "bg-yellow-50 text-yellow-700",
   pending: "bg-highlight/10 text-highlight-foreground",
   confirmed: "bg-blue-50 text-blue-700",
   processing: "bg-blue-50 text-blue-700",

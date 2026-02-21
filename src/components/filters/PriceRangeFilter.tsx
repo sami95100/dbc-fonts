@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 
@@ -136,20 +137,21 @@ export function PriceRangeFilter({
           </div>
 
           <div className="flex gap-2">
-            <button
+            <Button
               type="button"
+              variant="outline"
               onClick={handleReset}
-              className="flex-1 rounded-md border border-gray-200 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="flex-1 rounded-md py-2 text-sm font-medium"
             >
               {t("clear")}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               onClick={handleApply}
               className="flex-1 rounded-md bg-green-700 py-2 text-sm font-medium text-white hover:bg-green-800"
             >
               {t("apply")}
-            </button>
+            </Button>
           </div>
         </div>
       )}

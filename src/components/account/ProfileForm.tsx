@@ -65,12 +65,13 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
             )}
           </div>
         ) : (
-          <button
+          <Button
+            variant="outline"
             onClick={() => setOpen(true)}
             className="w-full rounded-lg border-2 border-dashed border-gray-200 py-6 text-center text-sm text-gray-500 transition hover:border-gray-300 hover:text-gray-700"
           >
             {t("addAddress")}
-          </button>
+          </Button>
         )}
       </div>
 

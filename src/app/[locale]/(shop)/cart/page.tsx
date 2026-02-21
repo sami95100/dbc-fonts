@@ -1,19 +1,50 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Loader2 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useCartStore } from "@/stores/cart-store";
 import { CartItemRow } from "@/components/cart/CartItemRow";
+import { getShippingMethods, type ShippingMethod } from "@/lib/api/products";
+import { formatPrice } from "@/lib/utils";
 
 export default function CartPage() {
   const locale = useLocale();
   const t = useTranslations("cart");
-  const { items, removeItem, updateQuantity, getSubtotal, hasShopProcessingItems } = useCartStore();
+  const { items, removeItem, updateQuantity, getSubtotal, getCartFulfillmentType } =
+    useCartStore();
 
   const subtotal = getSubtotal();
   const isEmpty = items.length === 0;
-  const needsShopProcessing = hasShopProcessingItems();
+  const fulfillmentType = getCartFulfillmentType();
+
+  // Fetch shipping methods from API
+  const [shippingMethods, setShippingMethods] = useState<ShippingMethod[]>([]);
+  const [isLoadingShipping, setIsLoadingShipping] = useState(false);
+
+  useEffect(() => {
+    if (isEmpty) return;
+
+    setIsLoadingShipping(true);
+    getShippingMethods(fulfillmentType).then(({ data }) => {
+      if (data) setShippingMethods(data);
+      setIsLoadingShipping(false);
+    });
+  }, [fulfillmentType, isEmpty]);
+
+  // Compute cheapest shipping option for cart summary
+  const cheapestMethod = shippingMethods.length > 0
+    ? shippingMethods.reduce((min, m) => (m.price < min.price ? m : min), shippingMethods[0])
+    : null;
+
+  // Delivery time range across all methods
+  const minDays = shippingMethods.length > 0
+    ? Math.min(...shippingMethods.filter((m) => m.max_days > 0).map((m) => m.min_days))
+    : 0;
+  const maxDays = shippingMethods.length > 0
+    ? Math.max(...shippingMethods.filter((m) => m.max_days > 0).map((m) => m.max_days))
+    : 0;
 
   return (
     <div className="bg-gray-50 py-8">
@@ -65,24 +96,36 @@ export default function CartPage() {
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">{t("subtotal")}</span>
                     <span className="font-medium">
-                      {subtotal.toLocaleString("fr-FR")} €
+                      {formatPrice(subtotal, locale)}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">{t("shipping")}</span>
-                    <span className="text-green-700 font-medium">{t("free")}</span>
+                    {isLoadingShipping ? (
+                      <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                    ) : cheapestMethod ? (
+                      <span className={cheapestMethod.price === 0 ? "font-medium text-green-700" : "text-gray-700"}>
+                        {cheapestMethod.price === 0
+                          ? t("free")
+                          : t("shippingFrom", { price: formatPrice(cheapestMethod.price, locale) })}
+                      </span>
+                    ) : (
+                      <span className="text-gray-400">—</span>
+                    )}
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">{t("delivery")}</span>
-                    <span className="text-gray-700">
-                      {needsShopProcessing ? t("deliveryExtended") : t("deliveryStandard")}
-                    </span>
-                  </div>
+                  {!isLoadingShipping && maxDays > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">{t("delivery")}</span>
+                      <span className="text-gray-700">
+                        {t("deliveryDays", { min: minDays, max: maxDays })}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-4 flex justify-between text-lg font-semibold">
                   <span>{t("total")}</span>
-                  <span>{subtotal.toLocaleString("fr-FR")} €</span>
+                  <span>{formatPrice(subtotal, locale)}</span>
                 </div>
 
                 <Link

@@ -136,7 +136,7 @@ function HeroSectionComponent({
               )}
             </div>
             {savings > 0 && (
-              <p className="mt-1 text-sm font-medium text-green-600">
+              <p className="mt-1 text-sm font-medium text-green-700">
                 {t("savings", { amount: savings })}
               </p>
             )}

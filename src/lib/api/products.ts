@@ -151,6 +151,45 @@ export async function findVariant(
 }
 
 /**
+ * Récupère les méthodes de livraison disponibles selon le type de fulfillment
+ */
+export interface ShippingMethod {
+  method: "home" | "uber" | "dpd" | "pickup";
+  carrier_name: string | null;
+  price: number;
+  min_days: number;
+  max_days: number;
+  carrier_id: number;
+  display_order: number;
+}
+
+export async function getShippingMethods(fulfillmentType: string) {
+  return publicApi.get<ShippingMethod[]>(
+    `/shipping-methods?fulfillment_type=${encodeURIComponent(fulfillmentType)}`
+  );
+}
+
+/**
+ * Devis Uber Direct pour une adresse de livraison
+ */
+export interface UberQuote {
+  quote_id: string;
+  fee: number;
+  currency: string;
+  duration_minutes: number;
+  expires_at: string;
+}
+
+export async function getUberQuote(address: {
+  address: string;
+  postal_code: string;
+  city: string;
+  country: string;
+}) {
+  return publicApi.post<UberQuote>("/uber/quote", address);
+}
+
+/**
  * Type pour la réponse des options disponibles
  */
 export interface AvailableOption {
@@ -164,6 +203,7 @@ export interface AvailableOptions {
   colors: AvailableOption[];
   sims: AvailableOption[];
   batteries: AvailableOption[];
+  grades: AvailableOption[];
 }
 
 /**

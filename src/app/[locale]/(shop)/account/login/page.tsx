@@ -97,8 +97,8 @@ export default function LoginPage() {
             </>
           ) : (
             <div className="text-center">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
-                <MailCheck className="h-6 w-6 text-green-600" />
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+                <MailCheck className="h-6 w-6 text-primary" />
               </div>
               <h1 className="text-xl font-bold text-gray-900">
                 {t("checkEmail")}

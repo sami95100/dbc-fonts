@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { FilterDropdown, type FilterOption } from "./FilterDropdown";
 import { PriceRangeFilter } from "./PriceRangeFilter";
 import type { FilterValues } from "@/lib/api/filters";
@@ -116,14 +117,15 @@ export function FilterBar({
 
         {/* Bouton reset */}
         {hasActiveFilters && (
-          <button
+          <Button
             type="button"
+            variant="outline"
             onClick={handleClearAll}
-            className="flex items-center gap-1 rounded-full border border-gray-200 bg-white px-3 py-2.5 text-sm font-normal text-gray-700 hover:bg-gray-50"
+            className="flex items-center gap-1 rounded-full px-3 py-2.5 text-sm font-normal"
           >
             <X className="h-4 w-4" />
             {t("clear")}
-          </button>
+          </Button>
         )}
       </div>
     </div>

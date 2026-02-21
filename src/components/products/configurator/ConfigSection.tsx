@@ -2,68 +2,24 @@
 
 import { memo, useState, useEffect } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, Info } from "lucide-react";
+import { ChevronLeft, ChevronRight, Info, Sparkles, CheckCircle, Battery, Smartphone, ShieldCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import type { ConfigSectionProps, ImageBadge } from "./types";
 
-// Badge icons
-function ScratchesIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" d="M4 4l4 4M8 4l-4 4M12 8l4 4M16 8l-4 4M8 16l4 4M12 16l-4 4" />
-    </svg>
-  );
-}
-
-function VerifiedIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-  );
-}
-
-function BatteryIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-      <rect x="2" y="7" width="18" height="10" rx="2" />
-      <path d="M22 10v4" strokeLinecap="round" />
-      <path d="M6 10v4M10 10v4M14 10v4" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function ScreenIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-      <rect x="5" y="3" width="14" height="18" rx="2" />
-      <path d="M12 18h.01" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function CoqueIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-      <rect x="6" y="2" width="12" height="20" rx="3" />
-      <path d="M9 6h6M9 18h6" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 function getBadgeIcon(icon: ImageBadge["icon"], className: string) {
+  const props = { className, "aria-hidden": true as const };
   switch (icon) {
     case "scratches":
-      return <ScratchesIcon className={className} />;
+      return <Sparkles {...props} />;
     case "verified":
-      return <VerifiedIcon className={className} />;
+      return <CheckCircle {...props} />;
     case "battery":
-      return <BatteryIcon className={className} />;
+      return <Battery {...props} />;
     case "screen":
-      return <ScreenIcon className={className} />;
+      return <Smartphone {...props} />;
     case "coque":
-      return <CoqueIcon className={className} />;
+      return <ShieldCheck {...props} />;
     default:
       return null;
   }

@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useMemo, useState, useCallback } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Check, Truck, RotateCcw, Cable, Calendar, ShoppingCart, Loader2 } from "lucide-react";
@@ -42,6 +42,7 @@ function OrderSummaryComponent({
   colorImages,
   availableBatteries,
 }: OrderSummaryProps) {
+  const locale = useLocale();
   const t = useTranslations("product.configurator");
   const tDelivery = useTranslations("product.delivery");
   const tCommon = useTranslations("common");
@@ -142,7 +143,7 @@ function OrderSummaryComponent({
         <div className="mt-5">
           <div className="flex items-baseline gap-2">
             <span className="text-3xl font-bold text-gray-900">
-              {totalPrice.toLocaleString("fr-FR", { minimumFractionDigits: 2 })} €
+              {totalPrice.toLocaleString(locale, { minimumFractionDigits: 2 })} €
             </span>
             <span className="text-sm text-gray-500">
               {t("beforeTradeIn")}
@@ -151,11 +152,11 @@ function OrderSummaryComponent({
           {priceNew > 0 && (
             <div className="mt-1 flex items-center gap-2">
               <span className="text-sm text-gray-400 line-through">
-                {priceNew.toLocaleString("fr-FR", { minimumFractionDigits: 2 })} € {tCommon("new")}
+                {priceNew.toLocaleString(locale, { minimumFractionDigits: 2 })} € {tCommon("new")}
               </span>
               {savings > 0 && (
                 <span className="rounded bg-green-100 px-2 py-0.5 text-sm font-medium text-green-700">
-                  {t("saveAmount")} {savings.toLocaleString("fr-FR", { minimumFractionDigits: 2 })} €
+                  {t("saveAmount")} {savings.toLocaleString(locale, { minimumFractionDigits: 2 })} €
                 </span>
               )}
             </div>

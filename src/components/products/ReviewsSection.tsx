@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Star, Loader2, CheckCircle } from "lucide-react";
 import { getModelReviews, type ReviewData, type ReviewStats } from "@/lib/api/products";
 import { cn } from "@/lib/utils";
@@ -40,6 +40,7 @@ function RatingBar({ count, total }: { count: number; total: number }) {
 }
 
 function ReviewCard({ review }: { review: ReviewData }) {
+  const locale = useLocale();
   const t = useTranslations("reviews");
   return (
     <div className="border-b border-gray-100 py-5 last:border-0">
@@ -60,7 +61,7 @@ function ReviewCard({ review }: { review: ReviewData }) {
         </div>
         {review.source_date && (
           <span className="shrink-0 text-xs text-gray-400">
-            {new Date(review.source_date).toLocaleDateString("fr-FR", {
+            {new Date(review.source_date).toLocaleDateString(locale, {
               day: "numeric",
               month: "short",
               year: "numeric",

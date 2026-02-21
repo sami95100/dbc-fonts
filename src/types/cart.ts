@@ -11,6 +11,7 @@ export interface CartItem {
   battery: "standard" | "new";
   batteryFallback: boolean;
   needsShopProcessing: boolean;
+  fulfillmentType?: string;
   price: number;
   quantity: number;
   imageUrl?: string;

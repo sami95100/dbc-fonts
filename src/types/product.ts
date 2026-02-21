@@ -92,6 +92,8 @@ export interface VariantSearchResult {
   sell_priority: number | null;
   battery_fallback: boolean;
   needs_shop_processing: boolean;
+  source_slug: string | null;
+  fulfillment_type: string | null;
 }
 
 export type Grade = "Parfait" | "Tres bon" | "Correct" | "Imparfait";

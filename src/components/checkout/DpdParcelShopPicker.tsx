@@ -39,8 +39,6 @@ const COUNTRY_NAMES: Record<string, string> = {
   LU: "Luxembourg",
 };
 
-const DAY_NAMES_FR = ["", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
-const DAY_NAMES_EN = ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export function DpdParcelShopPicker({
   locale,
@@ -56,8 +54,6 @@ export function DpdParcelShopPicker({
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
-
-  const dayNames = locale === "fr" ? DAY_NAMES_FR : DAY_NAMES_EN;
 
   useEffect(() => setMounted(true), []);
 
@@ -285,7 +281,7 @@ export function DpdParcelShopPicker({
                               </span>
                               {todayHours && (
                                 <span className="text-[10px] text-gray-400">
-                                  {dayNames[new Date().getDay() || 7]}: {todayHours}
+                                  {new Date().toLocaleDateString(locale, { weekday: "short" })}: {todayHours}
                                 </span>
                               )}
                             </div>

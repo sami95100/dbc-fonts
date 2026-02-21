@@ -106,6 +106,7 @@ export function ProductConfigurator({
     totalPrice,
     basePrice,
     isOutOfStock,
+    noStockAtAll,
     handleAddToCart,
     lastAddedItem,
     clearLastAdded,
@@ -148,52 +149,58 @@ export function ProductConfigurator({
           onConditionChange={setCondition}
           conditionImages={conditionImages || undefined}
           fallbackImageUrl={conditionImageUrl}
+          availableConditions={availableOptions?.grades}
         />
       )}
 
-      {/* Battery Section (only for mobile devices) */}
-      {shouldShowBattery && (
-        <BatterySection
-          selectedBattery={selection.battery}
-          onBatteryChange={setBattery}
-          standardPrice={standardPrice}
-          newBatteryPrice={newBatteryPrice}
-          availableBatteries={availableOptions?.batteries}
-          imageUrl={batteryImageUrl}
-        />
-      )}
+      {/* Battery, Storage, SIM, Color sections — hidden when no stock at all */}
+      {!noStockAtAll && (
+        <>
+          {/* Battery Section (only for mobile devices) */}
+          {shouldShowBattery && (
+            <BatterySection
+              selectedBattery={selection.battery}
+              onBatteryChange={setBattery}
+              standardPrice={standardPrice}
+              newBatteryPrice={newBatteryPrice}
+              availableBatteries={availableOptions?.batteries}
+              imageUrl={batteryImageUrl}
+            />
+          )}
 
-      {/* Storage Section (optional) */}
-      {showStorage && product.storages.length > 0 && (
-        <StorageSection
-          storages={product.storages}
-          selectedStorage={selection.storage}
-          onStorageChange={setStorage}
-          imageUrl={storageImageUrl}
-          availableStorages={availableOptions?.storages}
-        />
-      )}
+          {/* Storage Section (optional) */}
+          {showStorage && product.storages.length > 0 && (
+            <StorageSection
+              storages={product.storages}
+              selectedStorage={selection.storage}
+              onStorageChange={setStorage}
+              imageUrl={storageImageUrl}
+              availableStorages={availableOptions?.storages}
+            />
+          )}
 
-      {/* SIM Section (optional - only if sims available) */}
-      {product.sims && product.sims.length > 0 && (
-        <SimSection
-          sims={product.sims}
-          selectedSim={selection.sim}
-          onSimChange={setSim}
-          imageUrl={simImageUrl}
-          availableSims={availableOptions?.sims}
-        />
-      )}
+          {/* SIM Section (optional - only if sims available) */}
+          {product.sims && product.sims.length > 0 && (
+            <SimSection
+              sims={product.sims}
+              selectedSim={selection.sim}
+              onSimChange={setSim}
+              imageUrl={simImageUrl}
+              availableSims={availableOptions?.sims}
+            />
+          )}
 
-      {/* Color Section (at the end) */}
-      {product.colors.length > 0 && (
-        <ColorSection
-          colors={product.colors}
-          selectedColor={selection.color}
-          onColorChange={setColor}
-          colorImages={product._images}
-          availableColors={availableOptions?.colors}
-        />
+          {/* Color Section (at the end) */}
+          {product.colors.length > 0 && (
+            <ColorSection
+              colors={product.colors}
+              selectedColor={selection.color}
+              onColorChange={setColor}
+              colorImages={product._images}
+              availableColors={availableOptions?.colors}
+            />
+          )}
+        </>
       )}
 
       {/* Description Section (accordion) */}

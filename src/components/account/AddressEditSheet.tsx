@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { COUNTRY_CODES } from "@/lib/constants";
 import {
   Sheet,
@@ -186,13 +187,13 @@ function Field({
 }) {
   return (
     <FieldWrapper label={label}>
-      <input
+      <Input
         type={type}
         id={id}
         name={id}
         value={value}
         onChange={onChange}
-        className="w-full bg-transparent text-sm text-gray-900 outline-none"
+        className="h-auto border-0 bg-transparent p-0 text-sm text-gray-900 shadow-none focus-visible:ring-0"
       />
     </FieldWrapper>
   );

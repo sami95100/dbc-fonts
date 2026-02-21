@@ -4,6 +4,9 @@ export interface ShippingAddress {
   email: string;
   phone: string;
   address: string;
+  addressLine2: string;
+  accessCode: string;
+  deliveryInstructions: string;
   postalCode: string;
   city: string;
   country: string;
@@ -40,7 +43,9 @@ export interface CreateOrderPayload {
   dpd_shipping_postal_code?: string;
   dpd_shipping_city?: string;
   dpd_shipping_country?: string;
+  uber_quote_id?: string;
   notes?: string;
+  locale?: string;
   items: OrderItem[];
 }
 
@@ -73,12 +78,19 @@ export interface Order {
   foxway_reference?: string;
   foxway_status?: number;
   foxway_tracking_codes?: string[];
+  uber_delivery_id?: string;
+  uber_status?: string;
+  uber_tracking_url?: string;
+  uber_fee?: number;
+  uber_courier_name?: string;
+  uber_eta?: string;
   created_at: string;
   shipped_at?: string;
   delivered_at?: string;
 }
 
 export type OrderStatus =
+  | "pending_payment"
   | "pending"
   | "confirmed"
   | "processing"
@@ -93,4 +105,5 @@ export interface CreateOrderResponse {
     order_number: string;
   };
   delivery_type: "dropshipping" | "shop";
+  checkout_url: string;
 }
