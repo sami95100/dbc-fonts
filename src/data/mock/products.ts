@@ -888,15 +888,3 @@ export const MOCK_PRODUCTS: Product[] = [
     inStock: true,
   },
 ];
-
-export function getProductBySlug(slug: string): Product | undefined {
-  return MOCK_PRODUCTS.find((p) => p.slug === slug);
-}
-
-export function getProductsByBrand(brandSlug: string): Product[] {
-  return MOCK_PRODUCTS.filter((p) => p.brandSlug === brandSlug);
-}
-
-export function getProductsByCategory(category: string): Product[] {
-  return MOCK_PRODUCTS.filter((p) => p.category === category);
-}

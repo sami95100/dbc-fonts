@@ -9,10 +9,8 @@ import { createOrder } from "@/lib/api/orders";
 import { getProfile } from "@/lib/api/profile";
 import { getShippingMethods, getUberQuote, type ShippingMethod, type UberQuote } from "@/lib/api/products";
 import { GRADE_ID_TO_API } from "@/components/products/configurator";
-import {
-  STORE_ADDRESS,
-  type DeliveryMethod,
-} from "@/lib/constants";
+import { STORE_ADDRESS } from "@/lib/constants";
+import type { DeliveryMethod } from "@/lib/constants";
 import type {
   ShippingAddress,
   CreateOrderPayload,
@@ -53,8 +51,8 @@ export function useCheckout() {
     searchParams.get("cancelled") === "true" ? t("paymentCancelled") : null
   );
 
-  // Delivery state
-  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("home");
+  // Delivery state — selection by shipping method ID (UUID)
+  const [selectedShippingId, setSelectedShippingId] = useState<string | null>(null);
   const [dpdShop, setDpdShop] = useState<DpdParcelShop | null>(null);
   const [showAddressSheet, setShowAddressSheet] = useState(false);
 
@@ -84,10 +82,13 @@ export function useCheckout() {
     });
   }, [fulfillmentType]);
 
-  // Compute shipping cost from API data (override with Uber quote if available)
+  // Derive current method and UX behavior from selected ID
   const currentShippingMethod = shippingMethods.find(
-    (m) => m.method === deliveryMethod
+    (m) => m.id === selectedShippingId
   );
+  const deliveryMethod: DeliveryMethod = (currentShippingMethod?.method ?? "home") as DeliveryMethod;
+
+  // Compute shipping cost from API data (override with Uber quote if available)
   const shippingCost =
     deliveryMethod === "uber" && uberQuote
       ? uberQuote.fee
@@ -98,15 +99,15 @@ export function useCheckout() {
     clearLastOrder();
   }, [clearLastOrder]);
 
-  // Auto-select first available delivery method when shipping methods load
+  // Auto-select first available shipping method when methods load
   useEffect(() => {
     if (shippingMethods.length === 0) return;
 
-    const methods = shippingMethods.map((m) => m.method);
-    if (!methods.includes(deliveryMethod)) {
-      setDeliveryMethod(methods[0]);
+    const ids = shippingMethods.map((m) => m.id);
+    if (!selectedShippingId || !ids.includes(selectedShippingId)) {
+      setSelectedShippingId(ids[0]);
     }
-  }, [shippingMethods, deliveryMethod]);
+  }, [shippingMethods, selectedShippingId]);
 
   // Reset DPD shop when country changes
   useEffect(() => {
@@ -248,10 +249,28 @@ export function useCheckout() {
     const isPickup = deliveryMethod === "pickup";
     const isDpd = deliveryMethod === "dpd";
 
-    // Build full address with line 2 if provided
-    const fullAddress = isPickup
-      ? `${STORE_ADDRESS.name}, ${STORE_ADDRESS.address}`
-      : [formData.address, formData.addressLine2].filter(Boolean).join(", ");
+    // Build full address depending on delivery method
+    let fullAddress: string;
+    let postalCode: string;
+    let city: string;
+    let country: string;
+
+    if (isPickup) {
+      fullAddress = `${STORE_ADDRESS.name}, ${STORE_ADDRESS.address}`;
+      postalCode = STORE_ADDRESS.postalCode;
+      city = STORE_ADDRESS.city;
+      country = STORE_ADDRESS.country;
+    } else if (isDpd && dpdShop) {
+      fullAddress = `${dpdShop.company}, ${dpdShop.street} ${dpdShop.houseNo}`.trim();
+      postalCode = dpdShop.zipCode;
+      city = dpdShop.city;
+      country = dpdShop.country;
+    } else {
+      fullAddress = [formData.address, formData.addressLine2].filter(Boolean).join(", ");
+      postalCode = formData.postalCode;
+      city = formData.city;
+      country = formData.country;
+    }
 
     // Build notes from access code and delivery instructions
     const notesParts = [
@@ -266,9 +285,9 @@ export function useCheckout() {
       customer_email: formData.email,
       customer_phone: formData.phone,
       shipping_address: fullAddress,
-      shipping_postal_code: isPickup ? STORE_ADDRESS.postalCode : formData.postalCode,
-      shipping_city: isPickup ? STORE_ADDRESS.city : formData.city,
-      shipping_country: isPickup ? STORE_ADDRESS.country : formData.country,
+      shipping_postal_code: postalCode,
+      shipping_city: city,
+      shipping_country: country,
       shipping_cost: shippingCost,
       carrier_id: carrierId,
       notes: notesParts.length > 0 ? notesParts.join(" | ") : undefined,
@@ -278,10 +297,10 @@ export function useCheckout() {
 
     if (isDpd && dpdShop) {
       payload.dpd_parcel_shop_id = dpdShop.parcelShopId;
-      payload.dpd_shipping_address = `${dpdShop.company}, ${dpdShop.street} ${dpdShop.houseNo}`.trim();
-      payload.dpd_shipping_postal_code = dpdShop.zipCode;
-      payload.dpd_shipping_city = dpdShop.city;
-      payload.dpd_shipping_country = dpdShop.country;
+      payload.dpd_shipping_address = fullAddress;
+      payload.dpd_shipping_postal_code = postalCode;
+      payload.dpd_shipping_city = city;
+      payload.dpd_shipping_country = country;
     }
 
     if (deliveryMethod === "uber" && uberQuote) {
@@ -385,7 +404,9 @@ export function useCheckout() {
 
     // Delivery
     deliveryMethod,
-    setDeliveryMethod,
+    selectedShippingId,
+    setSelectedShippingId,
+    currentShippingMethod,
     dpdShop,
     setDpdShop,
     clearDpdError,

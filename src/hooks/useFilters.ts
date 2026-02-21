@@ -74,17 +74,3 @@ export function useFilters() {
     hasFilters,
   };
 }
-
-/**
- * Convertit les ActiveFilters en params pour l'API getModels
- */
-export function filtersToApiParams(filters: ActiveFilters) {
-  return {
-    minPrice: filters.minPrice,
-    maxPrice: filters.maxPrice,
-    // Pour l'API, on prend la premiere annee selectionnee (single select)
-    year: filters.years.length > 0 ? filters.years[0] : undefined,
-    // Pour l'API, on prend le premier stockage selectionne (single select)
-    storage: filters.storages.length > 0 ? filters.storages[0] : undefined,
-  };
-}

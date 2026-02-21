@@ -154,6 +154,7 @@ export async function findVariant(
  * Récupère les méthodes de livraison disponibles selon le type de fulfillment
  */
 export interface ShippingMethod {
+  id: string;
   method: "home" | "uber" | "dpd" | "pickup";
   carrier_name: string | null;
   price: number;

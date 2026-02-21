@@ -25,7 +25,9 @@ export default function CheckoutPage() {
     errors,
     handleChange,
     deliveryMethod,
-    setDeliveryMethod,
+    selectedShippingId,
+    setSelectedShippingId,
+    currentShippingMethod,
     dpdShop,
     setDpdShop,
     clearDpdError,
@@ -48,11 +50,10 @@ export default function CheckoutPage() {
   useEffect(() => setMounted(true), []);
 
   // Compute delivery time text from API data
-  const currentSm = shippingMethods.find((m) => m.method === deliveryMethod);
-  const currentDeliveryTime = currentSm
-    ? currentSm.min_days === 0 && currentSm.max_days === 0
+  const currentDeliveryTime = currentShippingMethod
+    ? currentShippingMethod.min_days === 0 && currentShippingMethod.max_days === 0
       ? t("deliveryPickupDesc")
-      : `${currentSm.min_days}-${currentSm.max_days} ${t("days")}`
+      : `${currentShippingMethod.min_days}-${currentShippingMethod.max_days} ${t("days")}`
     : null;
 
   // Lock body scroll when address sheet is open
@@ -172,6 +173,7 @@ export default function CheckoutPage() {
                 ) : (
                   shippingMethods.map((sm) => {
                     const method = sm.method as DeliveryMethod;
+                    const isSelected = selectedShippingId === sm.id;
                     const iconMap: Record<string, React.ReactNode> = {
                       pickup: <Store className="h-4 w-4" />,
                       dpd: <MapPin className="h-4 w-4" />,
@@ -188,11 +190,13 @@ export default function CheckoutPage() {
                       uber: "deliveryUberDesc",
                     };
                     const icon = iconMap[method] ?? <Truck className="h-4 w-4" />;
-                    const title = t(titleKeyMap[method] ?? "deliveryHome");
+                    // For "home" methods, use carrier_name as title to distinguish express vs classique
+                    const title = method === "home" && sm.carrier_name
+                      ? `${t("deliveryHome")} — ${sm.carrier_name}`
+                      : t(titleKeyMap[method] ?? "deliveryHome");
                     const descKey = descKeyMap[method] ?? "deliveryHomeDesc";
 
-                    // Build description: carrier name + base desc + delivery time
-                    const carrierPrefix = sm.carrier_name ? `${sm.carrier_name} - ` : "";
+                    // Build description: base desc + delivery time
                     const hasTime = !(sm.min_days === 0 && sm.max_days === 0);
                     const timeSuffix = hasTime
                       ? ` - ${sm.min_days}-${sm.max_days} ${t("days")}`
@@ -225,22 +229,22 @@ export default function CheckoutPage() {
                     }
 
                     return (
-                      <div key={method}>
+                      <div key={sm.id}>
                         <DeliveryOptionCard
-                          selected={deliveryMethod === method}
-                          onClick={() => setDeliveryMethod(method)}
+                          selected={isSelected}
+                          onClick={() => setSelectedShippingId(sm.id)}
                           icon={icon}
                           title={title}
-                          description={`${carrierPrefix}${t(descKey)}${timeSuffix}${uberExtra}`}
+                          description={`${t(descKey)}${timeSuffix}${uberExtra}`}
                           price={displayPrice}
                           priceClassName={displayPriceClassName}
                         />
-                        {isUber && deliveryMethod === "uber" && !hasHomeAddress && (
+                        {isUber && isSelected && !hasHomeAddress && (
                           <p className="mt-1 ml-10 text-xs text-gray-500">
                             {t("uberEnterAddress")}
                           </p>
                         )}
-                        {isUber && deliveryMethod === "uber" && quoteError && (
+                        {isUber && isSelected && quoteError && (
                           <p className="mt-1 ml-10 text-xs text-red-500">
                             {quoteError}
                           </p>

@@ -82,13 +82,6 @@ export const CATEGORIES: Category[] = [
   },
 ];
 
-export const TOP_NAV_LINKS = [
-  { name: "Notre Pacte Qualite", nameFr: "Notre Pacte Qualite", href: "/quality" },
-  { name: "Repair", nameFr: "Reparation", href: "/repair" },
-  { name: "Stop fast tech", nameFr: "Stop fast tech", href: "/stop-fast-tech" },
-  { name: "The Mag", nameFr: "Le Mag", href: "/mag" },
-];
-
 // Helpers
 export function getCategoryBySlug(slug: string): Category | undefined {
   return CATEGORIES.find((c) => c.slug === slug);

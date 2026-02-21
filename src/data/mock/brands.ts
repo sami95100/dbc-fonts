@@ -15,7 +15,3 @@ export const BRANDS: Brand[] = [
   { id: "sony", name: "Sony", slug: "sony" },
   { id: "oppo", name: "Oppo", slug: "oppo" },
 ];
-
-export function getBrandBySlug(slug: string): Brand | undefined {
-  return BRANDS.find((b) => b.slug === slug);
-}
