@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { HeroSection, BrandValues } from "@/components/home";
+import { HeroSection, PromoDeals, ShoppingGuides, BrandValues } from "@/components/home";
 import { ProductGrid } from "@/components/products/ProductGrid";
 import { getModels, getModelOptions, getModelPrices } from "@/lib/api/products";
 import { apiModelToProduct } from "@/lib/api/transformers";
@@ -45,6 +45,12 @@ export default async function HomePage({ params }: HomePageProps) {
     <>
       {/* Hero Section */}
       <HeroSection />
+
+      {/* Promo Deals */}
+      <PromoDeals />
+
+      {/* Shopping Guides */}
+      <ShoppingGuides />
 
       {/* Featured Products */}
       {featuredProducts.length > 0 && (

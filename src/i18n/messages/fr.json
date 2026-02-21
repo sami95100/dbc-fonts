@@ -36,6 +36,7 @@
   "categories": {
     "deals": "Bons plans",
     "giftIdeas": "Idees Cadeaux",
+    "iphone": "iPhone",
     "smartphones": "Smartphones",
     "tablets": "Tablettes",
     "laptops": "Ordinateurs portables",
@@ -43,6 +44,8 @@
     "smartwatches": "Montres connectees",
     "audio": "Audio",
     "appliances": "Appareils electromenagers",
+    "android": "Android",
+    "accessories": "Accessoires",
     "other": "Autres",
     "sub": {
       "smartphones": {
@@ -83,12 +86,17 @@
   },
   "home": {
     "hero": {
-      "title": "On fait bouger l'industrie.",
+      "title": "Achetez vite, achetez bien.\nAu bon prix.",
       "subtitle": "Des smartphones reconditionnes, testes et garantis. Moins cher, plus responsable.",
       "subtitlePrefix": "Moins cher et aussi performant que le neuf grace au ",
       "qualityPactLink": "Pacte Qualite DBC",
       "cta": "Decouvrir nos telephones",
-      "tagline": "Aujourd'hui, avant demain."
+      "tagline": "Aujourd'hui, avant demain.",
+      "proAccount": "Creer mon compte",
+      "catalog": "Acceder au catalogue",
+      "available": "disponibles",
+      "previous": "Precedent",
+      "next": "Suivant"
     },
     "trust": {
       "verifiedRefurbishers": "Reconditionneurs verifies",
@@ -119,6 +127,27 @@
       "future": {
         "title": "Agir pour demain",
         "description": "Chaque action, chaque decision est pensee pour laisser une empreinte positive sur la societe et l'environnement."
+      }
+    },
+    "promoDeals": {
+      "title": "Les bonnes affaires du moment.",
+      "titleAccent": "A ne pas rater.",
+      "from": "A partir de",
+      "buy": "Acheter"
+    },
+    "guides": {
+      "title": "Guides shopping.",
+      "titleAccent": "Une hesitation ? Voici la solution.",
+      "callButton": "Appeler un conseiller",
+      "specialist": {
+        "tag": "Specialistes DBC",
+        "title": "Faites vos achats en compagnie de nos Specialistes.",
+        "description": "En ligne ou dans l'un de nos 11 magasins. Nos experts vous aident a trouver le telephone ideal."
+      },
+      "advice": {
+        "tag": "Conseil personnalise",
+        "title": "Besoin d'un conseil ? Nos experts sont la pour vous.",
+        "description": "Un appel suffit. Nos conseillers vous guident dans votre choix selon vos besoins et votre budget."
       }
     },
     "bestDeals": "Nos meilleures offres"

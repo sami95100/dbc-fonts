@@ -36,6 +36,7 @@
   "categories": {
     "deals": "Deals",
     "giftIdeas": "Gift Ideas",
+    "iphone": "iPhone",
     "smartphones": "Smartphones",
     "tablets": "Tablets",
     "laptops": "Laptops",
@@ -43,6 +44,8 @@
     "smartwatches": "Smartwatches",
     "audio": "Audio",
     "appliances": "Home appliances",
+    "android": "Android",
+    "accessories": "Accessories",
     "other": "Other",
     "sub": {
       "smartphones": {
@@ -83,12 +86,17 @@
   },
   "home": {
     "hero": {
-      "title": "We're shaking up the industry.",
+      "title": "Buy fast, buy smart.\nAt the right price.",
       "subtitle": "Refurbished smartphones, tested and guaranteed. Cheaper, more responsible.",
       "subtitlePrefix": "Cheaper and as powerful as new thanks to our ",
       "qualityPactLink": "DBC Quality Pact",
       "cta": "Discover our phones",
-      "tagline": "Today, before tomorrow."
+      "tagline": "Today, before tomorrow.",
+      "proAccount": "Create my account",
+      "catalog": "Browse catalog",
+      "available": "available",
+      "previous": "Previous",
+      "next": "Next"
     },
     "brands": {
       "title": "Our brands"
@@ -119,6 +127,27 @@
       "future": {
         "title": "Acting for tomorrow",
         "description": "Every action, every decision is designed to leave a positive footprint on society and the environment."
+      }
+    },
+    "promoDeals": {
+      "title": "Today's best deals.",
+      "titleAccent": "Don't miss out.",
+      "from": "From",
+      "buy": "Buy"
+    },
+    "guides": {
+      "title": "Shopping guides.",
+      "titleAccent": "Unsure? Here's the solution.",
+      "callButton": "Call an advisor",
+      "specialist": {
+        "tag": "DBC Specialists",
+        "title": "Shop with our Specialists by your side.",
+        "description": "Online or in one of our 11 stores. Our experts help you find the perfect phone."
+      },
+      "advice": {
+        "tag": "Personalised advice",
+        "title": "Need advice? Our experts are here for you.",
+        "description": "One call is all it takes. Our advisors guide you based on your needs and budget."
       }
     },
     "bestDeals": "Our best deals"

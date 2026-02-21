@@ -23,15 +23,15 @@ export function Header() {
   }, []);
 
   return (
-    <header className="border-b border-gray-200 bg-white">
+    <header className="border-b border-[#034638] bg-[#034638] text-white">
       <div className="mx-auto max-w-7xl px-4">
-        <div className="flex h-16 items-center justify-between gap-4 md:h-20">
+        <div className="relative flex h-16 items-center justify-between gap-4 md:h-20">
           {/* Mobile menu */}
           <MobileMenu />
 
-          {/* Logo */}
-          <Link href={`/${locale}`} className="flex shrink-0 items-center">
-            <DbcLogo className="h-6 w-auto text-gray-900 md:h-8" />
+          {/* Logo - centered on mobile */}
+          <Link href={`/${locale}`} className="absolute left-1/2 -translate-x-1/2 flex shrink-0 items-center md:static md:translate-x-0">
+            <DbcLogo className="h-6 w-auto text-white md:h-8" />
           </Link>
 
           {/* Search - Hidden on mobile */}
@@ -44,7 +44,7 @@ export function Header() {
             {/* Help - Hidden on mobile */}
             <Link
               href={`/${locale}/help`}
-              className="hidden items-center gap-1 px-3 py-2 text-sm hover:text-gray-600 lg:flex"
+              className="hidden items-center gap-1 px-3 py-2 text-sm text-white hover:text-white/70 lg:flex"
             >
               {t("help")}
             </Link>
@@ -52,7 +52,7 @@ export function Header() {
             {/* Account */}
             <Link
               href={`/${locale}/account`}
-              className="relative p-2.5 hover:text-gray-600"
+              className="relative p-2.5 text-white hover:text-white/70"
               aria-label={t("account")}
             >
               <User className="h-6 w-6" aria-hidden="true" />
@@ -64,7 +64,7 @@ export function Header() {
             {/* Cart */}
             <Link
               href={`/${locale}/cart`}
-              className="relative p-2.5 hover:text-gray-600"
+              className="relative p-2.5 text-white hover:text-white/70"
               aria-label={t("cart")}
             >
               <ShoppingCart className="h-6 w-6" aria-hidden="true" />
