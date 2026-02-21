@@ -247,7 +247,8 @@ export function useCheckout() {
     }));
 
     const isPickup = deliveryMethod === "pickup";
-    const isDpd = deliveryMethod === "dpd";
+    // Use dpdShop as primary indicator (more reliable than deliveryMethod which can be stale)
+    const hasDpdShop = deliveryMethod === "dpd" && !!dpdShop;
 
     // Build full address depending on delivery method
     let fullAddress: string;
@@ -260,7 +261,7 @@ export function useCheckout() {
       postalCode = STORE_ADDRESS.postalCode;
       city = STORE_ADDRESS.city;
       country = STORE_ADDRESS.country;
-    } else if (isDpd && dpdShop) {
+    } else if (hasDpdShop) {
       fullAddress = `${dpdShop.company}, ${dpdShop.street} ${dpdShop.houseNo}`.trim();
       postalCode = dpdShop.zipCode;
       city = dpdShop.city;
@@ -295,7 +296,7 @@ export function useCheckout() {
       locale,
     };
 
-    if (isDpd && dpdShop) {
+    if (hasDpdShop) {
       payload.dpd_parcel_shop_id = dpdShop.parcelShopId;
       payload.dpd_shipping_address = fullAddress;
       payload.dpd_shipping_postal_code = postalCode;
