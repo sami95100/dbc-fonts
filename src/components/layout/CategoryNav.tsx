@@ -9,7 +9,7 @@ export function CategoryNav() {
   const t = useTranslations("categories");
 
   return (
-    <nav className="border-b border-gray-100 bg-white">
+    <nav className="border-b border-gray-200">
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex items-center gap-1 overflow-x-auto py-3 scrollbar-hide">
           {CATEGORIES.map((cat) => (

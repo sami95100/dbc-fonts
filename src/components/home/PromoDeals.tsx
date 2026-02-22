@@ -79,69 +79,21 @@ export function PromoDeals() {
     const el = scrollRef.current;
     if (!el) return;
     el.scrollBy({
-      left: direction === "left" ? -350 : 350,
+      left: direction === "left" ? -280 : 280,
       behavior: "smooth",
     });
   };
 
-  // DBC flag icon path (reused in pattern)
-  const flagPath = "M352.63,105.49V0C268.36,75.4,112.77,111.66,0,68.16v325.35l284.9-76.32v144.05c134.76-89.71,326.51-89.73,461.25,0V.03l-393.52,105.45ZM284.9,247.08l-217.2,58.21v-154.18c74.52,9.94,151.7-3.81,217.2-38.41v134.37ZM678.44,357.99c-99.17-42.65-226.63-42.66-325.82,0v-182.42l325.82-87.32v269.74Z";
-
-  // Build a dense Louis Vuitton-style monogram tile
-  // Grid: 6 cols x 8 rows, alternating logo / PROMO / BONNE AFFAIRE, offset every other row
-  const TILE_W = 480;
-  const TILE_H = 360;
-  const COL_W = 80;
-  const ROW_H = 45;
-  const ICON_SIZE = 20;
-  const FONT_SIZE = 9;
-  const OFFSET_X = COL_W / 2; // half-col shift on odd rows
-
-  const items: string[] = [];
-  for (let row = 0; row < 8; row++) {
-    const offsetX = row % 2 === 1 ? OFFSET_X : 0;
-    for (let col = 0; col < 6; col++) {
-      const x = col * COL_W + offsetX;
-      const y = row * ROW_H;
-      const idx = row * 6 + col;
-      const mod = idx % 3; // cycle: icon, PROMO, BONNE AFFAIRE
-
-      if (mod === 0) {
-        // DBC flag icon centered in cell
-        const ix = x + (COL_W - ICON_SIZE) / 2;
-        const iy = y + (ROW_H - ICON_SIZE * 0.62) / 2;
-        items.push(`<svg x="${ix}" y="${iy}" viewBox="0 0 746.14 461.25" width="${ICON_SIZE}" height="${Math.round(ICON_SIZE * 0.62)}" fill="white"><path d="${flagPath}"/></svg>`);
-      } else {
-        const label = mod === 1 ? "PROMO" : "BONNE AFFAIRE";
-        const tx = x + COL_W / 2;
-        const ty = y + ROW_H / 2 + FONT_SIZE / 3;
-        items.push(`<text x="${tx}" y="${ty}" fill="white" text-anchor="middle" style="font-family:system-ui,-apple-system,sans-serif;font-weight:700;font-size:${FONT_SIZE}px;letter-spacing:1.5px;">${label}</text>`);
-      }
-    }
-  }
-
-  const patternSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${TILE_W}" height="${TILE_H}" viewBox="0 0 ${TILE_W} ${TILE_H}">${items.join("")}</svg>`;
-  const encodedPattern = `url("data:image/svg+xml,${encodeURIComponent(patternSvg)}")`;
-
   return (
-    <section className="relative overflow-hidden bg-green-700 py-8 md:py-12 lg:py-16">
-      {/* Dense monogram background — LV style */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage: encodedPattern,
-          backgroundRepeat: "repeat",
-          backgroundSize: `${TILE_W}px ${TILE_H}px`,
-          opacity: 0.07,
-        }}
-      />
+    <section className="relative overflow-hidden bg-gray-100 py-8 md:py-12 lg:py-16">
 
       {/* Title */}
       <div className="relative mx-auto max-w-7xl px-4">
         <div className="mb-8">
-          <h2 className="text-2xl font-bold tracking-tight text-white md:text-3xl">
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900 md:text-3xl">
             {t("promoDeals.title")}{" "}
-            <span className="italic" style={{ color: "#D8E143" }}>
+            <br className="md:hidden" />
+            <span className="italic text-green-700">
               {t("promoDeals.titleAccent")}
             </span>
           </h2>
@@ -170,7 +122,7 @@ export function PromoDeals() {
               <Link
                 key={product.slug}
                 href={`/${locale}/products/${product.slug}`}
-                className="group flex w-[280px] shrink-0 flex-col rounded-2xl bg-white p-5 transition-shadow hover:shadow-md md:w-[300px] lg:w-[320px]"
+                className="group flex w-[220px] shrink-0 flex-col rounded-2xl bg-white p-4 transition-shadow hover:shadow-md md:w-[260px] lg:w-[300px]"
               >
                 {/* Product name */}
                 <h3 className="text-lg font-bold text-gray-900">
@@ -187,7 +139,7 @@ export function PromoDeals() {
                     alt={product.name}
                     fill
                     className="object-contain"
-                    sizes="(max-width: 768px) 280px, (max-width: 1024px) 300px, 320px"
+                    sizes="(max-width: 768px) 220px, (max-width: 1024px) 260px, 300px"
                   />
                 </div>
 
@@ -205,7 +157,7 @@ export function PromoDeals() {
                 {/* Price + CTA */}
                 <div className="flex items-end justify-between">
                   <p className="text-sm text-gray-600">
-                    {t("promoDeals.from")} {product.priceFrom} &euro;
+                    {product.priceFrom} &euro;
                   </p>
                   <span className="rounded-full bg-green-700 px-4 py-2 text-sm font-semibold text-white transition-colors group-hover:bg-green-800">
                     {t("promoDeals.buy")}

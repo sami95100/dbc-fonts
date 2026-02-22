@@ -14,6 +14,7 @@ export function Header() {
   const locale = useLocale();
   const t = useTranslations("nav");
   const [mounted, setMounted] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const itemCount = useCartStore((state) => state.getItemCount());
   const isAuthenticated = useAuthStore((s) => !!s.user);
 
@@ -22,8 +23,9 @@ export function Header() {
     setMounted(true);
   }, []);
 
+
   return (
-    <header className="border-b border-[#034638] bg-[#034638] text-white">
+    <header className="bg-gray-100 text-gray-900">
       <div className="mx-auto max-w-7xl px-4">
         <div className="relative flex h-16 items-center justify-between gap-4 md:h-20">
           {/* Mobile menu */}
@@ -31,7 +33,7 @@ export function Header() {
 
           {/* Logo - centered on mobile */}
           <Link href={`/${locale}`} className="absolute left-1/2 -translate-x-1/2 flex shrink-0 items-center md:static md:translate-x-0">
-            <DbcLogo className="h-6 w-auto text-white md:h-8" />
+            <DbcLogo className="h-6 w-auto text-green-700 md:h-8" />
           </Link>
 
           {/* Search - Hidden on mobile */}
@@ -44,7 +46,7 @@ export function Header() {
             {/* Help - Hidden on mobile */}
             <Link
               href={`/${locale}/help`}
-              className="hidden items-center gap-1 px-3 py-2 text-sm text-white hover:text-white/70 lg:flex"
+              className="hidden items-center gap-1 px-3 py-2 text-sm text-gray-900 hover:text-gray-500 lg:flex"
             >
               {t("help")}
             </Link>
@@ -52,7 +54,7 @@ export function Header() {
             {/* Account */}
             <Link
               href={`/${locale}/account`}
-              className="relative p-2.5 text-white hover:text-white/70"
+              className="relative p-2.5 text-gray-900 hover:text-gray-500"
               aria-label={t("account")}
             >
               <User className="h-6 w-6" aria-hidden="true" />
@@ -64,7 +66,7 @@ export function Header() {
             {/* Cart */}
             <Link
               href={`/${locale}/cart`}
-              className="relative p-2.5 text-white hover:text-white/70"
+              className="relative p-2.5 text-gray-900 hover:text-gray-500"
               aria-label={t("cart")}
             >
               <ShoppingCart className="h-6 w-6" aria-hidden="true" />

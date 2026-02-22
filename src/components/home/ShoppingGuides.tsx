@@ -9,10 +9,26 @@ const GUIDES = [
   {
     key: "specialist",
     image: "/awa.png",
+    hasSubtitle: false,
+    dark: false,
   },
   {
     key: "advice",
     image: "/sam sam.png",
+    hasSubtitle: false,
+    dark: false,
+  },
+  {
+    key: "shipping",
+    image: "/uber direct.png",
+    hasSubtitle: false,
+    dark: true,
+  },
+  {
+    key: "shippingEurope",
+    image: "",
+    hasSubtitle: false,
+    dark: true,
   },
 ] as const;
 
@@ -76,32 +92,37 @@ export function ShoppingGuides() {
         {/* Scroll container */}
         <div
           ref={scrollRef}
-          className="flex gap-5 overflow-x-auto scroll-smooth px-4 scrollbar-hide md:overflow-hidden md:px-8"
+          className="flex w-full gap-5 overflow-x-auto scroll-smooth px-4 pb-6 scrollbar-hide md:px-8"
         >
           {GUIDES.map((guide) => (
             <div
               key={guide.key}
-              className="group relative w-[280px] shrink-0 cursor-pointer overflow-hidden rounded-3xl bg-white transition-shadow duration-300 hover:shadow-lg md:w-[350px] lg:w-[400px]"
+              className={`relative h-[325px] w-[260px] shrink-0 cursor-pointer overflow-hidden rounded-3xl shadow-md transition-shadow duration-300 hover:shadow-xl md:h-[375px] md:w-[300px] lg:h-[437px] lg:w-[350px] ${guide.dark ? "bg-gray-900" : "bg-white"}`}
             >
               {/* Image - full card */}
-              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-b-3xl">
+              {guide.image ? (
                 <Image
                   src={guide.image}
                   alt={t(`guides.${guide.key}.title`)}
                   fill
-                  className="object-contain object-bottom"
-                  sizes="(max-width: 768px) 320px, (max-width: 1024px) 440px, 520px"
+                  className={guide.dark ? "object-cover" : "object-contain object-bottom"}
+                  sizes="(max-width: 768px) 260px, (max-width: 1024px) 300px, 350px"
                 />
-              </div>
+              ) : null}
 
               {/* Text overlay - top left */}
-              <div className="absolute left-0 top-0 p-6 md:p-8">
-                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.15em] text-gray-500">
+              <div className="absolute left-0 top-0 p-5 md:p-6">
+                <p className={`mb-2 text-xs font-semibold uppercase tracking-[0.15em] ${guide.dark ? "text-gray-400" : "text-gray-500"}`}>
                   {t(`guides.${guide.key}.tag`)}
                 </p>
-                <h3 className="text-xl font-bold leading-snug text-gray-900 md:text-2xl">
+                <h3 className={`text-lg font-bold leading-snug md:text-xl ${guide.dark ? "text-white" : "text-gray-900"}`}>
                   {t(`guides.${guide.key}.title`)}
                 </h3>
+                {guide.hasSubtitle && (
+                  <p className={`mt-2 text-xs md:text-sm ${guide.dark ? "text-gray-300" : "text-gray-500"}`}>
+                    {t(`guides.${guide.key}.subtitle`)}
+                  </p>
+                )}
               </div>
             </div>
           ))}

@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { HeroSection, PromoDeals, ShoppingGuides, BrandValues } from "@/components/home";
+import { HeroSection, PromoDeals, ShoppingGuides, GradeExplainer, BrandValues } from "@/components/home";
 import { ProductGrid } from "@/components/products/ProductGrid";
 import { getModels, getModelOptions, getModelPrices } from "@/lib/api/products";
 import { apiModelToProduct } from "@/lib/api/transformers";
@@ -52,9 +52,12 @@ export default async function HomePage({ params }: HomePageProps) {
       {/* Shopping Guides */}
       <ShoppingGuides />
 
+      {/* Grade Explainer */}
+      <GradeExplainer />
+
       {/* Featured Products */}
       {featuredProducts.length > 0 && (
-        <section className="bg-white py-12 md:py-16">
+        <section className="py-12 md:py-16">
           <div className="mx-auto max-w-7xl px-4">
             <h2 className="mb-8 font-display text-2xl font-bold text-gray-900 md:text-3xl">
               {t("bestDeals")}

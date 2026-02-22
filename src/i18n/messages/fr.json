@@ -40,8 +40,10 @@
     "smartphones": "Smartphones",
     "tablets": "Tablettes",
     "laptops": "Ordinateurs portables",
+    "laptopsShort": "Ordinateurs",
     "consoles": "Consoles",
     "smartwatches": "Montres connectees",
+    "smartwatchesShort": "Montres",
     "audio": "Audio",
     "appliances": "Appareils electromenagers",
     "android": "Android",
@@ -86,7 +88,9 @@
   },
   "home": {
     "hero": {
-      "title": "Achetez vite, achetez bien.\nAu bon prix.",
+      "title": "Acheter.\nAu bon prix.",
+      "titleBlack": "Acheter.",
+      "titleGreen": "Au bon prix.",
       "subtitle": "Des smartphones reconditionnes, testes et garantis. Moins cher, plus responsable.",
       "subtitlePrefix": "Moins cher et aussi performant que le neuf grace au ",
       "qualityPactLink": "Pacte Qualite DBC",
@@ -146,8 +150,56 @@
       },
       "advice": {
         "tag": "Conseil personnalise",
-        "title": "Besoin d'un conseil ? Nos experts sont la pour vous.",
+        "title": "Nos experts sont la pour vous.",
         "description": "Un appel suffit. Nos conseillers vous guident dans votre choix selon vos besoins et votre budget."
+      },
+      "shipping": {
+        "tag": "Livraison",
+        "title": "Enfin. Dans toute l'Ile-de-France en moins de 2h."
+      },
+      "shippingEurope": {
+        "tag": "Livraison",
+        "title": "Dans toute l'Europe."
+      }
+    },
+    "grades": {
+      "title": "Nos grades expliques.",
+      "subtitle": "Chaque telephone est teste, verifie et classe selon son etat. Trouvez celui qui vous correspond.",
+      "imageExample": "Exemple d'image",
+      "badges": {
+        "compatibleParts": "Ecran et batterie compatibles",
+        "noFaceId": "Face ID peut etre absent",
+        "fewTraces": "Peu de traces d'usure",
+        "appleScreen": "Ecran d'origine Apple",
+        "fullyFunctional": "Parfaitement fonctionnel",
+        "minorTraces": "Quelques rayures visibles",
+        "noWear": "Aucune trace d'usure",
+        "verifiedParts": "Pieces verifiees",
+        "idealGift": "Ideal pour offrir"
+      },
+      "imparfait": {
+        "section": "Ecran",
+        "name": "Imparfait",
+        "description": "Ecran ou batterie echange avec des pieces compatibles.",
+        "warranty": "Garantie 12 mois."
+      },
+      "correct": {
+        "section": "Ecran",
+        "name": "Correct",
+        "description": "Pour ceux qui veulent une tres bonne affaire.",
+        "warranty": "Garantie 12 mois."
+      },
+      "tresBon": {
+        "section": "Ecran",
+        "name": "Tres bon",
+        "description": "Quelques rayures visibles a l'oeil nu. Parfaitement fonctionnel.",
+        "warranty": "Garantie 12 mois."
+      },
+      "parfait": {
+        "section": "Ecran",
+        "name": "Parfait",
+        "description": "La meilleure qualite. Tres proche du neuf, etat impeccable.",
+        "warranty": "Garantie 24 mois."
       }
     },
     "bestDeals": "Nos meilleures offres"

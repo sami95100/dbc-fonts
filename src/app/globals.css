@@ -139,7 +139,7 @@
   --color-black: #000000;
 
   /* Semantic colors */
-  --color-background: #FFFFFF;
+  --color-background: #F5F5F5;
   --color-foreground: #000000;
   --color-muted: #F5F5F5;
   --color-muted-foreground: #454745;
@@ -170,6 +170,10 @@
   --font-sans: 'General Sans', system-ui, sans-serif;
   --font-display: 'Almarena Neue Display', 'General Sans', system-ui, sans-serif;
   --font-mono: monospace;
+}
+
+html {
+  background-color: #F5F5F5 !important;
 }
 
 body {

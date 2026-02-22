@@ -40,8 +40,10 @@
     "smartphones": "Smartphones",
     "tablets": "Tablets",
     "laptops": "Laptops",
+    "laptopsShort": "Laptops",
     "consoles": "Consoles",
     "smartwatches": "Smartwatches",
+    "smartwatchesShort": "Watches",
     "audio": "Audio",
     "appliances": "Home appliances",
     "android": "Android",
@@ -87,6 +89,8 @@
   "home": {
     "hero": {
       "title": "Buy fast, buy smart.\nAt the right price.",
+      "titleBlack": "Buy fast, buy smart.",
+      "titleGreen": "At the right price.",
       "subtitle": "Refurbished smartphones, tested and guaranteed. Cheaper, more responsible.",
       "subtitlePrefix": "Cheaper and as powerful as new thanks to our ",
       "qualityPactLink": "DBC Quality Pact",
@@ -146,8 +150,56 @@
       },
       "advice": {
         "tag": "Personalised advice",
-        "title": "Need advice? Our experts are here for you.",
+        "title": "Our experts are here for you.",
         "description": "One call is all it takes. Our advisors guide you based on your needs and budget."
+      },
+      "shipping": {
+        "tag": "Delivery",
+        "title": "Finally. Across the whole of Ile-de-France in under 2h."
+      },
+      "shippingEurope": {
+        "tag": "Delivery",
+        "title": "Across all of Europe."
+      }
+    },
+    "grades": {
+      "title": "Our grades explained.",
+      "subtitle": "Every phone is tested, verified and classified by condition. Find the one that suits you.",
+      "imageExample": "Image example",
+      "badges": {
+        "compatibleParts": "Compatible screen and battery",
+        "noFaceId": "Face ID may be absent",
+        "fewTraces": "Few traces of wear",
+        "appleScreen": "Original Apple screen",
+        "fullyFunctional": "Fully functional",
+        "minorTraces": "Some visible scratches",
+        "noWear": "No traces of wear",
+        "verifiedParts": "Verified parts",
+        "idealGift": "Ideal as a gift"
+      },
+      "imparfait": {
+        "section": "Screen",
+        "name": "Imperfect",
+        "description": "Screen or battery replaced with compatible parts.",
+        "warranty": "12-month warranty."
+      },
+      "correct": {
+        "section": "Screen",
+        "name": "Good",
+        "description": "For those looking for a great deal.",
+        "warranty": "12-month warranty."
+      },
+      "tresBon": {
+        "section": "Screen",
+        "name": "Very good",
+        "description": "Some scratches visible to the naked eye. Fully functional.",
+        "warranty": "12-month warranty."
+      },
+      "parfait": {
+        "section": "Screen",
+        "name": "Excellent",
+        "description": "The best quality. Very close to new, impeccable condition.",
+        "warranty": "24-month warranty."
       }
     },
     "bestDeals": "Our best deals"

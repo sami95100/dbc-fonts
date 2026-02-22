@@ -10,7 +10,7 @@ export function Footer() {
   return (
     <footer>
       {/* Trust bar */}
-      <div className="border-y border-gray-200 bg-white py-8">
+      <div className="border-y border-gray-200 py-8">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 md:grid-cols-4">
           <div className="flex items-start gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-highlight/10">

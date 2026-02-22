@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
@@ -70,9 +70,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  viewportFit: "cover",
+};
+
 export const metadata: Metadata = {
   title: "DBC - Telephones Reconditionnes",
   description: "Telephones reconditionnes premium avec garantie 12 mois",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+  },
 };
 
 interface LocaleLayoutProps {
@@ -93,9 +101,12 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className="bg-gray-100">
+      <head>
+        <meta name="theme-color" content="#F5F5F5" />
+      </head>
       <body
-        className={cn(almarenaNeue.variable, generalSans.variable, geistMono.variable, "font-sans antialiased")}
+        className={cn(almarenaNeue.variable, generalSans.variable, geistMono.variable, "font-sans antialiased bg-gray-100")}
       >
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>{children}</AuthProvider>

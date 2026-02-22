@@ -11,7 +11,7 @@ interface PolicyPageProps {
 
 export function PolicyPage({ locale, title, backLabel, lastUpdated, children }: PolicyPageProps) {
   return (
-    <div className="bg-white py-12 md:py-16">
+    <div className="py-12 md:py-16">
       <div className="mx-auto max-w-3xl px-4">
         <Link
           href={`/${locale}`}

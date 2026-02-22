@@ -10,7 +10,9 @@ interface ShopLayoutProps {
 
 export default function ShopLayout({ children }: ShopLayoutProps) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="relative flex min-h-screen flex-col bg-gray-100">
+      {/* Always-on sticky element for Safari iOS status bar color */}
+      <div className="pointer-events-none sticky top-0 z-[-1] -mb-16 h-16 bg-gray-100" aria-hidden="true" />
       <Toaster position="top-right" richColors />
       <TopBar />
       <Header />

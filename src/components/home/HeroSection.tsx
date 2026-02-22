@@ -8,11 +8,11 @@ import { useRef, useState, useEffect, useCallback } from "react";
 
 const CATEGORIES = [
   { slug: "smartphones", key: "iphone", count: 150, image: "/iphonepro-removebg-preview.png" },
-  { slug: "android", key: "android", count: 90, image: "/android.png", imageScale: "scale-[0.55]", imageHover: "group-hover:scale-[0.566]" },
+  { slug: "android", key: "android", count: 90, image: "/android.png" },
   { slug: "tablets", key: "tablets", count: 45, image: "/ipadpro-removebg-preview.png" },
-  { slug: "laptops", key: "laptops", count: 60, image: "/macpro-removebg-preview.png" },
-  { slug: "smartwatches", key: "smartwatches", count: 30, image: "/apple watch 1.png" },
-  { slug: "accessories", key: "accessories", count: 25, image: "/accesoire.png", imageScale: "scale-[0.7]", imageHover: "group-hover:scale-[0.72]" },
+  { slug: "laptops", key: "laptops", label: "laptopsShort", count: 60, image: "/macpro-removebg-preview.png" },
+  { slug: "smartwatches", key: "smartwatches", label: "smartwatchesShort", count: 30, image: "/apple watch 1.png" },
+  { slug: "accessories", key: "accessories", count: 25, image: "/accesoire.png" },
 ] as const;
 
 export function HeroSection() {
@@ -53,12 +53,13 @@ export function HeroSection() {
   };
 
   return (
-    <section className="bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-8 md:py-12 lg:py-16">
-        {/* Header row */}
-        <div className="mb-8 flex flex-col gap-4 md:mb-12 md:flex-row md:items-start md:justify-between">
+    <section className="py-8 md:py-12 lg:py-16">
+      {/* Header row */}
+      <div className="mx-auto mb-8 max-w-7xl px-4 md:mb-12">
+        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <h1 className="whitespace-pre-line text-4xl font-bold tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
-            {t("hero.title")}
+            {t("hero.titleBlack")}{"\n"}
+            <span className="text-green-400">{t("hero.titleGreen")}</span>
           </h1>
           <div className="flex flex-col gap-2 md:items-end md:pt-2">
             <Link
@@ -77,63 +78,63 @@ export function HeroSection() {
             </Link>
           </div>
         </div>
+      </div>
 
-        {/* Carousel */}
-        <div className="relative">
-          {/* Left arrow */}
-          <button
-            onClick={() => scroll("left")}
-            className={`absolute -left-3 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm transition-opacity hover:bg-gray-50 md:flex ${
-              canScrollLeft ? "opacity-100" : "pointer-events-none opacity-0"
-            }`}
-            aria-label={t("hero.previous")}
-          >
-            <ChevronLeft className="h-5 w-5 text-gray-600" />
-          </button>
+      {/* Carousel - full width */}
+      <div className="relative">
+        {/* Left arrow */}
+        <button
+          onClick={() => scroll("left")}
+          className={`absolute left-4 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm transition-opacity hover:bg-gray-50 md:flex ${
+            canScrollLeft ? "opacity-100" : "pointer-events-none opacity-0"
+          }`}
+          aria-label={t("hero.previous")}
+        >
+          <ChevronLeft className="h-5 w-5 text-gray-600" />
+        </button>
 
-          {/* Scroll container */}
-          <div
-            ref={scrollRef}
-            className="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide md:overflow-hidden"
-          >
-            {CATEGORIES.map((cat) => (
-              <Link
-                key={cat.slug}
-                href={`/${locale}/products/${cat.slug}`}
-                className="group flex w-[150px] shrink-0 flex-col rounded-lg md:w-[170px] lg:w-[190px]"
-              >
-                <div className="relative aspect-square w-full overflow-hidden">
-                  <Image
-                    src={cat.image}
-                    alt={tCat(cat.key)}
-                    fill
-                    className={`object-contain transition-transform duration-300 ${"imageScale" in cat && cat.imageScale ? cat.imageScale + " " + ("imageHover" in cat && cat.imageHover ? cat.imageHover : "") : "group-hover:scale-[1.03]"}`}
-                    sizes="(max-width: 768px) 150px, (max-width: 1024px) 170px, 190px"
-                  />
-                </div>
-                <div className="py-3 text-center">
-                  <p className="text-sm font-bold text-gray-900">
-                    {tCat(cat.key)}
-                  </p>
-                  <p className="mt-0.5 text-sm text-green-700">
-                    {cat.count}+ {t("hero.available")}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          {/* Right arrow */}
-          <button
-            onClick={() => scroll("right")}
-            className={`absolute -right-3 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm transition-opacity hover:bg-gray-50 md:flex ${
-              canScrollRight ? "opacity-100" : "pointer-events-none opacity-0"
-            }`}
-            aria-label={t("hero.next")}
-          >
-            <ChevronRight className="h-5 w-5 text-gray-600" />
-          </button>
+        {/* Scroll container */}
+        <div
+          ref={scrollRef}
+          className="flex items-end gap-4 overflow-x-auto scroll-smooth px-4 scrollbar-hide md:px-8"
+        >
+          {CATEGORIES.map((cat) => (
+            <Link
+              key={cat.slug}
+              href={`/${locale}/products/${cat.slug}`}
+              className="group flex w-[117px] shrink-0 flex-col md:w-[137px] lg:w-[157px]"
+            >
+              <div className="relative aspect-square w-full overflow-hidden">
+                <Image
+                  src={cat.image}
+                  alt={tCat(cat.key)}
+                  fill
+                  className="object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                  sizes="(max-width: 768px) 117px, (max-width: 1024px) 137px, 157px"
+                />
+              </div>
+              <div className="py-2 text-center">
+                <p className="text-xs font-bold text-gray-900">
+                  {tCat("label" in cat && cat.label ? cat.label : cat.key)}
+                </p>
+                <p className="mt-0.5 text-xs text-green-700">
+                  {cat.count}+ {t("hero.available")}
+                </p>
+              </div>
+            </Link>
+          ))}
         </div>
+
+        {/* Right arrow */}
+        <button
+          onClick={() => scroll("right")}
+          className={`absolute right-4 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm transition-opacity hover:bg-gray-50 md:flex ${
+            canScrollRight ? "opacity-100" : "pointer-events-none opacity-0"
+          }`}
+          aria-label={t("hero.next")}
+        >
+          <ChevronRight className="h-5 w-5 text-gray-600" />
+        </button>
       </div>
     </section>
   );
