@@ -736,6 +736,29 @@
     "verified": "Verified purchase",
     "reviewImage": "Review photo"
   },
+  "reviewRequest": {
+    "pageTitle": "Leave a review",
+    "subtitle": "Your opinion matters! Help other customers make their choice.",
+    "orderLabel": "Order",
+    "ratingLabel": "Your rating",
+    "titleLabel": "Title (optional)",
+    "titlePlaceholder": "Summarize your experience in a few words",
+    "contentLabel": "Comment (optional)",
+    "contentPlaceholder": "Share your experience with this product...",
+    "submit": "Submit my reviews",
+    "submitting": "Submitting...",
+    "successTitle": "Thank you for your reviews!",
+    "successMessage": "Your reviews have been saved. They will help other customers make their choice.",
+    "backToHome": "Back to home",
+    "alreadyReviewed": "You have already reviewed this order.",
+    "alreadyReviewedMessage": "Thank you! Your reviews are visible on product pages.",
+    "errorInvalidLink": "Invalid or expired link.",
+    "errorOrderNotFound": "Order not found.",
+    "errorGeneric": "An error occurred. Please try again.",
+    "errorMinRating": "Please rate at least one product.",
+    "loading": "Loading your products...",
+    "starLabel": "{count} star(s)"
+  },
   "account": {
     "login": {
       "title": "Sign in",

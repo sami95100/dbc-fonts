@@ -736,6 +736,29 @@
     "verified": "Achat verifie",
     "reviewImage": "Photo de l'avis"
   },
+  "reviewRequest": {
+    "pageTitle": "Donnez votre avis",
+    "subtitle": "Votre avis compte ! Aidez les autres clients a faire leur choix.",
+    "orderLabel": "Commande",
+    "ratingLabel": "Votre note",
+    "titleLabel": "Titre (optionnel)",
+    "titlePlaceholder": "Resumez votre experience en quelques mots",
+    "contentLabel": "Commentaire (optionnel)",
+    "contentPlaceholder": "Partagez votre experience avec ce produit...",
+    "submit": "Envoyer mes avis",
+    "submitting": "Envoi en cours...",
+    "successTitle": "Merci pour vos avis !",
+    "successMessage": "Vos avis ont bien ete enregistres. Ils aideront d'autres clients a faire leur choix.",
+    "backToHome": "Retour a l'accueil",
+    "alreadyReviewed": "Vous avez deja donne votre avis pour cette commande.",
+    "alreadyReviewedMessage": "Merci ! Vos avis sont visibles sur les fiches produits.",
+    "errorInvalidLink": "Lien invalide ou expire.",
+    "errorOrderNotFound": "Commande introuvable.",
+    "errorGeneric": "Une erreur est survenue. Veuillez reessayer.",
+    "errorMinRating": "Veuillez noter au moins un produit.",
+    "loading": "Chargement de vos produits...",
+    "starLabel": "{count} etoile(s)"
+  },
   "account": {
     "login": {
       "title": "Connexion",
