@@ -5,14 +5,15 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect, useCallback } from "react";
+import { useInView } from "@/hooks/useInView";
 
 const CATEGORIES = [
-  { slug: "smartphones", key: "iphone", count: 150, image: "/iphonepro-removebg-preview.png" },
-  { slug: "android", key: "android", count: 90, image: "/android.png" },
-  { slug: "tablets", key: "tablets", count: 45, image: "/ipadpro-removebg-preview.png" },
-  { slug: "laptops", key: "laptops", label: "laptopsShort", count: 60, image: "/macpro-removebg-preview.png" },
-  { slug: "smartwatches", key: "smartwatches", label: "smartwatchesShort", count: 30, image: "/apple watch 1.png" },
-  { slug: "accessories", key: "accessories", count: 25, image: "/accesoire.png" },
+  { slug: "smartphones", key: "iphone", count: 150, image: "/iphonepro-removebg-preview.png", imageScale: "scale-100" },
+  { slug: "android", key: "android", count: 90, image: "/android.png", imageScale: "scale-[0.80]" },
+  { slug: "tablets", key: "tablets", count: 45, image: "/ipadpro-removebg-preview.png", imageScale: "scale-100" },
+  { slug: "laptops", key: "laptops", label: "laptopsShort", count: 60, image: "/macpro-removebg-preview.png", imageScale: "scale-100" },
+  { slug: "smartwatches", key: "smartwatches", label: "smartwatchesShort", count: 30, image: "/apple watch 1.png", imageScale: "scale-100" },
+  { slug: "accessories", key: "accessories", count: 25, image: "/accesoire.png", imageScale: "scale-[0.85]" },
 ] as const;
 
 export function HeroSection() {
@@ -22,6 +23,7 @@ export function HeroSection() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const { ref: inViewRef, isInView } = useInView();
 
   const checkScroll = useCallback(() => {
     const el = scrollRef.current;
@@ -53,34 +55,32 @@ export function HeroSection() {
   };
 
   return (
-    <section className="py-8 md:py-12 lg:py-16">
+    <section ref={inViewRef} className={`pt-16 pb-8 md:pt-20 md:pb-12 lg:pt-24 lg:pb-16 transition-[opacity,transform] duration-[0.6s] ease-[cubic-bezier(0.25,0.1,0.25,1)] will-change-[opacity,transform] ${isInView ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}>
       {/* Header row */}
-      <div className="mx-auto mb-8 max-w-7xl px-4 md:mb-12">
-        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <h1 className="whitespace-pre-line text-4xl font-bold tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
-            {t("hero.titleBlack")}{"\n"}
-            <span className="text-green-400">{t("hero.titleGreen")}</span>
-          </h1>
-          <div className="flex flex-col gap-2 md:items-end md:pt-2">
-            <Link
-              href={`/${locale}/account`}
-              className="group inline-flex items-center gap-1 text-sm font-medium text-green-700 hover:text-green-800"
-            >
-              {t("hero.proAccount")}
-              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-            </Link>
-            <Link
-              href={`/${locale}/products`}
-              className="group inline-flex items-center gap-1 text-sm font-medium text-green-700 hover:text-green-800"
-            >
-              {t("hero.catalog")}
-              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-            </Link>
-          </div>
+      <div className="mx-auto mb-8 max-w-[980px] px-[22px] md:mb-10 md:px-[44px] lg:px-0">
+        <h1 className="whitespace-pre-line text-4xl font-bold tracking-tight text-gray-900 md:text-[48px] md:leading-[1.07] lg:text-[56px]">
+          {t("hero.titleBlack")}{"\n"}
+          <span className="text-green-400">{t("hero.titleGreen")}</span>
+        </h1>
+        <div className="mt-4 flex flex-col gap-2 md:mt-6 md:flex-row md:gap-6">
+          <Link
+            href={`/${locale}/account`}
+            className="group inline-flex items-center gap-1 text-sm font-medium text-green-700 hover:text-green-800 md:text-base"
+          >
+            {t("hero.proAccount")}
+            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </Link>
+          <Link
+            href={`/${locale}/products`}
+            className="group inline-flex items-center gap-1 text-sm font-medium text-green-700 hover:text-green-800 md:text-base"
+          >
+            {t("hero.catalog")}
+            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </Link>
         </div>
       </div>
 
-      {/* Carousel - full width */}
+      {/* Carousel */}
       <div className="relative">
         {/* Left arrow */}
         <button
@@ -93,31 +93,33 @@ export function HeroSection() {
           <ChevronLeft className="h-5 w-5 text-gray-600" />
         </button>
 
-        {/* Scroll container */}
+        {/* Scroll container — 3 visible + 4th cut in half on mobile */}
         <div
           ref={scrollRef}
-          className="flex items-end gap-4 overflow-x-auto scroll-smooth px-4 scrollbar-hide md:px-8"
+          className="flex items-end gap-4 overflow-x-auto px-[22px] scrollbar-hide md:gap-6 md:px-[44px] lg:justify-center lg:gap-8 lg:px-[calc((100vw-980px)/2)]"
+          style={{ WebkitOverflowScrolling: "touch" }}
         >
           {CATEGORIES.map((cat) => (
             <Link
               key={cat.slug}
               href={`/${locale}/products/${cat.slug}`}
-              className="group flex w-[117px] shrink-0 flex-col md:w-[137px] lg:w-[157px]"
+              className="group flex w-[calc((100vw-92px)/3.5)] shrink-0 flex-col md:w-[150px] lg:w-[140px]"
             >
-              <div className="relative aspect-square w-full overflow-hidden">
+              <div className="relative aspect-[4/3] w-full overflow-hidden md:aspect-square">
                 <Image
                   src={cat.image}
                   alt={tCat(cat.key)}
                   fill
-                  className="object-contain transition-transform duration-300 group-hover:scale-[1.03]"
-                  sizes="(max-width: 768px) 117px, (max-width: 1024px) 137px, 157px"
+                  unoptimized
+                  className={`object-contain transition-transform duration-300 group-hover:scale-[1.03] ${cat.imageScale}`}
+                  sizes="(max-width: 768px) 120px, (max-width: 1024px) 180px, 200px"
                 />
               </div>
-              <div className="py-2 text-center">
-                <p className="text-xs font-bold text-gray-900">
+              <div className="pt-3 text-center md:pt-2">
+                <p className="text-[14px] font-semibold text-gray-900 md:text-[15px]">
                   {tCat("label" in cat && cat.label ? cat.label : cat.key)}
                 </p>
-                <p className="mt-0.5 text-xs text-green-700">
+                <p className="mt-1 text-[12px] text-gray-500">
                   {cat.count}+ {t("hero.available")}
                 </p>
               </div>

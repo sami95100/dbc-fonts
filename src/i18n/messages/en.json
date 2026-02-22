@@ -21,7 +21,13 @@
     "physicalStores": "DBC isn't just a website — it's 11 physical stores."
   },
   "search": {
-    "placeholder": "Search for a product"
+    "placeholder": "Search for a product",
+    "quickLinks": "Quick links",
+    "suggestedSearches": "Suggested searches",
+    "noResults": "No results for",
+    "noResultsSub": "Try another term or explore our categories.",
+    "resultsFor": "Results for",
+    "close": "Close search"
   },
   "nav": {
     "home": "Home",
@@ -84,7 +90,11 @@
     "flashSale": "FLASH SALE",
     "message": "3 days: -35€ on EliteBook 840 G7",
     "cta": "Shop now",
-    "badge": "Promo"
+    "badge": "Promo",
+    "paypal": {
+      "message": "Pay in 4 interest-free installments with PayPal.\nTrade in your old device to reduce the cost.",
+      "cta": "Learn more"
+    }
   },
   "home": {
     "hero": {
@@ -116,6 +126,7 @@
     },
     "values": {
       "title": "Why DBC?",
+      "titleAccent": "Our commitments.",
       "access": {
         "title": "Opening doors for everyone",
         "description": "Making technology accessible to all, with no compromise on the environment or budget."
@@ -134,7 +145,7 @@
       }
     },
     "promoDeals": {
-      "title": "Today's best deals.",
+      "title": "Best deals.",
       "titleAccent": "Don't miss out.",
       "from": "From",
       "buy": "Buy"
@@ -164,6 +175,7 @@
     },
     "grades": {
       "title": "Our grades explained.",
+      "titleAccent": "Find the one that suits you.",
       "subtitle": "Every phone is tested, verified and classified by condition. Find the one that suits you.",
       "imageExample": "Image example",
       "badges": {
@@ -202,7 +214,54 @@
         "warranty": "24-month warranty."
       }
     },
-    "bestDeals": "Our best deals"
+    "bestDeals": "Our best deals.",
+    "bestDealsAccent": "Selected for you.",
+    "services": {
+      "title": "Our services",
+      "titleAccent": "What we do for you.",
+      "sale": {
+        "tag": "Sales",
+        "title": "Refurbished smartphones at the best price"
+      },
+      "repair": {
+        "tag": "Repair",
+        "title": "We repair your device in store"
+      },
+      "tradeIn": {
+        "tag": "Trade-in",
+        "title": "Sell your old phone at the best price"
+      }
+    },
+    "stores": {
+      "title": "Our stores.",
+      "titleAccent": "Always near you.",
+      "rosny2": { "name": "DBC Rosny2" },
+      "paris17": { "name": "DBC Paris 17" },
+      "paris12": { "name": "DBC Paris 12" },
+      "lille": { "name": "DBC Lille" },
+      "bruxelles": { "name": "DBC Brussels" },
+      "marseille": { "name": "DBC Marseille" },
+      "laValentine": { "name": "DBC La Valentine" },
+      "toulouse": { "name": "DBC Toulouse" },
+      "bordeaux": { "name": "DBC Bordeaux" },
+      "openUntil": "Open until {time}",
+      "opensAt": "Opens at {time}",
+      "closed": "Closed",
+      "today": "Today",
+      "back": "Back",
+      "openingHours": "Opening hours",
+      "addressLabel": "Address",
+      "openInMaps": "Open in Maps",
+      "days": {
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat",
+        "sun": "Sun"
+      }
+    }
   },
   "products": {
     "title": "Our refurbished products",
@@ -345,8 +404,16 @@
   },
   "cart": {
     "title": "Your cart",
-    "emptyTitle": "Your cart is empty",
+    "emptyTitle": "Your cart is empty.",
     "emptyDescription": "Browse our catalog to find your next device.",
+    "signInPrompt": "Sign in to check if you have saved items in your selection.",
+    "signInLink": "Sign in",
+    "signInPromptSuffix": " to check if you have saved items in your selection.",
+    "myProfile": "My profile",
+    "orders": "Orders",
+    "savedItems": "Your saved items",
+    "accountLink": "Account",
+    "signIn": "Sign in",
     "browseProducts": "Browse products",
     "continueShopping": "Continue shopping",
     "summary": "Summary",

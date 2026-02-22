@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { DoorOpen, Users, Zap, Leaf } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useInView } from "@/hooks/useInView";
 
 const VALUES = [
   { key: "access", icon: DoorOpen, color: "bg-highlight/10 text-highlight" },
@@ -14,34 +14,32 @@ const VALUES = [
 
 export function BrandValues() {
   const t = useTranslations("home.values");
+  const { ref, isInView } = useInView();
 
   return (
-    <section className="bg-gray-50 py-16 md:py-20">
+    <section ref={ref} className={`py-8 md:py-12 lg:py-16 transition-all duration-700 ease-out ${isInView ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"}`}>
       <div className="mx-auto max-w-7xl px-4">
-        <h2 className="mb-2 text-center font-display text-3xl font-bold text-gray-900 md:text-4xl">
-          {t("title")}
+        <h2 className="mb-8 text-[28px] font-bold leading-tight tracking-tight text-gray-900 md:mb-10 md:text-[32px] lg:text-[36px]">
+          {t("title")}{" "}
+          <span className="font-normal text-gray-500">{t("titleAccent")}</span>
         </h2>
-        <Image
-          src="/images/brand/brush-underline.svg"
-          alt=""
-          width={624}
-          height={71}
-          className="mx-auto mb-12 h-2 w-32 object-contain opacity-30"
-          aria-hidden="true"
-        />
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {VALUES.map(({ key, icon: Icon, color }) => (
+          {VALUES.map(({ key, icon: Icon, color }, index) => (
             <div
               key={key}
               className={cn(
-                "group rounded-2xl border border-gray-200 bg-white p-6",
-                "transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5"
+                "group rounded-3xl border border-gray-200 bg-white p-6",
+                "transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5",
+                isInView && "animate-fade-in-up",
+                isInView && index === 1 && "animate-delay-100",
+                isInView && index === 2 && "animate-delay-200",
+                isInView && index === 3 && "animate-delay-300",
               )}
             >
               <div
                 className={cn(
-                  "mb-4 flex h-12 w-12 items-center justify-center rounded-xl",
+                  "mb-4 flex h-14 w-14 items-center justify-center rounded-2xl",
                   color
                 )}
               >

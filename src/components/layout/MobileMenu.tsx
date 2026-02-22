@@ -19,7 +19,6 @@ export function MobileMenu() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Handle open/close with animation
   const handleOpen = () => {
     setOpen(true);
     requestAnimationFrame(() => setVisible(true));
@@ -27,7 +26,7 @@ export function MobileMenu() {
 
   const handleClose = () => {
     setVisible(false);
-    setTimeout(() => setOpen(false), 300);
+    setTimeout(() => setOpen(false), 400);
   };
 
   // Lock body scroll when open
@@ -51,66 +50,92 @@ export function MobileMenu() {
   const overlay = open ? (
     <div
       className={cn(
-        "fixed inset-0 z-[9999] h-full bg-white transition-transform duration-300 ease-out overflow-hidden",
-        visible ? "translate-y-0" : "translate-y-full"
+        "fixed inset-0 z-[9999] flex flex-col bg-white transition-all duration-400 ease-out",
+        visible ? "opacity-100" : "opacity-0"
       )}
     >
-      {/* Close button - top left */}
-      <div className="flex justify-start px-3 pt-3">
+      {/* Close button - top right (Apple style) */}
+      <div className="flex justify-end px-5 pt-4">
         <button
           type="button"
           onClick={handleClose}
-          className="p-2 text-gray-900"
+          className="p-2 text-gray-500 transition-colors hover:text-gray-900"
           aria-label="Fermer"
         >
-          <X className="h-6 w-6" />
+          <X className="h-6 w-6" strokeWidth={1.5} />
         </button>
       </div>
 
-      {/* Navigation links */}
-      <nav className="flex flex-col gap-1 overflow-y-auto px-6 pt-2 pb-8">
-        {/* Home */}
-        <Link
-          href={`/${locale}`}
-          onClick={handleClose}
-          className="py-2 text-2xl font-bold text-gray-900"
-        >
-          {t("home")}
-        </Link>
-
-        {/* Categories */}
-        {CATEGORIES.map((cat) => (
-          <Link
-            key={cat.id}
-            href={`/${locale}/products/${cat.slug}`}
-            onClick={handleClose}
-            className="py-2 text-2xl font-bold text-gray-900"
-          >
-            {tc(cat.slug)}
-          </Link>
-        ))}
+      {/* Navigation links - Apple style staggered fade-in */}
+      <nav className="flex-1 overflow-y-auto px-8 pt-4 pb-8 md:px-12">
+        {/* Primary links - categories */}
+        <div className="flex flex-col">
+          {CATEGORIES.map((cat, index) => (
+            <Link
+              key={cat.id}
+              href={`/${locale}/products/${cat.slug}`}
+              onClick={handleClose}
+              className={cn(
+                "border-b border-gray-100 py-3 font-display text-[28px] font-semibold text-gray-900 transition-all duration-500 ease-out hover:text-gray-500 md:text-[32px]",
+                visible
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-4 opacity-0"
+              )}
+              style={{ transitionDelay: visible ? `${(index + 1) * 50}ms` : "0ms" }}
+            >
+              {tc(cat.slug)}
+            </Link>
+          ))}
+        </div>
 
         {/* Divider */}
-        <div className="my-4 border-t border-gray-200" />
+        <div className="my-6 border-t border-gray-200" />
 
-        {/* Secondary links */}
-        <Link
-          href={`/${locale}/help`}
-          onClick={handleClose}
-          className="py-2 text-lg text-gray-500"
-        >
-          {t("help")}
-        </Link>
-        <Link
-          href={`/${locale}/account`}
-          onClick={handleClose}
-          className="py-2 text-lg text-gray-500"
-        >
-          {t("account")}
-        </Link>
+        {/* Secondary links - smaller, gray (Apple style) */}
+        <div className="flex flex-col gap-3">
+          <Link
+            href={`/${locale}`}
+            onClick={handleClose}
+            className={cn(
+              "text-lg font-medium text-gray-500 transition-all duration-500 ease-out hover:text-gray-900",
+              visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
+            )}
+            style={{ transitionDelay: visible ? `${(CATEGORIES.length + 1) * 50}ms` : "0ms" }}
+          >
+            {t("home")}
+          </Link>
+          <Link
+            href={`/${locale}/account`}
+            onClick={handleClose}
+            className={cn(
+              "text-lg font-medium text-gray-500 transition-all duration-500 ease-out hover:text-gray-900",
+              visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
+            )}
+            style={{ transitionDelay: visible ? `${(CATEGORIES.length + 2) * 50}ms` : "0ms" }}
+          >
+            {t("account")}
+          </Link>
+          <Link
+            href={`/${locale}/help`}
+            onClick={handleClose}
+            className={cn(
+              "text-lg font-medium text-gray-500 transition-all duration-500 ease-out hover:text-gray-900",
+              visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
+            )}
+            style={{ transitionDelay: visible ? `${(CATEGORIES.length + 3) * 50}ms` : "0ms" }}
+          >
+            {t("help")}
+          </Link>
+        </div>
 
         {/* Language switcher */}
-        <div className="mt-6 flex gap-3">
+        <div
+          className={cn(
+            "mt-8 flex gap-3 transition-all duration-500 ease-out",
+            visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
+          )}
+          style={{ transitionDelay: visible ? `${(CATEGORIES.length + 4) * 50}ms` : "0ms" }}
+        >
           <button
             type="button"
             onClick={() => switchLanguage("fr")}
@@ -118,7 +143,7 @@ export function MobileMenu() {
               "rounded-full px-5 py-2 text-sm font-medium transition-colors",
               locale === "fr"
                 ? "bg-gray-900 text-white"
-                : "bg-gray-100 text-gray-700"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             )}
           >
             FR
@@ -130,7 +155,7 @@ export function MobileMenu() {
               "rounded-full px-5 py-2 text-sm font-medium transition-colors",
               locale === "en"
                 ? "bg-gray-900 text-white"
-                : "bg-gray-100 text-gray-700"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             )}
           >
             EN
@@ -141,11 +166,11 @@ export function MobileMenu() {
   ) : null;
 
   return (
-    <div className="relative z-10 md:hidden">
+    <div className="relative z-10">
       {/* Hamburger button */}
       <button
         type="button"
-        className="p-2 text-gray-900"
+        className="p-2.5 text-gray-900 transition-colors hover:text-gray-500"
         aria-label={t("menu")}
         onClick={handleOpen}
       >

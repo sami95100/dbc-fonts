@@ -40,7 +40,7 @@ export function TopBar() {
   };
 
   return (
-    <div className="hidden border-b border-gray-200 md:block">
+    <div className="hidden md:block">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-1.5">
         {/* Announcement */}
         <p className="flex items-center gap-1.5 text-xs font-medium text-gray-600">

@@ -1,8 +1,9 @@
 import { getTranslations } from "next-intl/server";
-import { HeroSection, PromoDeals, ShoppingGuides, GradeExplainer, BrandValues } from "@/components/home";
+import { HeroSection, PromoDeals, ShoppingGuides, GradeExplainer, ServicesSection, StoresSection } from "@/components/home";
 import { ProductGrid } from "@/components/products/ProductGrid";
 import { getModels, getModelOptions, getModelPrices } from "@/lib/api/products";
 import { apiModelToProduct } from "@/lib/api/transformers";
+import { AnimatedSection } from "@/components/shared/AnimatedSection";
 
 interface HomePageProps {
   params: Promise<{ locale: string }>;
@@ -55,20 +56,24 @@ export default async function HomePage({ params }: HomePageProps) {
       {/* Grade Explainer */}
       <GradeExplainer />
 
+      {/* Services: Vente, Réparation, Reprise */}
+      <ServicesSection />
+
+      {/* Stores */}
+      <StoresSection />
+
       {/* Featured Products */}
       {featuredProducts.length > 0 && (
-        <section className="py-12 md:py-16">
+        <AnimatedSection className="py-8 md:py-12 lg:py-16">
           <div className="mx-auto max-w-7xl px-4">
-            <h2 className="mb-8 font-display text-2xl font-bold text-gray-900 md:text-3xl">
-              {t("bestDeals")}
+            <h2 className="mb-8 text-[28px] font-bold leading-tight tracking-tight text-gray-900 md:mb-10 md:text-[32px] lg:text-[36px]">
+              {t("bestDeals")}{" "}
+              <span className="font-normal text-gray-500">{t("bestDealsAccent")}</span>
             </h2>
             <ProductGrid products={featuredProducts} />
           </div>
-        </section>
+        </AnimatedSection>
       )}
-
-      {/* Brand Values */}
-      <BrandValues />
     </>
   );
 }

@@ -1,36 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { X } from "lucide-react";
 
 export function PromoBanner() {
-  const [isVisible, setIsVisible] = useState(true);
   const locale = useLocale();
-  const t = useTranslations("promo");
-
-  if (!isVisible) return null;
+  const t = useTranslations("promo.paypal");
 
   return (
-    <div className="relative bg-highlight py-2">
-      <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 text-sm">
-        <span className="font-bold text-primary">{t("flashSale")}</span>
-        <span className="text-primary/80">{t("message")}</span>
-        <Link
-          href={`/${locale}/products/smartphones`}
-          className="font-medium text-primary underline hover:no-underline"
-        >
-          {t("cta")}
-        </Link>
+    <div className="border-b border-gray-200 bg-white">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-5 md:px-6 md:py-6">
+        {/* Text */}
+        <div>
+          <p className="whitespace-pre-line text-sm leading-relaxed text-gray-900 md:text-base">
+            {t("message")}
+          </p>
+          <Link
+            href={`/${locale}/products`}
+            className="mt-1 inline-block text-sm font-medium text-blue-600 hover:underline md:text-base"
+          >
+            {t("cta")}
+          </Link>
+        </div>
+
+        {/* PayPal logo */}
+        <Image
+          src="/paypal.svg"
+          alt="PayPal"
+          width={120}
+          height={32}
+          className="h-6 w-auto shrink-0 md:h-8"
+        />
       </div>
-      <button
-        onClick={() => setIsVisible(false)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-primary/50 hover:text-primary"
-        aria-label="Close"
-      >
-        <X className="h-5 w-5" aria-hidden="true" />
-      </button>
     </div>
   );
 }

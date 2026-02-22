@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect, useCallback } from "react";
+import { useInView } from "@/hooks/useInView";
 
 const GUIDES = [
   {
@@ -20,7 +21,7 @@ const GUIDES = [
   },
   {
     key: "shipping",
-    image: "/uber direct.png",
+    image: "/uber-direct.png",
     hasSubtitle: false,
     dark: true,
   },
@@ -37,6 +38,7 @@ export function ShoppingGuides() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const { ref: inViewRef, isInView } = useInView();
 
   const checkScroll = useCallback(() => {
     const el = scrollRef.current;
@@ -67,10 +69,10 @@ export function ShoppingGuides() {
   };
 
   return (
-    <section className="bg-gray-100 py-8 md:py-12 lg:py-16">
+    <section ref={inViewRef} className={`py-8 md:py-12 lg:py-16 transition-all duration-700 ease-out ${isInView ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"}`}>
       <div className="mx-auto max-w-7xl px-4">
         {/* Title */}
-        <h2 className="mb-8 text-2xl font-bold tracking-tight text-gray-900 md:text-3xl">
+        <h2 className="mb-8 text-[28px] font-bold leading-tight tracking-tight text-gray-900 md:mb-10 md:text-[32px] lg:text-[36px]">
           {t("guides.title")}{" "}
           <span className="font-normal text-gray-500">{t("guides.titleAccent")}</span>
         </h2>
@@ -92,12 +94,12 @@ export function ShoppingGuides() {
         {/* Scroll container */}
         <div
           ref={scrollRef}
-          className="flex w-full gap-5 overflow-x-auto scroll-smooth px-4 pb-6 scrollbar-hide md:px-8"
+          className="flex w-full gap-3 overflow-x-auto scroll-smooth px-4 pb-6 scrollbar-hide md:gap-4 md:px-8"
         >
           {GUIDES.map((guide) => (
             <div
               key={guide.key}
-              className={`relative h-[325px] w-[260px] shrink-0 cursor-pointer overflow-hidden rounded-3xl shadow-md transition-shadow duration-300 hover:shadow-xl md:h-[375px] md:w-[300px] lg:h-[437px] lg:w-[350px] ${guide.dark ? "bg-gray-900" : "bg-white"}`}
+              className={`relative h-[345px] w-[280px] shrink-0 cursor-pointer overflow-hidden rounded-3xl shadow-md transition-shadow duration-300 hover:shadow-xl md:h-[400px] md:w-[320px] lg:h-[462px] lg:w-[370px] ${guide.dark ? "bg-gray-900" : "bg-white"}`}
             >
               {/* Image - full card */}
               {guide.image ? (
@@ -106,7 +108,7 @@ export function ShoppingGuides() {
                   alt={t(`guides.${guide.key}.title`)}
                   fill
                   className={guide.dark ? "object-cover" : "object-contain object-bottom"}
-                  sizes="(max-width: 768px) 260px, (max-width: 1024px) 300px, 350px"
+                  sizes="(max-width: 768px) 280px, (max-width: 1024px) 320px, 370px"
                 />
               ) : null}
 

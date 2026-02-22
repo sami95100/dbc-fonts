@@ -172,8 +172,11 @@
   --font-mono: monospace;
 }
 
-html {
-  background-color: #F5F5F5 !important;
+:root {
+  --sat: env(safe-area-inset-top, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
 }
 
 body {
@@ -183,6 +186,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 
 /* Titres en Almarena Neue Display */
 h1, h2, h3, h4, h5, h6 {
@@ -214,8 +218,48 @@ h1, h2, h3, h4, h5, h6 {
   outline-offset: 2px;
 }
 
+/* Remove focus outline on clean search inputs (Apple-style overlays) */
+.search-input-clean,
+.search-input-clean:focus,
+.search-input-clean:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 /* Selection - DBC Light Green */
 ::selection {
   background: #00BF6F;
   color: #FFFFFF;
+}
+
+/* Fade-in-up animation (Apple-style scroll reveal) */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out both;
+}
+
+@utility animate-delay-100 {
+  animation-delay: 100ms;
+}
+
+@utility animate-delay-200 {
+  animation-delay: 200ms;
+}
+
+@utility animate-delay-300 {
+  animation-delay: 300ms;
+}
+
+@utility animate-delay-400 {
+  animation-delay: 400ms;
 }

@@ -2,55 +2,158 @@
 
 ## Projet
 
-Clone BackMarket - Site e-commerce B2C pour telephones reconditionnes.
-Design System: Wise (couleurs, typographie, radius).
-Layout inspire de BackMarket.
+Site e-commerce B2C pour telephones reconditionnes - DBC.
+Design System inspire d'Apple.com + identite DBC.
+DBC = 11 magasins physiques + site internet.
 
-## Design System - Wise
+## Philosophie UX/UI : "Apple Quality, DBC Soul"
+
+### 3 Piliers fondamentaux
+
+1. **CONFIANCE** : Le reconditionne fait peur -> on rassure a CHAQUE section
+   - Grades transparents (Imparfait > Correct > Tres bon > Parfait)
+   - "100 points de controle" visible partout
+   - Garantie 12-24 mois selon grade
+   - Retour gratuit 30 jours
+   - Trust badges repetes : hero, configurateur, footer
+
+2. **URGENCE POSITIVE** : Donner envie d'acheter vite
+   - 11 magasins physiques = preparation immediate
+   - Livraison 2h en Ile-de-France (Uber Direct)
+   - Badges promo (jaune #D8E142) pour deals
+   - Stock visible ("Plus que X en stock")
+   - Prix barres pour montrer les economies
+
+3. **PROXIMITE** : Pas un entrepot anonyme, des humains
+   - "DBC, avant d'etre un site, c'est 11 magasins physiques"
+   - Conseillers specialistes visibles (photos, prenoms)
+   - Culture urbaine, ton direct et accessible
+   - TikTok, Snapchat : communaute
+
+### Patterns UX inspires d'Apple.com
+
+- **Sections full-width** avec alternance fond blanc / gris / vert fonce
+- **Espacement genereux** entre sections (py-12 md:py-16 lg:py-20)
+- **Titres courts et percutants** : max 5-6 mots par headline
+- **2 CTAs max par section** : lien texte + bouton
+- **Images produit enormes** : l'image est le hero, pas le texte
+- **Scroll storytelling** : chaque section raconte un aspect
+- **Animations subtiles** : fade-in + slide-up au scroll, jamais flashy
+- **Boutons pill-shaped** : border-radius rounded-full (signature Apple)
+- **Backdrop blur** sur header sticky et overlays
+- **Progressive disclosure** : configurateur revele les options etape par etape
+- **Hover cards** : scale(1.02) + shadow, transition 0.3s ease-out
+- **Fond alternes** : blanc -> gris-50 -> vert fonce -> gris-50 (rythme visuel)
+
+### Ce qui differencie DBC d'Apple
+
+| Apple | DBC |
+|-------|-----|
+| Noir comme couleur primaire | Vert fonce #034638 (confiance) |
+| Bleu #0071e3 pour CTAs | Vert vif #00BF6F (energie) |
+| Pas d'urgence prix | Jaune #D8E142 pour promos/urgence |
+| Produits neufs | Grades transparents + confiance |
+| Pure digital | Hybride 11 magasins + web |
+| Ton premium distant | Ton urbain, direct, accessible |
+| "Designed in California" | "Aujourd'hui, avant demain." |
+
+### Animations (subtiles, comme Apple)
+
+```
+Fade-in scroll : opacity 0->1, translateY(20px->0), 0.6s ease-out
+Stagger :        +0.1s delai par element dans les grilles
+Hover card :     scale(1.02) + shadow increase, 0.3s ease-out
+Hover bouton :   background darken, 0.2s ease
+Hover lien :     underline + chevron translateX(4px), 0.2s
+Image swap :     crossfade entre couleurs, 0.3s ease
+Backdrop blur :  blur(10px) sur header sticky
+```
+
+### Ton de voix
+
+- Direct, confiant, urbain
+- Phrases courtes, percutantes
+- Tutoiement autorise, langage accessible
+- Jamais de jargon technique inutile
+- Mettre en avant : economies, qualite, rapidite, proximite
+
+## Design System - DBC x Apple
 
 ### Approche
 - **Mobile-first** : Toujours coder mobile d'abord, puis `sm:`, `md:`, `lg:`
-- **Design System Wise** : Couleurs, radius, typographie Wise
-- **Layout BackMarket** : Structure pages et composants inspires BackMarket
+- **UX Apple** : Minimalisme, espacement genereux, animations subtiles, scroll storytelling
+- **Identite DBC** : Couleurs vertes, ton urbain, confiance, proximite physique
 - **API connectee** : Donnees depuis Flask backend
 
-### Couleurs Wise (override Tailwind dans globals.css)
+### Couleurs DBC (override Tailwind dans globals.css)
 ```css
 @theme inline {
-  /* Gray scale -> Wise content colors */
+  /* Gray scale */
   --color-gray-50: #FAFAFA;
-  --color-gray-100: #F5F5F5;
+  --color-gray-100: #F5F5F5;      /* Site background */
   --color-gray-200: #EBEBEB;
   --color-gray-500: #6B6D6B;
   --color-gray-600: #454745;
   --color-gray-900: #0E0F0C;
 
-  /* Green -> Wise green (accent) */
-  --color-green-400: #9FE870;    /* Bright green */
-  --color-green-700: #163300;    /* Forest green (primary) */
+  /* Green -> DBC Green palette */
+  --color-green-400: #00BF6F;     /* Light green (accent, energie) */
+  --color-green-700: #034638;     /* Dark green (primary, confiance) */
 
   /* Semantic colors */
-  --color-primary: #163300;      /* Forest green */
-  --color-accent: #9FE870;       /* Bright green */
-
-  /* Border radius - Wise values */
-  --radius-sm: 10px;   /* Mobile */
-  --radius-md: 16px;
-  --radius-lg: 20px;
+  --color-primary: #034638;       /* Dark green - CTAs, footer, header elements */
+  --color-accent: #00BF6F;        /* Light green - liens, accents, succes */
+  --color-highlight: #D8E142;     /* Jaune-vert vif - promos, badges, urgence */
+  --color-background: #F5F5F5;    /* Fond site - propre, aere */
 }
 ```
 
-Les classes Tailwind standard (`bg-gray-900`, `text-green-400`, `rounded-lg`) utilisent automatiquement les valeurs Wise.
+### Palette en contexte
+
+| Usage | Couleur | Classe Tailwind |
+|-------|---------|-----------------|
+| Bouton principal | #034638 | `bg-green-700` / `bg-primary` |
+| Accent, liens | #00BF6F | `text-accent` / `text-green-400` |
+| Badges promo, urgence | #D8E142 | `bg-highlight` / `bg-yellow-300` |
+| Fond site | #F5F5F5 | `bg-gray-100` / `bg-background` |
+| Texte principal | #0E0F0C | `text-gray-900` |
+| Texte secondaire | #6B6D6B | `text-gray-500` |
+| Bordures | #EBEBEB | `border-gray-200` |
+| Sections sombres | #034638 | `bg-primary text-white` |
+| Sections claires alt. | #FAFAFA | `bg-gray-50` |
 
 ### Typographie
-- **Titres** : Font bold, tracking tight
-- **Corps** : Font normal, text-sm a text-base
-- **Prix** : Font bold, grande taille
+- **Font titres** : Almarena Neue Display (font-display)
+- **Font corps** : General Sans (font-sans)
+- **H1** : `text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight` (Almarena)
+- **H2** : `text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight`
+- **H3** : `text-xl md:text-2xl font-bold`
+- **Body** : `text-base md:text-lg` (General Sans), line-height 1.6
+- **Small** : `text-sm text-gray-500`
+- **Prix** : `text-2xl md:text-3xl font-bold`
+- **Taglines** : Courtes, percutantes, max 5-6 mots
 
-### Espacements
-- Padding sections : `py-8 md:py-12 lg:py-16`
+### Espacements (genereux, style Apple)
+- Padding sections : `py-12 md:py-16 lg:py-20`
 - Gaps grilles : `gap-4 md:gap-6`
 - Conteneur max : `max-w-7xl mx-auto px-4`
+- Entre sections : espacement visuel fort (rythme Apple)
+
+### Boutons (pill-shaped, style Apple)
+- **Primary** : `bg-green-700 text-white rounded-full px-6 py-3 hover:bg-green-800`
+- **Secondary** : `border border-gray-900 text-gray-900 rounded-full px-6 py-3`
+- **Text link** : `text-green-700 hover:underline` + chevron `>`
+- **Promo** : `bg-highlight text-primary rounded-full font-bold`
+
+### Alternance de fonds (rythme visuel Apple)
+```
+Section 1 : bg-white
+Section 2 : bg-gray-50 (#FAFAFA)
+Section 3 : bg-primary (#034638) + text-white (section impact)
+Section 4 : bg-gray-50
+Section 5 : bg-white
+... repeter
+```
 
 ### Composants BackMarket a reproduire
 

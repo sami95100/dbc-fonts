@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect, useCallback } from "react";
+import { useInView } from "@/hooks/useInView";
 
 const PROMO_PRODUCTS = [
   {
@@ -55,6 +56,7 @@ export function PromoDeals() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const { ref: inViewRef, isInView } = useInView();
 
   const checkScroll = useCallback(() => {
     const el = scrollRef.current;
@@ -79,23 +81,20 @@ export function PromoDeals() {
     const el = scrollRef.current;
     if (!el) return;
     el.scrollBy({
-      left: direction === "left" ? -280 : 280,
+      left: direction === "left" ? -320 : 320,
       behavior: "smooth",
     });
   };
 
   return (
-    <section className="relative overflow-hidden bg-gray-100 py-8 md:py-12 lg:py-16">
+    <section ref={inViewRef} className={`relative py-8 md:py-12 lg:py-16 transition-[opacity,transform] duration-[0.6s] ease-[cubic-bezier(0.25,0.1,0.25,1)] will-change-[opacity,transform] ${isInView ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}>
 
       {/* Title */}
       <div className="relative mx-auto max-w-7xl px-4">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900 md:text-3xl">
+        <div className="mb-8 md:mb-10">
+          <h2 className="text-[28px] font-bold leading-tight tracking-tight text-gray-900 md:text-[32px] lg:text-[36px]">
             {t("promoDeals.title")}{" "}
-            <br className="md:hidden" />
-            <span className="italic text-green-700">
-              {t("promoDeals.titleAccent")}
-            </span>
+            <span className="font-normal text-gray-500">{t("promoDeals.titleAccent")}</span>
           </h2>
         </div>
       </div>
@@ -116,22 +115,24 @@ export function PromoDeals() {
         {/* Scroll container */}
         <div
           ref={scrollRef}
-          className="flex gap-4 overflow-x-auto scroll-smooth px-4 scrollbar-hide md:overflow-hidden md:px-8"
+          className="flex gap-3 overflow-x-auto scroll-smooth px-4 pb-6 scrollbar-hide md:gap-4 md:px-8"
         >
             {PROMO_PRODUCTS.map((product) => (
               <Link
                 key={product.slug}
                 href={`/${locale}/products/${product.slug}`}
-                className="group flex w-[220px] shrink-0 flex-col rounded-2xl bg-white p-4 transition-shadow hover:shadow-md md:w-[260px] lg:w-[300px]"
+                className="group flex w-[280px] shrink-0 flex-col overflow-hidden rounded-3xl bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg md:w-[320px] lg:w-[370px]"
               >
                 {/* Product name */}
-                <h3 className="text-lg font-bold text-gray-900">
-                  {product.name}
-                </h3>
+                <div className="px-6 pt-6">
+                  <h3 className="text-[19px] font-semibold leading-tight text-gray-900">
+                    {product.name}
+                  </h3>
+                </div>
 
                 {/* Product image */}
-                <div className="relative my-4 aspect-square w-full overflow-hidden">
-                  <span className="absolute right-2 top-2 z-10 rounded-full px-2.5 py-1 text-xs font-bold" style={{ backgroundColor: "#D8E143", color: "#034638" }}>
+                <div className="relative mx-auto my-4 aspect-[3/4] w-[55%]">
+                  <span className="absolute -right-8 -top-2 z-10 rounded-full bg-highlight px-3 py-1.5 text-sm font-bold text-primary">
                     {product.badge}
                   </span>
                   <Image
@@ -139,12 +140,12 @@ export function PromoDeals() {
                     alt={product.name}
                     fill
                     className="object-contain"
-                    sizes="(max-width: 768px) 220px, (max-width: 1024px) 260px, 300px"
+                    sizes="(max-width: 768px) 140px, (max-width: 1024px) 160px, 180px"
                   />
                 </div>
 
                 {/* Color dots */}
-                <div className="mb-4 flex items-center justify-center gap-1.5">
+                <div className="flex items-center justify-center gap-2 pb-4">
                   {product.colors.map((color) => (
                     <span
                       key={color}
@@ -155,10 +156,13 @@ export function PromoDeals() {
                 </div>
 
                 {/* Price + CTA */}
-                <div className="flex items-end justify-between">
-                  <p className="text-sm text-gray-600">
-                    {product.priceFrom} &euro;
-                  </p>
+                <div className="flex items-end justify-between px-6 pb-6">
+                  <div>
+                    <p className="text-xs text-gray-500">{t("promoDeals.from")}</p>
+                    <p className="text-lg font-bold text-gray-900">
+                      {product.priceFrom} &euro;
+                    </p>
+                  </div>
                   <span className="rounded-full bg-green-700 px-4 py-2 text-sm font-semibold text-white transition-colors group-hover:bg-green-800">
                     {t("promoDeals.buy")}
                   </span>

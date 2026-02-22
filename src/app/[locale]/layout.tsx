@@ -71,16 +71,15 @@ const geistMono = Geist_Mono({
 });
 
 export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
   viewportFit: "cover",
+  themeColor: "#FF3300",
 };
 
 export const metadata: Metadata = {
   title: "DBC - Telephones Reconditionnes",
   description: "Telephones reconditionnes premium avec garantie 12 mois",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-  },
 };
 
 interface LocaleLayoutProps {
@@ -101,12 +100,10 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className="bg-gray-100">
-      <head>
-        <meta name="theme-color" content="#F5F5F5" />
-      </head>
+    <html lang={locale}>
+      <head />
       <body
-        className={cn(almarenaNeue.variable, generalSans.variable, geistMono.variable, "font-sans antialiased bg-gray-100")}
+        className={cn(almarenaNeue.variable, generalSans.variable, geistMono.variable, "font-sans antialiased")}
       >
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>{children}</AuthProvider>

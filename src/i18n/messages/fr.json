@@ -21,7 +21,13 @@
     "physicalStores": "DBC, avant d'etre un site, c'est 11 magasins physiques."
   },
   "search": {
-    "placeholder": "Rechercher un produit"
+    "placeholder": "Rechercher un produit",
+    "quickLinks": "Liens rapides",
+    "suggestedSearches": "Recherches suggerees",
+    "noResults": "Aucun resultat pour",
+    "noResultsSub": "Essaie avec un autre terme ou explore nos categories.",
+    "resultsFor": "Resultats pour",
+    "close": "Fermer la recherche"
   },
   "nav": {
     "home": "Accueil",
@@ -84,7 +90,11 @@
     "flashSale": "VENTE FLASH",
     "message": "3 jours : -35€ sur l'EliteBook 840 G7",
     "cta": "J'y vais",
-    "badge": "Promo"
+    "badge": "Promo",
+    "paypal": {
+      "message": "Payez en 4x sans frais avec PayPal.\nEt faites reprendre votre ancien appareil pour reduire le cout.",
+      "cta": "En savoir plus"
+    }
   },
   "home": {
     "hero": {
@@ -116,6 +126,7 @@
     },
     "values": {
       "title": "Pourquoi DBC ?",
+      "titleAccent": "Nos engagements.",
       "access": {
         "title": "Ouvrir les portes a tous",
         "description": "Offrir a tous la possibilite d'acceder a la technologie, sans compromis sur l'environnement ni sur le budget."
@@ -134,7 +145,7 @@
       }
     },
     "promoDeals": {
-      "title": "Les bonnes affaires du moment.",
+      "title": "Les bonnes affaires.",
       "titleAccent": "A ne pas rater.",
       "from": "A partir de",
       "buy": "Acheter"
@@ -164,6 +175,7 @@
     },
     "grades": {
       "title": "Nos grades expliques.",
+      "titleAccent": "Trouvez celui qui vous correspond.",
       "subtitle": "Chaque telephone est teste, verifie et classe selon son etat. Trouvez celui qui vous correspond.",
       "imageExample": "Exemple d'image",
       "badges": {
@@ -202,7 +214,54 @@
         "warranty": "Garantie 24 mois."
       }
     },
-    "bestDeals": "Nos meilleures offres"
+    "bestDeals": "Nos meilleures offres.",
+    "bestDealsAccent": "Selectionnees pour vous.",
+    "services": {
+      "title": "Nos services",
+      "titleAccent": "Ce qu'on fait pour vous.",
+      "sale": {
+        "tag": "Vente",
+        "title": "Des smartphones reconditionnes au meilleur prix"
+      },
+      "repair": {
+        "tag": "Reparation",
+        "title": "On repare votre appareil en magasin"
+      },
+      "tradeIn": {
+        "tag": "Reprise",
+        "title": "Revendez votre ancien telephone au meilleur prix"
+      }
+    },
+    "stores": {
+      "title": "Nos magasins.",
+      "titleAccent": "Partout pres de chez vous.",
+      "rosny2": { "name": "DBC Rosny2" },
+      "paris17": { "name": "DBC Paris 17" },
+      "paris12": { "name": "DBC Paris 12" },
+      "lille": { "name": "DBC Lille" },
+      "bruxelles": { "name": "DBC Bruxelles" },
+      "marseille": { "name": "DBC Marseille" },
+      "laValentine": { "name": "DBC La Valentine" },
+      "toulouse": { "name": "DBC Toulouse" },
+      "bordeaux": { "name": "DBC Bordeaux" },
+      "openUntil": "Ouvert jusqu'a {time}",
+      "opensAt": "Ouvre a {time}",
+      "closed": "Ferme",
+      "today": "Auj.",
+      "back": "Retour",
+      "openingHours": "Heures d'ouverture",
+      "addressLabel": "Adresse",
+      "openInMaps": "Ouvrir dans Plans",
+      "days": {
+        "mon": "Lun",
+        "tue": "Mar",
+        "wed": "Mer",
+        "thu": "Jeu",
+        "fri": "Ven",
+        "sat": "Sam",
+        "sun": "Dim"
+      }
+    }
   },
   "products": {
     "title": "Nos produits reconditionnes",
@@ -345,8 +404,16 @@
   },
   "cart": {
     "title": "Votre panier",
-    "emptyTitle": "Votre panier est vide",
+    "emptyTitle": "Votre panier est vide.",
     "emptyDescription": "Parcourez notre catalogue pour trouver votre prochain appareil.",
+    "signInPrompt": "Connectez-vous pour verifier si vous avez enregistre des articles dans votre selection.",
+    "signInLink": "Connectez-vous",
+    "signInPromptSuffix": " pour verifier si vous avez enregistre des articles dans votre selection.",
+    "myProfile": "Mon profil",
+    "orders": "Commandes",
+    "savedItems": "Vos articles enregistres",
+    "accountLink": "Compte",
+    "signIn": "Se connecter",
     "browseProducts": "Voir les produits",
     "continueShopping": "Continuer mes achats",
     "summary": "Recapitulatif",
