@@ -24,6 +24,7 @@ export interface PhoneModel {
   review_count?: number;
   description?: string;
   has_promo?: boolean;
+  colors?: string[];
 }
 
 export interface ModelImage {

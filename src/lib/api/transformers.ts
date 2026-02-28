@@ -79,7 +79,7 @@ const COLOR_HEX_MAP: Record<string, string> = {
   Corail: "#ff6b6b",
 };
 
-function getColorHex(colorName: string): string {
+export function getColorHex(colorName: string): string {
   return COLOR_HEX_MAP[colorName] || "#999999";
 }
 

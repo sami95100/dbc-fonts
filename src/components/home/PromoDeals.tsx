@@ -6,49 +6,39 @@ import { useLocale, useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useInView } from "@/hooks/useInView";
+import { getModels } from "@/lib/api/products";
+import { getColorHex } from "@/lib/api/transformers";
+import type { PhoneModel } from "@/types/product";
 
-const PROMO_PRODUCTS = [
-  {
-    slug: "apple/iphone-16-pro-max",
-    name: "iPhone 16 Pro Max",
-    image: "/images/products/apple/iphone-16-pro-max/image.png",
-    priceFrom: 899,
-    colors: ["#1d1d1f", "#f5f5f7", "#4b4845", "#d4c5b3"],
-    badge: "-15%",
-  },
-  {
-    slug: "apple/iphone-16-pro",
-    name: "iPhone 16 Pro",
-    image: "/images/products/apple/iphone-16-pro/image.png",
-    priceFrom: 683,
-    colors: ["#1d1d1f", "#f5f5f7", "#4b4845"],
-    badge: "-20%",
-  },
-  {
-    slug: "apple/iphone-15-pro-max",
-    name: "iPhone 15 Pro Max",
-    image: "/images/products/apple/iphone-15-pro-max/image.png",
-    priceFrom: 639,
-    colors: ["#1d1d1f", "#f5f5f7", "#4b4845", "#d4c5b3"],
-    badge: "-25%",
-  },
-  {
-    slug: "apple/iphone-16",
-    name: "iPhone 16",
-    image: "/images/products/apple/iphone-16/image.png",
-    priceFrom: 549,
-    colors: ["#1d1d1f", "#f5f5f7", "#e3c8d0", "#c8d8e3"],
-    badge: "-10%",
-  },
-  {
-    slug: "apple/iphone-15",
-    name: "iPhone 15",
-    image: "/images/products/apple/iphone-15/image.png",
-    priceFrom: 449,
-    colors: ["#1d1d1f", "#f5f5f7", "#e3c8d0"],
-    badge: "-30%",
-  },
-] as const;
+interface PromoProduct {
+  slug: string;
+  name: string;
+  brand: string;
+  imageUrl: string | null;
+  priceFrom: number;
+  colors: string[];
+  badge: string | null;
+}
+
+function modelToPromo(model: PhoneModel): PromoProduct {
+  const priceFrom = model.price_from ?? 0;
+  const newPrice = model.new_price ?? 0;
+
+  let badge: string | null = null;
+  if (newPrice > 0 && priceFrom > 0 && priceFrom < newPrice) {
+    badge = `-${Math.round((1 - priceFrom / newPrice) * 100)}%`;
+  }
+
+  return {
+    slug: `${model.brand.toLowerCase()}/${model.slug}`,
+    name: model.name,
+    brand: model.brand,
+    imageUrl: model.primary_image_url ?? null,
+    priceFrom,
+    colors: (model.colors ?? []).map(getColorHex),
+    badge,
+  };
+}
 
 export function PromoDeals() {
   const locale = useLocale();
@@ -57,6 +47,26 @@ export function PromoDeals() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const { ref: inViewRef, isInView } = useInView();
+
+  const [products, setProducts] = useState<PromoProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchProducts() {
+      const res = await getModels({ promo: true, perPage: 8 });
+      if (cancelled) return;
+
+      if (res.data?.items) {
+        setProducts(res.data.items.map(modelToPromo));
+      }
+      setLoading(false);
+    }
+
+    fetchProducts();
+    return () => { cancelled = true; };
+  }, []);
 
   const checkScroll = useCallback(() => {
     const el = scrollRef.current;
@@ -75,7 +85,7 @@ export function PromoDeals() {
       el.removeEventListener("scroll", checkScroll);
       window.removeEventListener("resize", checkScroll);
     };
-  }, [checkScroll]);
+  }, [checkScroll, products]);
 
   const scroll = (direction: "left" | "right") => {
     const el = scrollRef.current;
@@ -85,6 +95,8 @@ export function PromoDeals() {
       behavior: "smooth",
     });
   };
+
+  if (!loading && products.length === 0) return null;
 
   return (
     <section ref={inViewRef} className={`relative py-8 md:py-12 lg:py-16 transition-[opacity,transform] duration-[0.6s] ease-[cubic-bezier(0.25,0.1,0.25,1)] will-change-[opacity,transform] ${isInView ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}>
@@ -117,59 +129,95 @@ export function PromoDeals() {
           ref={scrollRef}
           className="flex gap-3 overflow-x-auto scroll-smooth px-4 pb-6 scrollbar-hide md:gap-4 md:px-8"
         >
-            {PROMO_PRODUCTS.map((product) => (
-              <Link
-                key={product.slug}
-                href={`/${locale}/products/${product.slug}`}
-                className="group flex w-[280px] shrink-0 flex-col overflow-hidden rounded-3xl bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg md:w-[320px] lg:w-[370px]"
-              >
-                {/* Product name */}
-                <div className="px-6 pt-6">
-                  <h3 className="text-[19px] font-semibold leading-tight text-gray-900">
-                    {product.name}
-                  </h3>
-                </div>
-
-                {/* Product image */}
-                <div className="relative mx-auto my-4 aspect-[3/4] w-[55%]">
-                  <span className="absolute -right-8 -top-2 z-10 rounded-full bg-highlight px-3 py-1.5 text-sm font-bold text-primary">
-                    {product.badge}
-                  </span>
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-contain"
-                    sizes="(max-width: 768px) 140px, (max-width: 1024px) 160px, 180px"
-                  />
-                </div>
-
-                {/* Color dots */}
-                <div className="flex items-center justify-center gap-2 pb-4">
-                  {product.colors.map((color) => (
-                    <span
-                      key={color}
-                      className="h-3 w-3 rounded-full border border-gray-200"
-                      style={{ backgroundColor: color }}
-                    />
-                  ))}
-                </div>
-
-                {/* Price + CTA */}
-                <div className="flex items-end justify-between px-6 pb-6">
-                  <div>
-                    <p className="text-xs text-gray-500">{t("promoDeals.from")}</p>
-                    <p className="text-lg font-bold text-gray-900">
-                      {product.priceFrom} &euro;
-                    </p>
+          {loading
+            ? Array.from({ length: 5 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="flex w-[280px] shrink-0 flex-col overflow-hidden rounded-3xl bg-white shadow-sm md:w-[320px] lg:w-[370px]"
+                >
+                  <div className="px-6 pt-6">
+                    <div className="h-6 w-3/4 animate-pulse rounded bg-gray-200" />
                   </div>
-                  <span className="rounded-full bg-green-700 px-4 py-2 text-sm font-semibold text-white transition-colors group-hover:bg-green-800">
-                    {t("promoDeals.buy")}
-                  </span>
+                  <div className="relative mx-auto my-4 aspect-[3/4] w-[55%]">
+                    <div className="h-full w-full animate-pulse rounded-2xl bg-gray-100" />
+                  </div>
+                  <div className="flex items-center justify-center gap-2 pb-4">
+                    {[1, 2, 3].map((d) => (
+                      <div key={d} className="h-3 w-3 animate-pulse rounded-full bg-gray-200" />
+                    ))}
+                  </div>
+                  <div className="flex items-end justify-between px-6 pb-6">
+                    <div>
+                      <div className="mb-1 h-3 w-16 animate-pulse rounded bg-gray-200" />
+                      <div className="h-5 w-20 animate-pulse rounded bg-gray-200" />
+                    </div>
+                    <div className="h-9 w-20 animate-pulse rounded-full bg-gray-200" />
+                  </div>
                 </div>
-              </Link>
-            ))}
-          </div>
+              ))
+            : products.map((product) => (
+                <Link
+                  key={product.slug}
+                  href={`/${locale}/products/${product.slug}`}
+                  className="group flex w-[280px] shrink-0 flex-col overflow-hidden rounded-3xl bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg md:w-[320px] lg:w-[370px]"
+                >
+                  {/* Product name */}
+                  <div className="px-6 pt-6">
+                    <h3 className="text-[19px] font-semibold leading-tight text-gray-900">
+                      {product.name}
+                    </h3>
+                  </div>
+
+                  {/* Product image */}
+                  <div className="relative mx-auto my-4 aspect-[3/4] w-[55%]">
+                    {product.badge && (
+                      <span className="absolute -right-8 -top-2 z-10 rounded-full bg-highlight px-3 py-1.5 text-sm font-bold text-primary">
+                        {product.badge}
+                      </span>
+                    )}
+                    {product.imageUrl ? (
+                      <Image
+                        src={product.imageUrl}
+                        alt={product.name}
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 768px) 140px, (max-width: 1024px) 160px, 180px"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center rounded-2xl bg-gray-100">
+                        <span className="text-4xl text-gray-300">📱</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Color dots */}
+                  {product.colors.length > 0 && (
+                    <div className="flex items-center justify-center gap-2 pb-4">
+                      {product.colors.map((hex, i) => (
+                        <span
+                          key={i}
+                          className="h-3 w-3 rounded-full border border-gray-200"
+                          style={{ backgroundColor: hex }}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Price + CTA */}
+                  <div className="flex items-end justify-between px-6 pb-6">
+                    <div>
+                      <p className="text-xs text-gray-500">{t("promoDeals.from")}</p>
+                      <p className="text-lg font-bold text-gray-900">
+                        {product.priceFrom} &euro;
+                      </p>
+                    </div>
+                    <span className="rounded-full bg-green-700 px-4 py-2 text-sm font-semibold text-white transition-colors group-hover:bg-green-800">
+                      {t("promoDeals.buy")}
+                    </span>
+                  </div>
+                </Link>
+              ))}
+        </div>
 
         {/* Right arrow */}
         <button

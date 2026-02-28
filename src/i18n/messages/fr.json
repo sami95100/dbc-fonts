@@ -214,8 +214,6 @@
         "warranty": "Garantie 24 mois."
       }
     },
-    "bestDeals": "Nos meilleures offres.",
-    "bestDealsAccent": "Selectionnees pour vous.",
     "services": {
       "title": "Nos services",
       "titleAccent": "Ce qu'on fait pour vous.",
@@ -991,5 +989,69 @@
     "rights": "Tous droits reserves.",
     "tagline": "Le futur, entre vos mains.",
     "description": "DBC reinvente la consommation de produits electroniques en alliant responsabilite sociale, ecologie et acces equitable pour tous."
+  },
+  "tradeIn": {
+    "title": "Estimez la valeur de votre telephone",
+    "subtitle": "Obtenez une estimation instantanee du prix de reprise de votre ancien appareil.",
+    "steps": {
+      "brand": "Marque",
+      "model": "Modele",
+      "storage": "Stockage",
+      "condition": "Etat",
+      "result": "Estimation"
+    },
+    "brandStep": {
+      "title": "Quelle est la marque de votre telephone ?"
+    },
+    "modelStep": {
+      "title": "Quel est le modele ?"
+    },
+    "storageStep": {
+      "title": "Quelle capacite de stockage ?"
+    },
+    "conditionStep": {
+      "title": "Dans quel etat est votre telephone ?",
+      "screen": {
+        "title": "Ecran",
+        "perfect": "Parfait, aucune rayure",
+        "minor_scratches": "Micro-rayures visibles",
+        "cracked": "Ecran fissure ou casse"
+      },
+      "chassis": {
+        "title": "Chassis et coque",
+        "perfect": "Parfait etat",
+        "minor_wear": "Usure legere, petites marques",
+        "dents": "Bosses ou deformations"
+      },
+      "battery": {
+        "title": "Batterie",
+        "above_85": "Bonne sante (> 85%)",
+        "80_to_85": "Correcte (80-85%)",
+        "below_80": "Faible (< 80%)"
+      },
+      "functionality": {
+        "title": "Fonctionnalites",
+        "all_works": "Tout fonctionne parfaitement",
+        "minor_issues": "Certaines fonctions ne marchent plus"
+      }
+    },
+    "result": {
+      "title": "Votre estimation de reprise",
+      "yourDevice": "Votre appareil",
+      "condition": "Etat estime",
+      "grades": {
+        "bon_etat": "Bon etat",
+        "correct": "Correct",
+        "casse": "Casse / Non repris"
+      },
+      "estimatedPrice": "Prix de reprise estime",
+      "noPrice": "Ce modele dans cet etat ne peut pas etre repris.",
+      "disclaimer": "Cette estimation est indicative. Le prix final sera determine apres examen en magasin.",
+      "restart": "Nouvelle estimation",
+      "contact": "Nous contacter"
+    },
+    "back": "Retour",
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue. Veuillez reessayer."
   }
 }

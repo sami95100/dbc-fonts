@@ -70,6 +70,7 @@ export async function getModels(params?: {
   year?: number;
   storage?: string;
   search?: string;
+  promo?: boolean;
   page?: number;
   perPage?: number;
 }) {
@@ -82,6 +83,7 @@ export async function getModels(params?: {
   if (params?.year) searchParams.set("year", String(params.year));
   if (params?.storage) searchParams.set("storage", params.storage);
   if (params?.search) searchParams.set("search", params.search);
+  if (params?.promo) searchParams.set("promo", "1");
   if (params?.page) searchParams.set("page", String(params.page));
   if (params?.perPage) searchParams.set("per_page", String(params.perPage));
 

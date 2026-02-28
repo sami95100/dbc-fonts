@@ -214,8 +214,6 @@
         "warranty": "24-month warranty."
       }
     },
-    "bestDeals": "Our best deals.",
-    "bestDealsAccent": "Selected for you.",
     "services": {
       "title": "Our services",
       "titleAccent": "What we do for you.",
@@ -991,5 +989,69 @@
     "rights": "All rights reserved.",
     "tagline": "The future, in your hands.",
     "description": "DBC reinvents electronics consumption by combining social responsibility, ecology, and equitable access for all."
+  },
+  "tradeIn": {
+    "title": "Estimate your phone's value",
+    "subtitle": "Get an instant trade-in price estimate for your old device.",
+    "steps": {
+      "brand": "Brand",
+      "model": "Model",
+      "storage": "Storage",
+      "condition": "Condition",
+      "result": "Estimate"
+    },
+    "brandStep": {
+      "title": "What is the brand of your phone?"
+    },
+    "modelStep": {
+      "title": "What is the model?"
+    },
+    "storageStep": {
+      "title": "What storage capacity?"
+    },
+    "conditionStep": {
+      "title": "What condition is your phone in?",
+      "screen": {
+        "title": "Screen",
+        "perfect": "Perfect, no scratches",
+        "minor_scratches": "Minor scratches visible",
+        "cracked": "Cracked or broken screen"
+      },
+      "chassis": {
+        "title": "Body and case",
+        "perfect": "Perfect condition",
+        "minor_wear": "Minor wear, small marks",
+        "dents": "Dents or deformations"
+      },
+      "battery": {
+        "title": "Battery",
+        "above_85": "Good health (> 85%)",
+        "80_to_85": "Fair (80-85%)",
+        "below_80": "Low (< 80%)"
+      },
+      "functionality": {
+        "title": "Functionality",
+        "all_works": "Everything works perfectly",
+        "minor_issues": "Some features no longer work"
+      }
+    },
+    "result": {
+      "title": "Your trade-in estimate",
+      "yourDevice": "Your device",
+      "condition": "Estimated condition",
+      "grades": {
+        "bon_etat": "Good condition",
+        "correct": "Fair",
+        "casse": "Damaged / Not accepted"
+      },
+      "estimatedPrice": "Estimated trade-in price",
+      "noPrice": "This model in this condition cannot be traded in.",
+      "disclaimer": "This estimate is indicative. The final price will be determined after in-store inspection.",
+      "restart": "New estimate",
+      "contact": "Contact us"
+    },
+    "back": "Back",
+    "loading": "Loading...",
+    "error": "An error occurred. Please try again."
   }
 }
