@@ -4,7 +4,7 @@ import { memo, useMemo, useState, useCallback } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Check, Truck, RotateCcw, Cable, Calendar, ShoppingCart, Loader2 } from "lucide-react";
+import { Check, Truck, RotateCcw, Cable, Calendar, ShoppingCart, Loader2, Smartphone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getImageUrls } from "@/lib/api/transformers";
 import type { ProductSelection, ConfigurableProduct } from "../types";
@@ -80,21 +80,27 @@ function OrderSummaryComponent({
 
   // Get product image for selected color
   const productImages = colorImages ? getImageUrls(colorImages, selection.color) : [];
-  const productImage = productImages[0] || product.primaryImageUrl || `/images/products/apple/${product.slug}/image.png`;
+  const productImage = productImages[0] || product.primaryImageUrl || null;
 
   return (
     <section className="grid gap-6 border-t border-gray-200 py-10 lg:grid-cols-2 lg:items-center lg:gap-12 lg:py-12">
       {/* Left: Product Image */}
       <div className="space-y-3">
         <div className="relative aspect-square overflow-hidden rounded-3xl bg-white">
-          <Image
-            src={productImage}
-            alt={`${product.name} - ${selection.color}`}
-            fill
-            className="object-contain p-8"
-            sizes="(max-width: 1024px) 100vw, 400px"
-            unoptimized={productImage.startsWith("http")}
-          />
+          {productImage ? (
+            <Image
+              src={productImage}
+              alt={`${product.name} - ${selection.color}`}
+              fill
+              className="object-contain p-8"
+              sizes="(max-width: 1024px) 100vw, 400px"
+              unoptimized={productImage.startsWith("http")}
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <Smartphone className="h-20 w-20 text-gray-300" />
+            </div>
+          )}
         </div>
       </div>
 

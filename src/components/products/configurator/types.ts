@@ -87,7 +87,7 @@ export interface VariantInfo {
 
 export interface CartConfirmationItem {
   productName: string;
-  imageUrl: string;
+  imageUrl?: string;
   price: number;
   storage: string;
   color: string;
@@ -132,7 +132,7 @@ export interface ConfigSectionProps {
 export interface ImageGalleryProps {
   images: string[];
   productName: string;
-  fallbackImage: string;
+  fallbackImage: string | null;
 }
 
 export interface ColorSelectorProps {

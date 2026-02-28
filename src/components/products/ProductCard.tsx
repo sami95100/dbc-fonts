@@ -1,10 +1,9 @@
 import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Star, Zap } from "lucide-react";
+import { Smartphone, Star, Zap } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import type { Product } from "@/data/mock/products";
-import { getProductImage } from "@/data/mock/products";
 
 interface ProductCardProps {
   product: Product;
@@ -23,7 +22,7 @@ function ProductCardComponent({ product }: ProductCardProps) {
   const t = useTranslations("common");
   const tPromo = useTranslations("promo");
 
-  const imagePath = getProductImage(product);
+  const imageUrl = product.primaryImageUrl;
 
   const categorySlug = CATEGORY_SLUG_MAP[product.category] || "smartphones";
 
@@ -36,13 +35,19 @@ function ProductCardComponent({ product }: ProductCardProps) {
       <div className="flex gap-4 sm:block">
         {/* Product Image */}
         <div className="relative aspect-square w-28 shrink-0 overflow-hidden rounded-xl sm:mb-4 sm:w-full">
-          <Image
-            src={imagePath}
-            alt={product.name}
-            fill
-            className="object-contain"
-            sizes="(max-width: 640px) 112px, (max-width: 1024px) 33vw, 25vw"
-          />
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={product.name}
+              fill
+              className="object-contain"
+              sizes="(max-width: 640px) 112px, (max-width: 1024px) 33vw, 25vw"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-gray-50">
+              <Smartphone className="h-12 w-12 text-gray-300" />
+            </div>
+          )}
           {product.isPromo && (
             <span className="absolute left-1.5 top-1.5 inline-flex items-center gap-0.5 rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-white shadow-sm">
               <Zap className="h-2.5 w-2.5 fill-current" />

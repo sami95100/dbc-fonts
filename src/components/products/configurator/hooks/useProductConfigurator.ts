@@ -9,7 +9,6 @@ import {
   type AvailableOption,
 } from "@/lib/api/products";
 import { getImageUrls } from "@/lib/api/transformers";
-import { getProductImage } from "@/data/mock/products";
 import { useCartStore } from "@/stores/cart-store";
 import type { CartItem } from "@/types/cart";
 import type { ModelImagesByCondition } from "@/types/product";
@@ -45,7 +44,7 @@ interface UseProductConfiguratorReturn {
 
   // Images
   colorImages: string[];
-  fallbackImage: string;
+  fallbackImage: string | null;
   conditionImages: ModelImagesByCondition | null;
 
   // Computed values
@@ -374,7 +373,7 @@ export function useProductConfigurator({
   }, [product._images, selection.color]);
 
   const fallbackImage = useMemo(() => {
-    return getProductImage(product);
+    return product.primaryImageUrl || null;
   }, [product]);
 
   // ============================================
@@ -451,7 +450,7 @@ export function useProductConfigurator({
       fulfillmentType: variantInfo.fulfillmentType || undefined,
       price: totalPrice,
       quantity: 1,
-      imageUrl: colorImages[0] || fallbackImage,
+      imageUrl: colorImages[0] || fallbackImage || undefined,
       isPromo: variantInfo.isPromo || false,
     };
 
@@ -459,7 +458,7 @@ export function useProductConfigurator({
 
     setLastAddedItem({
       productName: product.name,
-      imageUrl: colorImages[0] || fallbackImage,
+      imageUrl: colorImages[0] || fallbackImage || undefined,
       price: totalPrice,
       storage: selection.storage,
       color: selection.color,

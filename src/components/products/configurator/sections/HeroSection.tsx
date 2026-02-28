@@ -88,7 +88,7 @@ function HeroSectionComponent({
       <ImageGallery
         images={images}
         productName={product.name}
-        fallbackImage={`/images/products/${product.id}/main.png`}
+        fallbackImage={product.primaryImageUrl || null}
       />
 
       {/* Right: Product Info */}

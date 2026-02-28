@@ -4,7 +4,7 @@ import { memo, useEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
-import { Check, X } from "lucide-react";
+import { Check, Smartphone, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -116,15 +116,19 @@ function AddToCartSheetComponent({ item, onClose }: AddToCartSheetProps) {
             {/* Product info */}
             {item && (
               <div className="flex items-center gap-4 py-4">
-                <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-gray-50">
-                  <Image
-                    src={item.imageUrl}
-                    alt={item.productName}
-                    width={80}
-                    height={80}
-                    className="h-full w-full object-contain p-2"
-                    unoptimized={item.imageUrl.startsWith("http")}
-                  />
+                <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-50">
+                  {item.imageUrl ? (
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.productName}
+                      width={80}
+                      height={80}
+                      className="h-full w-full object-contain p-2"
+                      unoptimized={item.imageUrl.startsWith("http")}
+                    />
+                  ) : (
+                    <Smartphone className="h-10 w-10 text-gray-300" />
+                  )}
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="font-semibold text-gray-900">{item.productName}</p>

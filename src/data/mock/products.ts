@@ -53,14 +53,9 @@ export interface Product {
   isPromo?: boolean;
 }
 
-// Helper to get image path - priorite: API primary_image_url, puis fallback local
-export function getProductImage(product: Product): string {
-  // Utiliser l'image primaire de l'API si disponible
-  if (product.primaryImageUrl) {
-    return product.primaryImageUrl;
-  }
-  // Fallback sur l'image locale
-  return `/images/products/apple/${product.slug}/image.png`;
+// Helper to get image path - retourne l'image API ou null
+export function getProductImage(product: Product): string | null {
+  return product.primaryImageUrl || null;
 }
 
 // Standard conditions template

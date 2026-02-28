@@ -74,7 +74,7 @@ function StickyHeaderComponent({
 
   // Get image URL for selected color (or fallback to primary)
   const productImages = colorImages ? getImageUrls(colorImages, selection.color) : [];
-  const imageUrl = productImages[0] || product.primaryImageUrl || `/images/products/apple/${product.slug}/image.png`;
+  const imageUrl = productImages[0] || product.primaryImageUrl || null;
 
   // Calculate animated values based on scroll progress
   const translateY = -100 + (scrollProgress * 100); // -100% to 0%
@@ -118,14 +118,16 @@ function StickyHeaderComponent({
             }}
           >
             {/* Product thumbnail */}
-            <div className="hidden h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-gray-50 sm:block">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={imageUrl}
-                alt={product.name}
-                className="h-full w-full object-contain"
-              />
-            </div>
+            {imageUrl && (
+              <div className="hidden h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-gray-50 sm:block">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={imageUrl}
+                  alt={product.name}
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            )}
 
             {/* Config summary */}
             <div className="min-w-0">

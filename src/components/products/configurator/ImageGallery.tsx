@@ -2,6 +2,7 @@
 
 import { useState, useEffect, memo } from "react";
 import Image from "next/image";
+import { Smartphone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import type { ImageGalleryProps } from "./types";
@@ -33,7 +34,7 @@ function ImageGalleryComponent({
     setCurrentIndex(0);
   }, [images]);
 
-  const displayImages = images.length > 0 ? images : [fallbackImage];
+  const displayImages = images.length > 0 ? images : fallbackImage ? [fallbackImage] : [];
   const currentImage = displayImages[currentIndex] || displayImages[0];
   const showThumbnails = displayImages.length > 1;
 
@@ -76,15 +77,21 @@ function ImageGalleryComponent({
           className="relative flex-1 aspect-square overflow-hidden rounded-2xl"
           role="tabpanel"
         >
-          <Image
-            src={currentImage}
-            alt={productName}
-            fill
-            className="object-contain p-8"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            priority
-            unoptimized={currentImage.startsWith("http")}
-          />
+          {currentImage ? (
+            <Image
+              src={currentImage}
+              alt={productName}
+              fill
+              className="object-contain p-8"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+              unoptimized={currentImage.startsWith("http")}
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-gray-50">
+              <Smartphone className="h-24 w-24 text-gray-300" />
+            </div>
+          )}
         </div>
       </div>
 
