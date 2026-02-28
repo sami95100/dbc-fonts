@@ -82,7 +82,7 @@ export interface ModelPrices {
 
 export interface ModelOptions {
   storages: Array<{ value: string; available: boolean }>;
-  colors: Array<{ value: string; available: boolean }>;
+  colors: Array<{ value: string; available: boolean; hex?: string }>;
   sims: Array<{ value: string; available: boolean }>;
   batteries: Array<{ value: string; price_delta: number }>;
 }

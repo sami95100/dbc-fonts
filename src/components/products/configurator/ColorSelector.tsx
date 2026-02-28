@@ -44,7 +44,7 @@ function ColorSelectorComponent({
 
   return (
     <div
-      className="grid grid-cols-2 gap-3"
+      className="flex flex-wrap gap-5"
       role="radiogroup"
       aria-label={t("colorSelection")}
     >
@@ -56,48 +56,43 @@ function ColorSelectorComponent({
           ? colorAvailabilityMap.get(color.name) ?? true
           : true;
 
-        return (
-          <button
-            key={color.name}
-            type="button"
-            role="radio"
-            aria-checked={isSelected}
-            disabled={!isAvailable}
-            onClick={() => isAvailable && onColorChange(color.name)}
-            className={cn(
-              "flex items-center gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all duration-150",
-              isSelected && isAvailable
-                ? "border-green-700 bg-green-50"
-                : isAvailable
-                ? "border-gray-200 bg-white hover:border-gray-300"
-                : "cursor-not-allowed border-gray-200 bg-gray-50 opacity-60"
-            )}
-          >
-            {/* Color swatch */}
-            <span
-              className={cn(
-                "h-6 w-6 flex-shrink-0 rounded-full border",
-                color.hex === "#FFFFFF" || color.hex === "#f5f5f7" || color.hex === "#e3e4e5"
-                  ? "border-gray-300"
-                  : "border-transparent",
-                !isAvailable && "opacity-50"
-              )}
-              style={{ backgroundColor: color.hex }}
-              aria-hidden="true"
-            />
+        const isLight =
+          color.hex === "#FFFFFF" || color.hex === "#f5f5f7" || color.hex === "#e3e4e5";
 
-            {/* Color name + sold out badge */}
-            <div className="flex flex-1 items-center justify-between">
-              <span className={cn("text-sm font-medium", !isAvailable ? "text-gray-400 line-through" : "text-gray-900")}>
-                {color.name}
-              </span>
+        return (
+          <div key={color.name} className="flex flex-col items-center gap-1.5">
+            <button
+              type="button"
+              role="radio"
+              aria-checked={isSelected}
+              aria-label={`${color.name}${!isAvailable ? ` — ${soldOutLabel}` : ""}`}
+              disabled={!isAvailable}
+              onClick={() => isAvailable && onColorChange(color.name)}
+              className={cn(
+                "relative h-6 w-6 rounded-full transition-shadow duration-200",
+                isAvailable
+                  ? "cursor-pointer"
+                  : "cursor-not-allowed opacity-40",
+                isSelected && "ring-[2.5px] ring-primary ring-offset-[2.5px]"
+              )}
+              style={{
+                backgroundColor: color.hex,
+                boxShadow: "inset 0 3px 5px rgba(0,0,0,0.2)",
+              }}
+            >
               {!isAvailable && (
-                <span className="ml-2 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
-                  {soldOutLabel}
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <span className="h-[2px] w-8 rotate-45 rounded-full bg-gray-400" />
                 </span>
               )}
-            </div>
-          </button>
+            </button>
+            <span className={cn(
+              "text-xs",
+              isSelected ? "font-semibold text-gray-900" : "text-gray-500"
+            )}>
+              {color.name}
+            </span>
+          </div>
         );
       })}
     </div>

@@ -150,10 +150,10 @@ export interface TransformModelParams {
 export function apiModelToProduct(params: TransformModelParams): Product {
   const { model, prices, options, images } = params;
 
-  // Construire les couleurs avec hex codes
+  // Construire les couleurs avec hex codes (API prioritaire, fallback local)
   const colors: ProductColor[] = options.colors.map((c) => ({
     name: c.value,
-    hex: getColorHex(c.value),
+    hex: c.hex || getColorHex(c.value),
   }));
 
   // Construire les storages
