@@ -141,7 +141,7 @@ function OrderSummaryComponent({
             </span>
           )}
           <span className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700">
-            {selection.color}
+            {(() => { try { return t(`colorNames.${selection.color}`); } catch { return selection.color; } })()}
           </span>
         </div>
 

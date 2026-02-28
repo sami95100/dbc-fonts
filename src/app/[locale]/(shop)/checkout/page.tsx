@@ -190,10 +190,7 @@ export default function CheckoutPage() {
                       uber: "deliveryUberDesc",
                     };
                     const icon = iconMap[method] ?? <Truck className="h-4 w-4" />;
-                    // For "home" methods, use carrier_name as title to distinguish express vs classique
-                    const title = method === "home" && sm.carrier_name
-                      ? `${t("deliveryHome")} — ${sm.carrier_name}`
-                      : t(titleKeyMap[method] ?? "deliveryHome");
+                    const title = t(titleKeyMap[method] ?? "deliveryHome");
                     const descKey = descKeyMap[method] ?? "deliveryHomeDesc";
 
                     // Build description: base desc + delivery time
@@ -476,7 +473,7 @@ export default function CheckoutPage() {
                     onChange={handleChange}
                     placeholder={t("fields.accessCodePlaceholder")}
                   />
-                  <div className="max-w-xs">
+                  <div>
                   <label
                     htmlFor="sheet-country"
                     className="mb-1 block text-sm font-medium text-gray-700"
@@ -488,7 +485,7 @@ export default function CheckoutPage() {
                     name="country"
                     value={formData.country}
                     onChange={handleChange}
-                    className="h-9 w-full rounded-lg border border-gray-200 bg-transparent px-3 py-1 text-base shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:border-ring"
+                    className="h-9 w-full rounded-full border border-gray-200 bg-transparent px-4 py-1 text-base shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:border-ring"
                   >
                     {COUNTRY_CODES.map((code) => (
                       <option key={code} value={code}>

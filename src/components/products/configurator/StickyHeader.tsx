@@ -132,7 +132,7 @@ function StickyHeaderComponent({
             {/* Config summary */}
             <div className="min-w-0">
               <p className="truncate text-sm font-medium text-gray-900">
-                {conditionLabel} - {batteryLabel} - {selection.storage} - {selection.color}
+                {conditionLabel} - {batteryLabel} - {selection.storage} - {(() => { try { return t(`colorNames.${selection.color}`); } catch { return selection.color; } })()}
               </p>
               <p className="text-xs text-gray-500">{product.name}</p>
             </div>

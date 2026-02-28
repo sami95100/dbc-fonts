@@ -24,15 +24,15 @@ export function TrustBar() {
   ];
 
   return (
-    <div className="border-b border-gray-100 bg-gray-50 py-4">
+    <div className="border-b border-gray-100 bg-gray-50 py-3">
       <div className="mx-auto max-w-7xl px-4">
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="flex gap-4 overflow-x-auto scrollbar-hide md:grid md:grid-cols-4 md:overflow-visible">
           {items.map((item) => (
-            <div key={item.key} className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-gray-600">
+            <div key={item.key} className="flex shrink-0 items-center gap-2">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-gray-600">
                 {item.icon}
               </div>
-              <span className="text-sm font-medium text-gray-900">
+              <span className="whitespace-nowrap text-xs font-medium text-gray-900 md:text-sm md:whitespace-normal">
                 {t(item.key)}
               </span>
             </div>

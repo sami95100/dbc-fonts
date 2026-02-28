@@ -1,7 +1,7 @@
 import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Smartphone, Star, Zap } from "lucide-react";
+import { Smartphone, Star } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import type { Product } from "@/data/mock/products";
 
@@ -33,8 +33,14 @@ function ProductCardComponent({ product }: ProductCardProps) {
     >
       {/* Mobile: Horizontal layout / Desktop: Vertical layout */}
       <div className="flex gap-4 sm:block">
-        {/* Product Image */}
-        <div className="relative aspect-square w-28 shrink-0 overflow-hidden rounded-xl sm:mb-4 sm:w-full">
+        {/* Product Image wrapper - no overflow so badge isn't clipped */}
+        <div className="relative w-28 shrink-0 sm:mb-4 sm:w-full">
+          {product.isPromo && (
+            <span className="absolute top-0 -right-1 z-10 -translate-y-1/2 rounded-full bg-accent px-2 py-0.5 text-[10px] font-semibold text-white">
+              {tPromo("badge")}
+            </span>
+          )}
+          <div className="relative aspect-square overflow-hidden rounded-xl">
           {imageUrl ? (
             <Image
               src={imageUrl}
@@ -48,12 +54,7 @@ function ProductCardComponent({ product }: ProductCardProps) {
               <Smartphone className="h-12 w-12 text-gray-300" />
             </div>
           )}
-          {product.isPromo && (
-            <span className="absolute left-1.5 top-1.5 inline-flex items-center gap-0.5 rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-white shadow-sm">
-              <Zap className="h-2.5 w-2.5 fill-current" />
-              {tPromo("badge")}
-            </span>
-          )}
+          </div>
         </div>
 
         {/* Product Info */}

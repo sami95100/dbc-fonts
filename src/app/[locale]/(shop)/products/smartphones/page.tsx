@@ -72,23 +72,23 @@ export default async function SmartphonesPage({ params }: SmartphonesPageProps) 
           ]}
         />
 
-        <div className="mb-6">
-          <h1 className="mb-2 text-3xl font-bold text-gray-900 md:text-4xl">
+        <div className="mb-3 md:mb-6">
+          <h1 className="mb-1 text-2xl font-bold text-gray-900 md:mb-2 md:text-4xl">
             {t("smartphonesTitle")}
           </h1>
-          <p className="text-gray-600">
+          <p className="hidden text-gray-600 md:block">
             {t("smartphonesSubtitle")}
           </p>
         </div>
 
         {/* Sous-categories par marque */}
         {category?.subcategories && (
-          <div className="mb-8 flex flex-wrap gap-3">
+          <div className="mb-4 flex gap-2 overflow-x-auto scrollbar-hide md:mb-8 md:flex-wrap md:gap-3 md:overflow-visible">
             {category.subcategories.map((sub) => (
               <a
                 key={sub.id}
                 href={`/${locale}/products/smartphones/${sub.slug}`}
-                className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:border-green-700 hover:bg-green-700 hover:text-white"
+                className="shrink-0 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:border-green-700 hover:bg-green-700 hover:text-white"
               >
                 {tCat(`sub.smartphones.${sub.slug}`)}
               </a>

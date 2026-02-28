@@ -163,7 +163,7 @@ function FieldWrapper({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-gray-50 px-3 pb-2.5 pt-1.5">
+    <div className="rounded-full border border-gray-200 bg-gray-50 px-4 pb-2.5 pt-1.5">
       <span className="block text-[11px] leading-tight text-gray-400">
         {label}
       </span>

@@ -308,7 +308,7 @@ export default function ReviewPage() {
                 value={item.title}
                 onChange={(e) => updateItem(index, "title", e.target.value)}
                 placeholder={t("titlePlaceholder")}
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
+                className="w-full rounded-2xl border border-gray-200 px-4 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
               />
             </div>
 
@@ -321,7 +321,7 @@ export default function ReviewPage() {
                 onChange={(e) => updateItem(index, "content", e.target.value)}
                 placeholder={t("contentPlaceholder")}
                 rows={3}
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
+                className="w-full rounded-2xl border border-gray-200 px-4 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
               />
             </div>
           </div>

@@ -16,7 +16,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
   const t = useTranslations("nav");
 
   return (
-    <nav className="mb-4 flex items-center gap-2 text-sm text-gray-500">
+    <nav className="mb-4 hidden items-center gap-2 text-sm text-gray-500 md:flex">
       <Link href={`/${locale}`} className="hover:text-gray-900">
         {t("home")}
       </Link>
