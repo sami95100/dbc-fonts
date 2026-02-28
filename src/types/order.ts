@@ -44,6 +44,7 @@ export interface CreateOrderPayload {
   dpd_shipping_city?: string;
   dpd_shipping_country?: string;
   uber_quote_id?: string;
+  shipping_method?: "home" | "uber" | "dpd" | "pickup";
   notes?: string;
   locale?: string;
   items: OrderItem[];
@@ -62,7 +63,7 @@ export interface DpdParcelShop {
 export interface Order {
   id: string;
   order_number: string;
-  delivery_type: "dropshipping" | "shop";
+  delivery_type: "dropshipping" | "shop" | "pickup";
   status: OrderStatus;
   customer_name: string;
   customer_email: string;
@@ -94,6 +95,7 @@ export type OrderStatus =
   | "pending"
   | "confirmed"
   | "processing"
+  | "ready_for_pickup"
   | "shipped"
   | "delivered"
   | "cancelled";
@@ -104,6 +106,6 @@ export interface CreateOrderResponse {
     id: string;
     order_number: string;
   };
-  delivery_type: "dropshipping" | "shop";
+  delivery_type: "dropshipping" | "shop" | "pickup";
   checkout_url: string;
 }

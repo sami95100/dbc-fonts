@@ -292,6 +292,7 @@ export function useCheckout() {
       shipping_cost: shippingCost,
       carrier_id: carrierId,
       notes: notesParts.length > 0 ? notesParts.join(" | ") : undefined,
+      shipping_method: deliveryMethod,
       items: orderItems,
       locale,
     };
