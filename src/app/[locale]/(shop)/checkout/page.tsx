@@ -242,7 +242,7 @@ export default function CheckoutPage() {
                           </p>
                         )}
                         {isUber && isSelected && quoteError && (
-                          <div id="uber-quote-error" className="mt-2 ml-10 flex items-start gap-2 rounded-md bg-red-50 px-3 py-2">
+                          <div id="uber-quote-error" className="mt-2 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
                             <span className="mt-0.5 shrink-0 text-red-500">⚠</span>
                             <p className="text-sm text-red-700">
                               {quoteError}
