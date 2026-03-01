@@ -539,6 +539,7 @@
     "deliveryPickupReady": "Usually ready in 2 hours",
     "deliveryUber": "Uber Direct",
     "deliveryUberDesc": "Express delivery in 1h",
+    "deliveryUberLive": "Express delivery - ~{minutes} min",
     "uberEnterAddress": "Enter your address for exact pricing",
     "deliveryDpd": "DPD Parcel Locker",
     "deliveryDpdDesc": "Delivery to a pickup point",

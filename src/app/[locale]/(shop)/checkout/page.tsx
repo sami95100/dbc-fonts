@@ -219,10 +219,12 @@ export default function CheckoutPage() {
                       displayPrice = formatPrice(sm.price, locale);
                     }
 
-                    // Uber: show estimated time from quote or "enter address" hint
-                    let uberExtra = "";
+                    // Uber: replace description with real estimate when available
+                    let description: string;
                     if (isUber && uberQuote) {
-                      uberExtra = ` - ~${uberQuote.duration_minutes} min`;
+                      description = `${t("deliveryUberLive", { minutes: uberQuote.duration_minutes })}`;
+                    } else {
+                      description = `${t(descKey)}${timeSuffix}`;
                     }
 
                     return (
@@ -232,7 +234,7 @@ export default function CheckoutPage() {
                           onClick={() => setSelectedShippingId(sm.id)}
                           icon={icon}
                           title={title}
-                          description={`${t(descKey)}${timeSuffix}${uberExtra}`}
+                          description={description}
                           price={displayPrice}
                           priceClassName={displayPriceClassName}
                         />

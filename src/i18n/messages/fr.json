@@ -539,6 +539,7 @@
     "deliveryPickupReady": "Habituellement pret en 2 heures",
     "deliveryUber": "Uber Direct",
     "deliveryUberDesc": "Livraison express en 1h",
+    "deliveryUberLive": "Livraison express - ~{minutes} min",
     "uberEnterAddress": "Entrez votre adresse pour obtenir le prix exact",
     "deliveryDpd": "Point relais DPD",
     "deliveryDpdDesc": "Livraison en point relais",
