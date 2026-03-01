@@ -325,8 +325,13 @@ export function useCheckout() {
     let freshUberQuote = uberQuote;
     if (deliveryMethod === "uber") {
       if (!freshUberQuote) {
-        // Scroll to the existing quote error instead of showing a second error
-        document.getElementById("uber-quote-error")?.scrollIntoView({ behavior: "smooth", block: "center" });
+        // Show error at the Uber card level and scroll to it
+        if (!quoteError) {
+          setQuoteError(t("errors.uberQuoteRequired"));
+        }
+        setTimeout(() => {
+          document.getElementById("uber-quote-error")?.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 100);
         return;
       }
       if (new Date(freshUberQuote.expires_at) <= new Date()) {
