@@ -325,7 +325,8 @@ export function useCheckout() {
     let freshUberQuote = uberQuote;
     if (deliveryMethod === "uber") {
       if (!freshUberQuote) {
-        setSubmitError(t("errors.uberQuoteRequired"));
+        // Scroll to the existing quote error instead of showing a second error
+        document.getElementById("uber-quote-error")?.scrollIntoView({ behavior: "smooth", block: "center" });
         return;
       }
       if (new Date(freshUberQuote.expires_at) <= new Date()) {
@@ -338,8 +339,12 @@ export function useCheckout() {
           country: formData.country,
         });
         if (error || !data) {
-          setSubmitError(error?.error || t("errors.uberQuoteFailed"));
+          setQuoteError(error?.error || t("errors.uberQuoteFailed"));
           setIsSubmitting(false);
+          // Scroll to the quote error after it renders
+          setTimeout(() => {
+            document.getElementById("uber-quote-error")?.scrollIntoView({ behavior: "smooth", block: "center" });
+          }, 100);
           return;
         }
         freshUberQuote = data;
