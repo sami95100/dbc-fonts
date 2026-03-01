@@ -34,10 +34,11 @@ function FilteredProductGridInner({
   const maxPrice = searchParams.get("max_price");
   const years = searchParams.getAll("year");
   const storages = searchParams.getAll("storage");
+  const colors = searchParams.getAll("color");
 
   // Recharger les produits quand les filtres changent
   useEffect(() => {
-    const hasFilters = minPrice || maxPrice || years.length > 0 || storages.length > 0;
+    const hasFilters = minPrice || maxPrice || years.length > 0 || storages.length > 0 || colors.length > 0;
 
     if (!hasFilters) {
       setProducts(initialProducts);
@@ -53,6 +54,7 @@ function FilteredProductGridInner({
           maxPrice: maxPrice ? parseInt(maxPrice, 10) : undefined,
           year: years.length > 0 ? parseInt(years[0], 10) : undefined,
           storage: storages.length > 0 ? storages[0] : undefined,
+          color: colors.length > 0 ? colors[0] : undefined,
           perPage: 50,
         });
 
@@ -92,7 +94,7 @@ function FilteredProductGridInner({
     }
 
     fetchFilteredProducts();
-  }, [brand, minPrice, maxPrice, years.join(","), storages.join(","), initialProducts]);
+  }, [brand, minPrice, maxPrice, years.join(","), storages.join(","), colors.join(","), initialProducts]);
 
   return (
     <>

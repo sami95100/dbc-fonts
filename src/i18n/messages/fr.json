@@ -287,6 +287,7 @@
       "year": "Annee",
       "screen": "Taille d'ecran",
       "storage": "Stockage",
+      "color": "Couleur",
       "filter": "Filtrer",
       "sort": "Trier",
       "bestSellers": "Meilleures ventes",
@@ -392,7 +393,11 @@
         "Turquoise": "Turquoise",
         "Ivory": "Ivoire",
         "Mauve": "Mauve",
-        "Charcoal": "Anthracite"
+        "Charcoal": "Anthracite",
+        "Orange": "Orange",
+        "Pink": "Rose bonbon",
+        "Aura Blue": "Bleu Aura",
+        "Twilight": "Crepuscule"
       },
       "descriptionTitle": "Description du produit",
       "addedToCart": "Ajoute au panier",

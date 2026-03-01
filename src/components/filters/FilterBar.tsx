@@ -12,6 +12,7 @@ export interface ActiveFilters {
   maxPrice?: number;
   years: number[];
   storages: string[];
+  colors: string[];
 }
 
 interface FilterBarProps {
@@ -28,6 +29,7 @@ export function FilterBar({
   className,
 }: FilterBarProps) {
   const t = useTranslations("catalog.filters");
+  const tColor = useTranslations("product.configurator.colorNames");
 
   // Convertir les annees en options
   const yearOptions: FilterOption[] = availableFilters.years.map((year) => ({
@@ -42,6 +44,15 @@ export function FilterBar({
       label: storage,
     })
   );
+
+  // Convertir les couleurs en options (traduites, sans "nd")
+  const colorOptions: FilterOption[] = (availableFilters.colors || [])
+    .filter((c) => c !== "nd")
+    .map((color) => {
+      let label = color;
+      try { label = tColor(color); } catch { /* fallback au nom brut */ }
+      return { value: color, label };
+    });
 
   const handlePriceChange = (min?: number, max?: number) => {
     onFiltersChange({
@@ -65,12 +76,20 @@ export function FilterBar({
     });
   };
 
+  const handleColorsChange = (values: string[]) => {
+    onFiltersChange({
+      ...activeFilters,
+      colors: values,
+    });
+  };
+
   const handleClearAll = () => {
     onFiltersChange({
       minPrice: undefined,
       maxPrice: undefined,
       years: [],
       storages: [],
+      colors: [],
     });
   };
 
@@ -78,7 +97,8 @@ export function FilterBar({
     activeFilters.minPrice !== undefined ||
     activeFilters.maxPrice !== undefined ||
     activeFilters.years.length > 0 ||
-    activeFilters.storages.length > 0;
+    activeFilters.storages.length > 0 ||
+    activeFilters.colors.length > 0;
 
   return (
     <div className={className}>
@@ -111,6 +131,17 @@ export function FilterBar({
             options={storageOptions}
             selected={activeFilters.storages}
             onChange={handleStoragesChange}
+            multiSelect
+          />
+        )}
+
+        {/* Filtre Couleur */}
+        {colorOptions.length > 0 && (
+          <FilterDropdown
+            label={t("color")}
+            options={colorOptions}
+            selected={activeFilters.colors}
+            onChange={handleColorsChange}
             multiSelect
           />
         )}

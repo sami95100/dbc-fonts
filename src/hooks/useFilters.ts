@@ -19,12 +19,14 @@ export function useFilters() {
     const maxPrice = searchParams.get("max_price");
     const years = searchParams.getAll("year");
     const storages = searchParams.getAll("storage");
+    const colors = searchParams.getAll("color");
 
     return {
       minPrice: minPrice ? parseInt(minPrice, 10) : undefined,
       maxPrice: maxPrice ? parseInt(maxPrice, 10) : undefined,
       years: years.map((y) => parseInt(y, 10)),
       storages,
+      colors,
     };
   }, [searchParams]);
 
@@ -45,6 +47,9 @@ export function useFilters() {
       newFilters.storages.forEach((storage) => {
         params.append("storage", storage);
       });
+      newFilters.colors.forEach((color) => {
+        params.append("color", color);
+      });
 
       const query = params.toString();
       router.push(`${pathname}${query ? `?${query}` : ""}`, { scroll: false });
@@ -63,7 +68,8 @@ export function useFilters() {
       filters.minPrice !== undefined ||
       filters.maxPrice !== undefined ||
       filters.years.length > 0 ||
-      filters.storages.length > 0
+      filters.storages.length > 0 ||
+      filters.colors.length > 0
     );
   }, [filters]);
 

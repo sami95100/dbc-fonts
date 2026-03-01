@@ -11,6 +11,7 @@ export interface FilterValues {
   brands: string[];
   years: number[];
   storages: string[];
+  colors: string[];
 }
 
 /**

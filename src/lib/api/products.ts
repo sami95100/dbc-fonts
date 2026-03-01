@@ -69,6 +69,7 @@ export async function getModels(params?: {
   maxPrice?: number;
   year?: number;
   storage?: string;
+  color?: string;
   search?: string;
   promo?: boolean;
   page?: number;
@@ -82,6 +83,7 @@ export async function getModels(params?: {
   if (params?.maxPrice) searchParams.set("max_price", String(params.maxPrice));
   if (params?.year) searchParams.set("year", String(params.year));
   if (params?.storage) searchParams.set("storage", params.storage);
+  if (params?.color) searchParams.set("color", params.color);
   if (params?.search) searchParams.set("search", params.search);
   if (params?.promo) searchParams.set("promo", "1");
   if (params?.page) searchParams.set("page", String(params.page));

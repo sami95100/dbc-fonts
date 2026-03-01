@@ -287,6 +287,7 @@
       "year": "Release year",
       "screen": "Screen size",
       "storage": "Storage capacity (GB)",
+      "color": "Color",
       "filter": "Filter",
       "sort": "Sort",
       "bestSellers": "Best sellers",
@@ -388,7 +389,11 @@
         "Turquoise": "Turquoise",
         "Ivory": "Ivory",
         "Mauve": "Mauve",
-        "Charcoal": "Charcoal"
+        "Charcoal": "Charcoal",
+        "Orange": "Orange",
+        "Pink": "Pink",
+        "Aura Blue": "Aura Blue",
+        "Twilight": "Twilight"
       },
       "descriptionTitle": "Product description",
       "addedToCart": "Added to cart",
