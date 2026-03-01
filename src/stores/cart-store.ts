@@ -33,7 +33,7 @@ interface CartState {
   clearLastOrder: () => void;
   getItemCount: () => number;
   getSubtotal: () => number;
-  getCartFulfillmentType: () => string;
+  getCartFulfillmentType: () => "foxway_direct" | "foxway_shop" | "shop_stock";
 }
 
 export const useCartStore = create<CartState>()(
