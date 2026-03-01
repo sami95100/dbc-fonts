@@ -44,6 +44,7 @@ export interface CreateOrderPayload {
   dpd_shipping_city?: string;
   dpd_shipping_country?: string;
   uber_quote_id?: string;
+  order_type?: "foxway_direct" | "foxway_shop" | "shop_stock";
   shipping_method?: "home" | "uber" | "dpd" | "pickup";
   notes?: string;
   locale?: string;

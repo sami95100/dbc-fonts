@@ -310,6 +310,8 @@ export function useCheckout() {
       payload.shipping_cost = uberQuote.fee;
     }
 
+    payload.order_type = fulfillmentType;
+
     return payload;
   };
 
