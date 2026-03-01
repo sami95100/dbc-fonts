@@ -136,7 +136,7 @@ export function useCheckout() {
         country: formData.country,
       });
       if (error) {
-        setQuoteError(t("errors.uberQuoteFailed"));
+        setQuoteError(error.error || t("errors.uberQuoteFailed"));
         setUberQuote(null);
       } else if (data) {
         setUberQuote(data);
@@ -338,7 +338,7 @@ export function useCheckout() {
           country: formData.country,
         });
         if (error || !data) {
-          setSubmitError(t("errors.uberQuoteFailed"));
+          setSubmitError(error?.error || t("errors.uberQuoteFailed"));
           setIsSubmitting(false);
           return;
         }
