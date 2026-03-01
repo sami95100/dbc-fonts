@@ -9,6 +9,7 @@ const STATUS_STYLES: Record<OrderStatus, string> = {
   pending: "bg-highlight/10 text-highlight-foreground",
   confirmed: "bg-blue-50 text-blue-700",
   processing: "bg-blue-50 text-blue-700",
+  ready_for_pickup: "bg-green-50 text-green-700",
   shipped: "bg-purple-50 text-purple-700",
   delivered: "bg-green-50 text-green-700",
   cancelled: "bg-red-50 text-red-700",
