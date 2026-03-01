@@ -44,8 +44,9 @@ export interface CreateOrderPayload {
   dpd_shipping_city?: string;
   dpd_shipping_country?: string;
   uber_quote_id?: string;
+  stuart_quote_id?: string;
   order_type?: "foxway_direct" | "foxway_shop" | "shop_stock";
-  shipping_method?: "home" | "uber" | "dpd" | "pickup";
+  shipping_method?: "home" | "uber" | "stuart" | "dpd" | "pickup";
   notes?: string;
   locale?: string;
   items: OrderItem[];
@@ -86,6 +87,13 @@ export interface Order {
   uber_fee?: number;
   uber_courier_name?: string;
   uber_eta?: string;
+  stuart_job_id?: string;
+  stuart_status?: string;
+  stuart_tracking_url?: string;
+  stuart_fee?: number;
+  stuart_driver_name?: string;
+  stuart_driver_phone?: string;
+  stuart_eta?: string;
   created_at: string;
   shipped_at?: string;
   delivered_at?: string;

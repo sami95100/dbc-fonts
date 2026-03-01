@@ -161,7 +161,7 @@ export async function findVariant(
  */
 export interface ShippingMethod {
   id: string;
-  method: "home" | "uber" | "dpd" | "pickup";
+  method: "home" | "uber" | "stuart" | "dpd" | "pickup";
   carrier_name: string | null;
   price: number;
   min_days: number;
@@ -194,6 +194,25 @@ export async function getUberQuote(address: {
   country: string;
 }) {
   return publicApi.post<UberQuote>("/uber/quote", address);
+}
+
+/**
+ * Devis Stuart pour une adresse de livraison
+ */
+export interface StuartQuote {
+  quote_id: number;
+  fee: number;
+  currency: string;
+  duration_minutes: number;
+}
+
+export async function getStuartQuote(address: {
+  address: string;
+  postal_code: string;
+  city: string;
+  country: string;
+}) {
+  return publicApi.post<StuartQuote>("/stuart/quote", address);
 }
 
 /**

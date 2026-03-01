@@ -4,7 +4,7 @@ export type CountryCode = (typeof COUNTRY_CODES)[number];
 
 // --- Delivery ---
 
-export type DeliveryMethod = "home" | "uber" | "dpd" | "pickup";
+export type DeliveryMethod = "home" | "uber" | "stuart" | "dpd" | "pickup";
 
 export type FulfillmentType = "foxway_direct" | "foxway_shop" | "shop_stock";
 

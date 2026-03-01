@@ -7,7 +7,7 @@ import { useCartStore } from "@/stores/cart-store";
 import { useAuthStore } from "@/stores/auth-store";
 import { createOrder } from "@/lib/api/orders";
 import { getProfile } from "@/lib/api/profile";
-import { getShippingMethods, getUberQuote, type ShippingMethod, type UberQuote } from "@/lib/api/products";
+import { getShippingMethods, getUberQuote, getStuartQuote, type ShippingMethod, type UberQuote, type StuartQuote } from "@/lib/api/products";
 import { GRADE_ID_TO_API } from "@/components/products/configurator";
 import { STORE_ADDRESS } from "@/lib/constants";
 import type { DeliveryMethod } from "@/lib/constants";
@@ -65,6 +65,11 @@ export function useCheckout() {
   const [isLoadingQuote, setIsLoadingQuote] = useState(false);
   const [quoteError, setQuoteError] = useState<string | null>(null);
 
+  // Stuart quote
+  const [stuartQuote, setStuartQuote] = useState<StuartQuote | null>(null);
+  const [isLoadingStuartQuote, setIsLoadingStuartQuote] = useState(false);
+  const [stuartQuoteError, setStuartQuoteError] = useState<string | null>(null);
+
   const fulfillmentType = getCartFulfillmentType();
   const subtotal = getSubtotal();
   const hasHomeAddress = formData.address.trim() !== "" && formData.city.trim() !== "";
@@ -88,11 +93,13 @@ export function useCheckout() {
   );
   const deliveryMethod: DeliveryMethod = (currentShippingMethod?.method ?? "home") as DeliveryMethod;
 
-  // Compute shipping cost from API data (override with Uber quote if available)
+  // Compute shipping cost from API data (override with dynamic quote if available)
   const shippingCost =
     deliveryMethod === "uber" && uberQuote
       ? uberQuote.fee
-      : currentShippingMethod?.price ?? 0;
+      : deliveryMethod === "stuart" && stuartQuote
+        ? stuartQuote.fee
+        : currentShippingMethod?.price ?? 0;
 
   // Clear last order on mount
   useEffect(() => {
@@ -142,6 +149,39 @@ export function useCheckout() {
         setUberQuote(data);
       }
       setIsLoadingQuote(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [deliveryMethod, formData.address, formData.postalCode, formData.city, formData.country, t]);
+
+  // Fetch Stuart quote when address is ready and method is stuart
+  useEffect(() => {
+    if (deliveryMethod !== "stuart") {
+      setStuartQuote(null);
+      setStuartQuoteError(null);
+      return;
+    }
+    if (!formData.address.trim() || !formData.postalCode.trim() || !formData.city.trim()) {
+      setStuartQuote(null);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setIsLoadingStuartQuote(true);
+      setStuartQuoteError(null);
+      const { data, error } = await getStuartQuote({
+        address: formData.address,
+        postal_code: formData.postalCode,
+        city: formData.city,
+        country: formData.country,
+      });
+      if (error) {
+        setStuartQuoteError(error.error || t("errors.stuartQuoteFailed"));
+        setStuartQuote(null);
+      } else if (data) {
+        setStuartQuote(data);
+      }
+      setIsLoadingStuartQuote(false);
     }, 800);
 
     return () => clearTimeout(timer);
@@ -203,7 +243,7 @@ export function useCheckout() {
       newErrors.phone = t("errors.invalidPhone");
     }
 
-    if (deliveryMethod === "home" || deliveryMethod === "uber") {
+    if (deliveryMethod === "home" || deliveryMethod === "uber" || deliveryMethod === "stuart") {
       if (!formData.address.trim()) newErrors.address = t("errors.required");
       if (!formData.postalCode.trim()) {
         newErrors.postalCode = t("errors.required");
@@ -220,7 +260,7 @@ export function useCheckout() {
     setErrors(newErrors);
 
     if (
-      (deliveryMethod === "home" || deliveryMethod === "uber") &&
+      (deliveryMethod === "home" || deliveryMethod === "uber" || deliveryMethod === "stuart") &&
       (newErrors.address || newErrors.postalCode || newErrors.city)
     ) {
       setShowAddressSheet(true);
@@ -308,6 +348,11 @@ export function useCheckout() {
     if (deliveryMethod === "uber" && uberQuote) {
       payload.uber_quote_id = uberQuote.quote_id;
       payload.shipping_cost = uberQuote.fee;
+    }
+
+    if (deliveryMethod === "stuart" && stuartQuote) {
+      payload.stuart_quote_id = String(stuartQuote.quote_id);
+      payload.shipping_cost = stuartQuote.fee;
     }
 
     payload.order_type = fulfillmentType;
