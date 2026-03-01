@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { Truck, MapPin, Store, X, Loader2, Zap } from "lucide-react";
+import { Truck, MapPin, Store, X, Loader2, Zap, Bike } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { COUNTRY_CODES, STORE_ADDRESS } from "@/lib/constants";
@@ -43,6 +43,9 @@ export default function CheckoutPage() {
     uberQuote,
     isLoadingQuote,
     quoteError,
+    stuartQuote,
+    isLoadingStuartQuote,
+    stuartQuoteError,
     orderCompleteRef,
   } = useCheckout();
 
@@ -178,16 +181,19 @@ export default function CheckoutPage() {
                       pickup: <Store className="h-4 w-4" />,
                       dpd: <MapPin className="h-4 w-4" />,
                       uber: <Zap className="h-4 w-4" />,
+                      stuart: <Bike className="h-4 w-4" />,
                     };
                     const titleKeyMap: Record<string, string> = {
                       pickup: "deliveryPickup",
                       dpd: "deliveryDpd",
                       uber: "deliveryUber",
+                      stuart: "deliveryStuart",
                     };
                     const descKeyMap: Record<string, string> = {
                       pickup: "deliveryPickupDesc",
                       dpd: "deliveryDpdDesc",
                       uber: "deliveryUberDesc",
+                      stuart: "deliveryStuartDesc",
                     };
                     const icon = iconMap[method] ?? <Truck className="h-4 w-4" />;
                     const title = t(titleKeyMap[method] ?? "deliveryHome");
@@ -199,15 +205,19 @@ export default function CheckoutPage() {
                       ? ` - ${sm.min_days}-${sm.max_days} ${t("days")}`
                       : "";
 
-                    // Uber: dynamic price from quote (no DB price — always calculated)
+                    // Dynamic price from quote (Uber or Stuart — no DB price)
                     const isUber = method === "uber";
+                    const isStuart = method === "stuart";
+                    const isDynamicPrice = isUber || isStuart;
                     let displayPrice: string;
                     let displayPriceClassName: string | undefined;
-                    if (isUber) {
-                      if (isLoadingQuote) {
+                    if (isDynamicPrice) {
+                      const loading = isUber ? isLoadingQuote : isLoadingStuartQuote;
+                      const quote = isUber ? uberQuote : stuartQuote;
+                      if (loading) {
                         displayPrice = "...";
-                      } else if (uberQuote) {
-                        displayPrice = formatPrice(uberQuote.fee, locale);
+                      } else if (quote) {
+                        displayPrice = formatPrice(quote.fee, locale);
                       } else {
                         displayPrice = "—";
                         displayPriceClassName = "text-gray-400";
@@ -219,13 +229,21 @@ export default function CheckoutPage() {
                       displayPrice = formatPrice(sm.price, locale);
                     }
 
-                    // Uber: replace description with real estimate when available
+                    // Replace description with real estimate when available
                     let description: string;
                     if (isUber && uberQuote) {
                       description = `${t("deliveryUberLive", { minutes: uberQuote.duration_minutes })}`;
+                    } else if (isStuart && stuartQuote) {
+                      description = `${t("deliveryStuartLive", { minutes: stuartQuote.duration_minutes })}`;
                     } else {
                       description = `${t(descKey)}${timeSuffix}`;
                     }
+
+                    // Determine if this dynamic method needs address prompt or has error
+                    const needsAddressPrompt = isDynamicPrice && isSelected && !hasHomeAddress;
+                    const dynamicQuoteError = isUber && isSelected ? quoteError : isStuart && isSelected ? stuartQuoteError : null;
+                    const errorId = isUber ? "uber-quote-error" : "stuart-quote-error";
+                    const enterAddressKey = isUber ? "uberEnterAddress" : "stuartEnterAddress";
 
                     return (
                       <div key={sm.id}>
@@ -238,16 +256,16 @@ export default function CheckoutPage() {
                           price={displayPrice}
                           priceClassName={displayPriceClassName}
                         />
-                        {isUber && isSelected && !hasHomeAddress && (
+                        {needsAddressPrompt && (
                           <p className="mt-1 ml-10 text-xs text-gray-500">
-                            {t("uberEnterAddress")}
+                            {t(enterAddressKey)}
                           </p>
                         )}
-                        {isUber && isSelected && quoteError && (
-                          <div id="uber-quote-error" className="mt-2 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
+                        {dynamicQuoteError && (
+                          <div id={errorId} className="mt-2 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
                             <span className="mt-0.5 shrink-0 text-red-500">⚠</span>
                             <p className="text-sm text-red-700">
-                              {quoteError}
+                              {dynamicQuoteError}
                             </p>
                           </div>
                         )}
@@ -276,7 +294,7 @@ export default function CheckoutPage() {
 
               <div className="mt-4">
                 {renderAddressCard()}
-                {(deliveryMethod === "home" || deliveryMethod === "uber") && errors.address && !hasHomeAddress && (
+                {(deliveryMethod === "home" || deliveryMethod === "uber" || deliveryMethod === "stuart") && errors.address && !hasHomeAddress && (
                   <p className="mt-2 text-sm text-red-600">{t("errors.required")}</p>
                 )}
               </div>
@@ -382,17 +400,19 @@ export default function CheckoutPage() {
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">{t("shipping")}</span>
                   <span className={cn(
-                    deliveryMethod === "uber" && !uberQuote
+                    (deliveryMethod === "uber" && !uberQuote) || (deliveryMethod === "stuart" && !stuartQuote)
                       ? "text-gray-400"
                       : shippingCost === 0
                         ? "font-medium text-green-700"
                         : ""
                   )}>
-                    {deliveryMethod === "uber" && !uberQuote
+                    {(deliveryMethod === "uber" && !uberQuote)
                       ? isLoadingQuote ? "..." : "—"
-                      : shippingCost === 0
-                        ? t("free")
-                        : formatPrice(shippingCost, locale)}
+                      : (deliveryMethod === "stuart" && !stuartQuote)
+                        ? isLoadingStuartQuote ? "..." : "—"
+                        : shippingCost === 0
+                          ? t("free")
+                          : formatPrice(shippingCost, locale)}
                   </span>
                 </div>
                 {currentDeliveryTime && (

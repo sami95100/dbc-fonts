@@ -515,7 +515,9 @@
       "invalidPostalCode": "Invalid postal code",
       "submitFailed": "Error creating order",
       "uberQuoteRequired": "An Uber quote is required for this delivery",
-      "uberQuoteFailed": "Uber quote unavailable, please try again"
+      "uberQuoteFailed": "Uber quote unavailable, please try again",
+      "stuartQuoteRequired": "A Stuart quote is required for this delivery",
+      "stuartQuoteFailed": "Stuart quote unavailable, please try again"
     },
     "countries": {
       "FR": "France",
@@ -546,6 +548,10 @@
     "deliveryUberDesc": "Express delivery in 1h",
     "deliveryUberLive": "Express delivery - ~{minutes} min",
     "uberEnterAddress": "Enter your address for exact pricing",
+    "deliveryStuart": "Stuart",
+    "deliveryStuartDesc": "Express delivery Ile-de-France",
+    "deliveryStuartLive": "Express delivery - ~{minutes} min",
+    "stuartEnterAddress": "Enter your address for exact pricing",
     "deliveryDpd": "DPD Parcel Locker",
     "deliveryDpdDesc": "Delivery to a pickup point",
     "deliveryDpdDescShop": "Delivery to a pickup point",

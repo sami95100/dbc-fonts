@@ -370,7 +370,6 @@ export function useCheckout() {
     let freshUberQuote = uberQuote;
     if (deliveryMethod === "uber") {
       if (!freshUberQuote) {
-        // Show error at the Uber card level and scroll to it
         if (!quoteError) {
           setQuoteError(t("errors.uberQuoteRequired"));
         }
@@ -380,7 +379,6 @@ export function useCheckout() {
         return;
       }
       if (new Date(freshUberQuote.expires_at) <= new Date()) {
-        // Quote expired — refresh it
         setIsSubmitting(true);
         const { data, error } = await getUberQuote({
           address: formData.address,
@@ -391,7 +389,6 @@ export function useCheckout() {
         if (error || !data) {
           setQuoteError(error?.error || t("errors.uberQuoteFailed"));
           setIsSubmitting(false);
-          // Scroll to the quote error after it renders
           setTimeout(() => {
             document.getElementById("uber-quote-error")?.scrollIntoView({ behavior: "smooth", block: "center" });
           }, 100);
@@ -399,6 +396,20 @@ export function useCheckout() {
         }
         freshUberQuote = data;
         setUberQuote(data);
+      }
+    }
+
+    // Stuart: ensure we have a valid quote
+    let freshStuartQuote = stuartQuote;
+    if (deliveryMethod === "stuart") {
+      if (!freshStuartQuote) {
+        if (!stuartQuoteError) {
+          setStuartQuoteError(t("errors.stuartQuoteRequired"));
+        }
+        setTimeout(() => {
+          document.getElementById("stuart-quote-error")?.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 100);
+        return;
       }
     }
 
@@ -410,6 +421,10 @@ export function useCheckout() {
       if (deliveryMethod === "uber" && freshUberQuote) {
         payload.uber_quote_id = freshUberQuote.quote_id;
         payload.shipping_cost = freshUberQuote.fee;
+      }
+      if (deliveryMethod === "stuart" && freshStuartQuote) {
+        payload.stuart_quote_id = String(freshStuartQuote.quote_id);
+        payload.shipping_cost = freshStuartQuote.fee;
       }
       const response = await createOrder(payload);
 
@@ -487,6 +502,11 @@ export function useCheckout() {
     uberQuote,
     isLoadingQuote,
     quoteError,
+
+    // Stuart
+    stuartQuote,
+    isLoadingStuartQuote,
+    stuartQuoteError,
 
     // Ref for empty cart guard
     orderCompleteRef,

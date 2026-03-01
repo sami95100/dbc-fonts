@@ -515,7 +515,9 @@
       "invalidPostalCode": "Code postal invalide",
       "submitFailed": "Erreur lors de la creation de la commande",
       "uberQuoteRequired": "Un devis Uber est requis pour cette livraison",
-      "uberQuoteFailed": "Devis Uber indisponible, veuillez reessayer"
+      "uberQuoteFailed": "Devis Uber indisponible, veuillez reessayer",
+      "stuartQuoteRequired": "Un devis Stuart est requis pour cette livraison",
+      "stuartQuoteFailed": "Devis Stuart indisponible, veuillez reessayer"
     },
     "countries": {
       "FR": "France",
@@ -546,6 +548,10 @@
     "deliveryUberDesc": "Livraison express en 1h",
     "deliveryUberLive": "Livraison express - ~{minutes} min",
     "uberEnterAddress": "Entrez votre adresse pour obtenir le prix exact",
+    "deliveryStuart": "Stuart",
+    "deliveryStuartDesc": "Livraison express Ile-de-France",
+    "deliveryStuartLive": "Livraison express - ~{minutes} min",
+    "stuartEnterAddress": "Entrez votre adresse pour obtenir le prix exact",
     "deliveryDpd": "Point relais DPD",
     "deliveryDpdDesc": "Livraison en point relais",
     "deliveryDpdDescShop": "Livraison en point relais",
