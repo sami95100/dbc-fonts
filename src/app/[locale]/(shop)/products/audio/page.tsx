@@ -2,9 +2,9 @@ import { getTranslations } from "next-intl/server";
 import { Breadcrumb } from "@/components/products/Breadcrumb";
 import { TrustBar } from "@/components/products/TrustBar";
 import { FilteredProductGrid } from "@/components/products/FilteredProductGrid";
-import { getModels, getModelOptions, getModelPrices } from "@/lib/api/products";
+import { getModels } from "@/lib/api/products";
 import { getFilters } from "@/lib/api/filters";
-import { apiModelToProduct } from "@/lib/api/transformers";
+import { apiModelsToProductList } from "@/lib/api/transformers";
 import { getCategoryBySlug } from "@/data/mock/categories";
 
 interface AudioPageProps {
@@ -25,31 +25,9 @@ export default async function AudioPage({ params }: AudioPageProps) {
     getFilters({}),
   ]);
 
-  let products: Awaited<ReturnType<typeof apiModelToProduct>>[] = [];
-
-  if (modelsResponse.data && modelsResponse.data.items.length > 0) {
-    const transformedProducts = await Promise.all(
-      modelsResponse.data.items.map(async (model) => {
-        const [optionsRes, pricesRes] = await Promise.all([
-          getModelOptions(model.id),
-          getModelPrices(model.id),
-        ]);
-
-        if (optionsRes.data && pricesRes.data) {
-          return apiModelToProduct({
-            model,
-            prices: pricesRes.data,
-            options: optionsRes.data,
-          });
-        }
-        return null;
-      })
-    );
-
-    products = transformedProducts.filter(
-      (p): p is NonNullable<typeof p> => p !== null
-    );
-  }
+  const products = modelsResponse.data?.items
+    ? apiModelsToProductList(modelsResponse.data.items)
+    : [];
 
   const defaultFilters = {
     price: { min: 0, max: 2000 },

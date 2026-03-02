@@ -5,9 +5,9 @@ import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { ProductGrid } from "./ProductGrid";
 import { FilterBarWrapper } from "@/components/filters";
-import { getModels, getModelOptions, getModelPrices } from "@/lib/api/products";
-import { getFilters, type FilterValues } from "@/lib/api/filters";
-import { apiModelToProduct } from "@/lib/api/transformers";
+import { getModels } from "@/lib/api/products";
+import { type FilterValues } from "@/lib/api/filters";
+import { apiModelsToProductList } from "@/lib/api/transformers";
 import type { Product } from "@/data/mock/products";
 
 interface FilteredProductGridProps {
@@ -59,29 +59,7 @@ function FilteredProductGridInner({
         });
 
         if (response.data && response.data.items.length > 0) {
-          const transformedProducts = await Promise.all(
-            response.data.items.map(async (model) => {
-              const [optionsRes, pricesRes] = await Promise.all([
-                getModelOptions(model.id),
-                getModelPrices(model.id),
-              ]);
-
-              if (optionsRes.data && pricesRes.data) {
-                return apiModelToProduct({
-                  model,
-                  prices: pricesRes.data,
-                  options: optionsRes.data,
-                });
-              }
-              return null;
-            })
-          );
-
-          const validProducts = transformedProducts.filter(
-            (p): p is NonNullable<typeof p> => p !== null
-          );
-
-          setProducts(validProducts);
+          setProducts(apiModelsToProductList(response.data.items));
         } else {
           setProducts([]);
         }

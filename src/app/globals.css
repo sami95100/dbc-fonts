@@ -10,71 +10,9 @@
 @plugin "@tailwindcss/typography";
 @plugin "tailwindcss-animate";
 
-/* General Sans - Police texte courant */
-@font-face {
-  font-family: 'General Sans';
-  src: url('/fonts/GeneralSans-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'General Sans';
-  src: url('/fonts/GeneralSans-Medium.woff') format('woff');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'General Sans';
-  src: url('/fonts/GeneralSans-Semibold.woff') format('woff');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'General Sans';
-  src: url('/fonts/GeneralSans-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Almarena Neue Display - Police titres */
-@font-face {
-  font-family: 'Almarena Neue Display';
-  src: url('/fonts/almarena-neue/AlmarenaNeueDisplay-Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Almarena Neue Display';
-  src: url('/fonts/almarena-neue/AlmarenaNeueDisplay-Medium.otf') format('opentype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Almarena Neue Display';
-  src: url('/fonts/almarena-neue/AlmarenaNeueDisplay-SemiBold.otf') format('opentype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Almarena Neue Display';
-  src: url('/fonts/almarena-neue/AlmarenaNeueDisplay-Bold.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
+/* Fonts are loaded via Next.js localFont() in layout.tsx.
+   CSS variables --font-general-sans and --font-almarena-neue
+   are set on <body> via className. */
 
 @theme inline {
   /* ============================================
@@ -166,9 +104,9 @@
   --color-destructive: #DC2626;
   --color-destructive-foreground: #FFFFFF;
 
-  /* Fonts */
-  --font-sans: 'General Sans', system-ui, sans-serif;
-  --font-display: 'Almarena Neue Display', 'General Sans', system-ui, sans-serif;
+  /* Fonts - references to localFont() CSS variables from layout.tsx */
+  --font-sans: var(--font-general-sans), system-ui, sans-serif;
+  --font-display: var(--font-almarena-neue), var(--font-general-sans), system-ui, sans-serif;
   --font-mono: monospace;
 }
 
@@ -182,15 +120,14 @@
 body {
   background: var(--color-background);
   color: var(--color-foreground);
-  font-family: 'General Sans', system-ui, sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-
 /* Titres en Almarena Neue Display */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Almarena Neue Display', 'General Sans', system-ui, sans-serif;
+  font-family: var(--font-display);
 }
 
 /* Custom scrollbar */

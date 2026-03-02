@@ -250,12 +250,10 @@ export function apiModelToProduct(params: TransformModelParams): Product {
 }
 
 /**
- * Transforme une liste de modeles en Products simplifies (pour listing).
- * Ne charge pas les options/images - juste les infos de base.
+ * Transforme une liste de modeles en Products pour le listing catalogue.
+ * Utilise uniquement les donnees de getModels() - ZERO appel supplementaire.
  */
-export function apiModelsToProductList(
-  models: PhoneModel[]
-): Partial<Product>[] {
+export function apiModelsToProductList(models: PhoneModel[]): Product[] {
   const categoryMap: Record<string, string> = {
     mobile: "smartphones",
     tablet: "tablets",
@@ -275,10 +273,15 @@ export function apiModelsToProductList(
     priceNew: model.new_price || 0,
     rating: model.review_avg || 0,
     reviewCount: model.review_count || 0,
+    colors: (model.colors ?? []).map((c) => ({ name: c, hex: getColorHex(c) })),
+    storages: [],
+    conditions: [],
+    batteryOptions: { standard: { price: 0 }, new: { price: 30 } },
     imageFolder: model.slug,
     inStock: true,
     primaryImageUrl: model.primary_image_url || undefined,
     isPromo: model.has_promo || false,
+    description: model.description || undefined,
   }));
 }
 
