@@ -66,6 +66,7 @@ export default async function AudioBrandPage({ params }: AudioBrandPageProps) {
     brands: [],
     years: [],
     storages: [],
+    colors: [],
   };
 
   const filters = filtersResponse.data || defaultFilters;

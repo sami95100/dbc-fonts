@@ -67,6 +67,7 @@ export default async function SmartphonesBrandPage({ params }: SmartphonesBrandP
     brands: [],
     years: [],
     storages: [],
+    colors: [],
   };
 
   const filters = filtersResponse.data || defaultFilters;

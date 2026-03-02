@@ -66,6 +66,7 @@ export default async function LaptopsBrandPage({ params }: LaptopsBrandPageProps
     brands: [],
     years: [],
     storages: [],
+    colors: [],
   };
 
   const filters = filtersResponse.data || defaultFilters;

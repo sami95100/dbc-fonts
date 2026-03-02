@@ -70,6 +70,7 @@ export default async function TabletsBrandPage({ params }: TabletsBrandPageProps
     brands: [],
     years: [],
     storages: [],
+    colors: [],
   };
 
   const filters = filtersResponse.data || defaultFilters;

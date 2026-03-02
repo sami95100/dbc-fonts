@@ -66,6 +66,7 @@ export default async function SmartwatchesBrandPage({ params }: SmartwatchesBran
     brands: [],
     years: [],
     storages: [],
+    colors: [],
   };
 
   const filters = filtersResponse.data || defaultFilters;
