@@ -1,10 +1,13 @@
-import { HeroSection, PromoDeals, ShoppingGuides, GradeExplainer, ServicesSection, StoresSection } from "@/components/home";
+import { HeroSection, ReassuranceSection, PromoDeals, ShoppingGuides, GradeExplainer, ServicesSection, StoresSection } from "@/components/home";
 
 export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
       <HeroSection />
+
+      {/* Reassurance - Pacte Qualité DBC */}
+      <ReassuranceSection />
 
       {/* Promo Deals */}
       <PromoDeals />

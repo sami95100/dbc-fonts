@@ -116,7 +116,7 @@
       "title": "Our brands"
     },
     "trust": {
-      "verifiedRefurbishers": "Verified refurbishers",
+      "verifiedRefurbishers": "11 stores in France and Belgium",
       "checkpoints": "Up to 100 checkpoints",
       "freeReturn": "Free returns within 30 days",
       "warrantyMonths": "12 months warranty",
@@ -233,15 +233,33 @@
     "stores": {
       "title": "Our stores.",
       "titleAccent": "Always near you.",
-      "rosny2": { "name": "DBC Rosny2" },
-      "paris17": { "name": "DBC Paris 17" },
-      "paris12": { "name": "DBC Paris 12" },
-      "lille": { "name": "DBC Lille" },
-      "bruxelles": { "name": "DBC Brussels" },
-      "marseille": { "name": "DBC Marseille" },
-      "laValentine": { "name": "DBC La Valentine" },
-      "toulouse": { "name": "DBC Toulouse" },
-      "bordeaux": { "name": "DBC Bordeaux" },
+      "rosny2": {
+        "name": "DBC Rosny2"
+      },
+      "paris17": {
+        "name": "DBC Paris 17"
+      },
+      "paris12": {
+        "name": "DBC Paris 12"
+      },
+      "lille": {
+        "name": "DBC Lille"
+      },
+      "bruxelles": {
+        "name": "DBC Brussels"
+      },
+      "marseille": {
+        "name": "DBC Marseille"
+      },
+      "laValentine": {
+        "name": "DBC La Valentine"
+      },
+      "toulouse": {
+        "name": "DBC Toulouse"
+      },
+      "bordeaux": {
+        "name": "DBC Bordeaux"
+      },
       "openUntil": "Open until {time}",
       "opensAt": "Opens at {time}",
       "closed": "Closed",
@@ -259,6 +277,12 @@
         "sat": "Sat",
         "sun": "Sun"
       }
+    },
+    "reassurance": {
+      "line1": "Same quality,",
+      "line2": "it's just the price that drops",
+      "line3": "thanks to the",
+      "highlight": "DBC Labs Standard"
     }
   },
   "products": {
@@ -625,9 +649,9 @@
       "missionTitle": "Our mission",
       "missionP1": "<strong>We're shaking up the industry.</strong> Our goal is to make refurbished tech accessible to everyone, without compromising on quality. We believe it's possible to offer premium smartphones at fair prices, while having a positive impact on the environment.",
       "valuesTitle": "Our values",
-      "valueSimple": "<strong>Simple</strong> \u2014 No jargon, no surprises. We tell you exactly what you're buying.",
-      "valueInspiring": "<strong>Inspiring</strong> \u2014 The future, in your hands. Choosing refurbished is choosing a smarter way to consume.",
-      "valueStrong": "<strong>Strong</strong> \u2014 24-month warranty, 30 days to change your mind, and a customer service team that actually responds.",
+      "valueSimple": "<strong>Simple</strong> — No jargon, no surprises. We tell you exactly what you're buying.",
+      "valueInspiring": "<strong>Inspiring</strong> — The future, in your hands. Choosing refurbished is choosing a smarter way to consume.",
+      "valueStrong": "<strong>Strong</strong> — 24-month warranty, 30 days to change your mind, and a customer service team that actually responds.",
       "storesContentTitle": "Our stores",
       "storesContentP1": "DBC has 11 physical stores in France. You can come discover our products, test them on the spot and leave with your new phone the same day. Our in-store teams are here to advise you and answer all your questions."
     },
@@ -664,8 +688,8 @@
       "gradeImperfectDesc": "More pronounced signs of wear (scratches, small dents). The lowest price for a 100% functional device.",
       "batteryContentTitle": "The battery",
       "batteryContentIntro": "The battery is a key part of the user experience. That's why we give you the choice:",
-      "batteryOriginal": "<strong>Original battery</strong> \u2014 Tested and certified with a minimum capacity of 80%.",
-      "batteryNewOption": "<strong>New battery</strong> \u2014 Replacement with a new battery for maximum battery life (option available on every product).",
+      "batteryOriginal": "<strong>Original battery</strong> — Tested and certified with a minimum capacity of 80%.",
+      "batteryNewOption": "<strong>New battery</strong> — Replacement with a new battery for maximum battery life (option available on every product).",
       "warrantyContentTitle": "24-month warranty",
       "warrantyContentP1": "All our products come with a <strong>24-month commercial warranty</strong>, 12 months more than most of the market. This warranty covers internal technical defects, sudden and unforeseeable malfunctions, parts and labor included.",
       "warrantyContentP2": "In case of any issue, our customer service responds within 4 business hours and handles the entire repair or replacement."
@@ -679,7 +703,7 @@
       "emailResponse": "Response < 24 business hours",
       "hoursTitle": "Hours",
       "hoursDays": "Monday - Friday",
-      "hoursTime": "9am \u2013 7pm (Paris time)",
+      "hoursTime": "9am – 7pm (Paris time)",
       "storesTitle": "Our stores",
       "storesDesc": "Find us in one of our <strong>11 physical stores</strong> in France. Our teams are available to advise you, let you test our products and answer all your questions.",
       "afterSalesTitle": "After-sales service",
@@ -738,7 +762,7 @@
       "intro": "At DBC, every line of these Terms of Sale is designed to simplify your life: transparent pricing, human customer service and lightning-fast interventions on your refurbished devices.",
       "s0Title": "0. Seller identity",
       "s0P1": "<strong>DBC PARIS 17 BIS</strong>, SAS registered with RCS Paris 922 178 488, VAT FR28922178488, headquarters 110 avenue de Villiers, 75017 Paris.",
-      "s0P2": "Customer service: WhatsApp (icon on website) \u2014 response < 4 business hours | Phone: 07 43 39 66 69 \u2014 response < 1 business hour | Email: contact@dbcstore.fr \u2014 response < 24 business hours",
+      "s0P2": "Customer service: WhatsApp (icon on website) — response < 4 business hours | Phone: 07 43 39 66 69 — response < 1 business hour | Email: contact@dbcstore.fr — response < 24 business hours",
       "s1Title": "1. Scope and acceptance",
       "s1P1": "These General Terms of Sale apply to all orders placed on dbcstore.fr. By confirming your purchase, you accept these terms without reservation.",
       "s2Title": "2. Definitions",
@@ -747,7 +771,7 @@
       "s2Li3": "<strong>Platform</strong>: dbcstore.fr website",
       "s3Title": "3. Account creation and ordering",
       "s3P1": "Creating an account is recommended but never mandatory: you can place an order as a \"guest\".",
-      "s3P2": "Express checkout: selection \u2022 cart \u2022 shipping/payment \u2022 confirmation. Payment constitutes a commitment to pay.",
+      "s3P2": "Express checkout: selection • cart • shipping/payment • confirmation. Payment constitutes a commitment to pay.",
       "s3P3": "We confirm availability within 24 hours. If a Product is ultimately unavailable, we cancel and refund immediately.",
       "s4Title": "4. Prices and payment methods",
       "s4Li1": "Prices in euros including VAT, shown excluding any shipping costs.",
@@ -768,7 +792,7 @@
       "s5Row3Delay": "48-72 hours",
       "s5Row3Price": "Shown before payment",
       "s5P1": "Ownership and risk are transferred upon physical delivery of the package, once full payment has been received.",
-      "s6Title": "6. Right of withdrawal \u2014 30 days",
+      "s6Title": "6. Right of withdrawal — 30 days",
       "s6P1": "You have <strong>30 days</strong> to change your mind. A WhatsApp message, a call or an email is all it takes and we'll send you a prepaid return label within 4 business hours. You then have 14 days to ship the Product in its original condition.",
       "s6P2": "We refund within a maximum of 14 days after receipt, initial shipping costs included.",
       "s6P3": "Exceptions: personalized items, opened in-ear headphones, unsealed sealed accessories.",
@@ -776,7 +800,7 @@
       "s7_1Title": "7.1 Legal warranties",
       "s7_1Li1": "<strong>Conformity</strong>: 2 years (1 year for second-hand goods).",
       "s7_1Li2": "<strong>Hidden defects</strong>: 2 years from discovery.",
-      "s7_2Title": "7.2 DBC commercial warranty \u2014 24 months",
+      "s7_2Title": "7.2 DBC commercial warranty — 24 months",
       "s7_2Li1": "<strong>Instant interventions</strong>: 90% of repairs or exchanges are done on the spot at our workshop.",
       "s7_2Li2": "<strong>Maximum commitment</strong>: never more than 3 business days to resolve an issue, original parts included.",
       "s7_2Li3": "<strong>Zero fees</strong>: shipping, diagnostics and labor covered by DBC.",
@@ -836,7 +860,7 @@
       "rightRestriction": "<strong>Right to restriction</strong>: restrict the processing of your data.",
       "rightsExercise": "To exercise your rights, contact us by email at <link>contact@dbcstore.fr</link>. We commit to responding within 30 days.",
       "complaintTitle": "Complaints",
-      "complaintP1": "If you believe that the processing of your personal data constitutes a violation of the GDPR, you can file a complaint with the CNIL (Commission Nationale de l'Informatique et des Libert\u00e9s) at <cnil>www.cnil.fr</cnil>."
+      "complaintP1": "If you believe that the processing of your personal data constitutes a violation of the GDPR, you can file a complaint with the CNIL (Commission Nationale de l'Informatique et des Libertés) at <cnil>www.cnil.fr</cnil>."
     },
     "legal": {
       "identityTitle": "Seller identity",
@@ -845,7 +869,7 @@
       "legalForm": "Legal form",
       "legalFormValue": "SAS (Simplified Joint Stock Company)",
       "shareCapital": "Share capital",
-      "shareCapitalValue": "\u20ac100",
+      "shareCapitalValue": "€100",
       "headquarters": "Headquarters",
       "headquartersValue": "110 avenue de Villiers, 75017 Paris, France",
       "rcs": "RCS",
@@ -871,16 +895,16 @@
     },
     "refund": {
       "intro": "At DBC, we want to offer a simpler and more flexible experience than what most refurbished marketplaces provide. If a device doesn't suit you, we do everything to make the return, exchange or refund as frictionless as possible.",
-      "s1Title": "1. Right of withdrawal \u2014 30 days to change your mind",
+      "s1Title": "1. Right of withdrawal — 30 days to change your mind",
       "s1P1": "You have <strong>30 calendar days</strong> from receipt of your product to exercise your right of withdrawal, without having to justify your decision.",
       "s1Li1": "The day of delivery is not counted.",
       "s1Li2": "If the deadline falls on a Saturday, Sunday or public holiday, it is extended to the next business day.",
       "s1Li3": "No charges: the return shipping label and insurance are fully covered by DBC Store.",
       "s2Title": "2. How to initiate a return?",
-      "s2P1": "No need to fill out a long form \u2014 two quick options:",
+      "s2P1": "No need to fill out a long form — two quick options:",
       "s2Li1": "<strong>WhatsApp</strong>: click the green icon in the bottom right corner of any page, then simply send your order number.",
       "s2Li2": "<strong>Call</strong>: call us at 07 43 39 66 69.",
-      "s2Li3": "<strong>Email</strong>: write to us at contact@dbcstore.fr with subject \"Return \u2013 Order No. XXXX\".",
+      "s2Li3": "<strong>Email</strong>: write to us at contact@dbcstore.fr with subject \"Return – Order No. XXXX\".",
       "s2P2": "We respond within <strong>4 business hours</strong> with: your prepaid label (Colissimo or Mondial Relay, your choice), the packaging guide, and the proposed pickup date.",
       "s3Title": "3. Preparing your device before shipping",
       "s3Li1": "<strong>Back up</strong> your data and <strong>factory reset</strong> the device.",
@@ -895,19 +919,19 @@
       "s4ThBank": "Bank processing",
       "s4ThSupport": "Support",
       "s4Row1Method": "Credit card",
-      "s4Row1Trigger": "\u2264 2 business days",
+      "s4Row1Trigger": "≤ 2 business days",
       "s4Row1Bank": "~5 business days",
       "s4Row1Support": "Same card",
       "s4Row2Method": "PayPal",
-      "s4Row2Trigger": "\u2264 2 business days",
+      "s4Row2Trigger": "≤ 2 business days",
       "s4Row2Bank": "~5 business days",
       "s4Row2Support": "Same account",
       "s4Row3Method": "SEPA transfer",
-      "s4Row3Trigger": "\u2264 2 business days",
+      "s4Row3Trigger": "≤ 2 business days",
       "s4Row3Bank": "~3 business days",
       "s4Row3Support": "Provided IBAN",
       "s4P1": "The timeline starts from confirmation of receipt at our warehouse. You will receive a confirmation email and an update in \"My account\".",
-      "s5Title": "5. Commercial warranty \u2014 24 months",
+      "s5Title": "5. Commercial warranty — 24 months",
       "s5P1": "All refurbished products sold by DBC Store are covered by a <strong>24-month commercial warranty</strong>, 12 months more than most competitors in the industry.",
       "s5CoveredTitle": "Covered",
       "s5CoveredLi1": "Internal technical defects",
@@ -917,7 +941,7 @@
       "s5ExcludedLi1": "Normal wear (battery)",
       "s5ExcludedLi2": "Oxidation or liquid damage",
       "s5ExcludedLi3": "Physical breakage or impact",
-      "s5P2": "We prioritize fast repairs (\u2264 3 business days for smartphones/tablets, \u2264 5 business days for laptops). If repair is impossible or exceeds 10 business days, you can choose between an equivalent replacement, a 12-month store credit, or a full refund.",
+      "s5P2": "We prioritize fast repairs (≤ 3 business days for smartphones/tablets, ≤ 5 business days for laptops). If repair is impossible or exceeds 10 business days, you can choose between an equivalent replacement, a 12-month store credit, or a full refund.",
       "s5P3": "Shipping costs related to warranty interventions are fully covered by DBC.",
       "s6Title": "6. Exceptions & refund adjustments",
       "s6Li1": "<strong>Missing accessories</strong>: catalog price deducted.",
@@ -929,7 +953,7 @@
       "s8Li1": "<strong>WhatsApp</strong>: green icon on the website (response < 4 business hours)",
       "s8Li2": "<strong>Call</strong>: 07 43 39 66 69 (response < 1 business hour)",
       "s8Li3": "<strong>Email</strong>: contact@dbcstore.fr (response < 24 business hours)",
-      "s8P1": "Our team is available Monday to Friday, 9am \u2013 7pm (Paris time)."
+      "s8P1": "Our team is available Monday to Friday, 9am – 7pm (Paris time)."
     }
   },
   "reviews": {

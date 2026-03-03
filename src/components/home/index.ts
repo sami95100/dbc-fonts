@@ -1,4 +1,5 @@
 export { HeroSection } from "./HeroSection";
+export { ReassuranceSection } from "./ReassuranceSection";
 export { PromoDeals } from "./PromoDeals";
 export { ShoppingGuides } from "./ShoppingGuides";
 export { GradeExplainer } from "./GradeExplainer";

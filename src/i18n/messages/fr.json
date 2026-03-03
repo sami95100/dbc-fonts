@@ -113,7 +113,7 @@
       "next": "Suivant"
     },
     "trust": {
-      "verifiedRefurbishers": "Reconditionneurs verifies",
+      "verifiedRefurbishers": "11 magasins en France et Belgique",
       "checkpoints": "Jusqu'a 100 points de controle",
       "freeReturn": "Retour gratuit sous 30 jours",
       "warrantyMonths": "12 mois de garantie commerciale",
@@ -233,15 +233,33 @@
     "stores": {
       "title": "Nos magasins.",
       "titleAccent": "Partout pres de chez vous.",
-      "rosny2": { "name": "DBC Rosny2" },
-      "paris17": { "name": "DBC Paris 17" },
-      "paris12": { "name": "DBC Paris 12" },
-      "lille": { "name": "DBC Lille" },
-      "bruxelles": { "name": "DBC Bruxelles" },
-      "marseille": { "name": "DBC Marseille" },
-      "laValentine": { "name": "DBC La Valentine" },
-      "toulouse": { "name": "DBC Toulouse" },
-      "bordeaux": { "name": "DBC Bordeaux" },
+      "rosny2": {
+        "name": "DBC Rosny2"
+      },
+      "paris17": {
+        "name": "DBC Paris 17"
+      },
+      "paris12": {
+        "name": "DBC Paris 12"
+      },
+      "lille": {
+        "name": "DBC Lille"
+      },
+      "bruxelles": {
+        "name": "DBC Bruxelles"
+      },
+      "marseille": {
+        "name": "DBC Marseille"
+      },
+      "laValentine": {
+        "name": "DBC La Valentine"
+      },
+      "toulouse": {
+        "name": "DBC Toulouse"
+      },
+      "bordeaux": {
+        "name": "DBC Bordeaux"
+      },
       "openUntil": "Ouvert jusqu'a {time}",
       "opensAt": "Ouvre a {time}",
       "closed": "Ferme",
@@ -259,6 +277,12 @@
         "sat": "Sam",
         "sun": "Dim"
       }
+    },
+    "reassurance": {
+      "line1": "C'est la meme qualite,",
+      "line2": "c'est juste le prix qui baisse",
+      "line3": "grace au",
+      "highlight": "Standard DBC Labs"
     }
   },
   "products": {
@@ -625,9 +649,9 @@
       "missionTitle": "Notre mission",
       "missionP1": "<strong>On fait bouger l'industrie.</strong> Notre objectif est de rendre le reconditionne accessible a tous, sans compromis sur la qualite. Nous croyons qu'il est possible de proposer des smartphones premium a des prix justes, tout en ayant un impact positif sur l'environnement.",
       "valuesTitle": "Nos valeurs",
-      "valueSimple": "<strong>Simple</strong> \u2014 Pas de jargon, pas de surprise. On vous dit exactement ce que vous achetez.",
-      "valueInspiring": "<strong>Inspirant</strong> \u2014 Le futur, entre vos mains. Choisir le reconditionne, c'est choisir un mode de consommation plus intelligent.",
-      "valueStrong": "<strong>Fort</strong> \u2014 24 mois de garantie, 30 jours pour changer d'avis, et un SAV qui repond vraiment.",
+      "valueSimple": "<strong>Simple</strong> — Pas de jargon, pas de surprise. On vous dit exactement ce que vous achetez.",
+      "valueInspiring": "<strong>Inspirant</strong> — Le futur, entre vos mains. Choisir le reconditionne, c'est choisir un mode de consommation plus intelligent.",
+      "valueStrong": "<strong>Fort</strong> — 24 mois de garantie, 30 jours pour changer d'avis, et un SAV qui repond vraiment.",
       "storesContentTitle": "Nos magasins",
       "storesContentP1": "DBC, c'est 11 magasins physiques en France. Vous pouvez venir decouvrir nos produits, les tester sur place et repartir avec votre nouveau telephone le jour meme. Nos equipes en boutique sont la pour vous conseiller et repondre a toutes vos questions."
     },
@@ -664,8 +688,8 @@
       "gradeImperfectDesc": "Des marques d'usure plus prononcees (rayures, petits impacts). Le prix le plus bas pour un appareil 100 % fonctionnel.",
       "batteryContentTitle": "La batterie",
       "batteryContentIntro": "La batterie est un element cle de l'experience utilisateur. C'est pourquoi nous vous donnons le choix :",
-      "batteryOriginal": "<strong>Batterie d'origine</strong> \u2014 Testee et certifiee avec une capacite minimale de 80 %.",
-      "batteryNewOption": "<strong>Batterie neuve</strong> \u2014 Remplacement par une batterie neuve pour une autonomie maximale (option disponible sur chaque produit).",
+      "batteryOriginal": "<strong>Batterie d'origine</strong> — Testee et certifiee avec une capacite minimale de 80 %.",
+      "batteryNewOption": "<strong>Batterie neuve</strong> — Remplacement par une batterie neuve pour une autonomie maximale (option disponible sur chaque produit).",
       "warrantyContentTitle": "Garantie 24 mois",
       "warrantyContentP1": "Tous nos produits beneficient d'une <strong>garantie commerciale de 24 mois</strong>, soit 12 mois de plus que la majorite du marche. Cette garantie couvre les defauts techniques internes, les dysfonctionnements soudains et imprevisibles, pieces et main-d'oeuvre incluses.",
       "warrantyContentP2": "En cas de probleme, notre SAV repond sous 4 h ouvrees et prend en charge l'integralite de la reparation ou du remplacement."
@@ -679,7 +703,7 @@
       "emailResponse": "Reponse < 24 h ouvrees",
       "hoursTitle": "Horaires",
       "hoursDays": "Lundi - Vendredi",
-      "hoursTime": "9 h \u2013 19 h (heure de Paris)",
+      "hoursTime": "9 h – 19 h (heure de Paris)",
       "storesTitle": "Nos magasins",
       "storesDesc": "Retrouvez-nous dans l'un de nos <strong>11 magasins physiques</strong> en France. Nos equipes sont disponibles pour vous conseiller, vous faire tester les produits et repondre a toutes vos questions.",
       "afterSalesTitle": "Service apres-vente",
@@ -726,7 +750,7 @@
       "s5Title": "5. Propriete intellectuelle",
       "s5P1": "Tout le contenu et les materiaux disponibles sur notre site, y compris, mais sans s'y limiter, les textes, graphiques, logos, images, clips audio, videos et logiciels, sont la propriete de DBC Electronics ou de ses concedants de licence et sont proteges par les lois sur les droits d'auteur et autres lois sur la propriete intellectuelle.",
       "s6Title": "6. Limitation de responsabilite",
-      "s6P1": "Notre site est fourni \u00ab tel quel \u00bb et \u00ab tel que disponible \u00bb sans aucune garantie d'aucune sorte, expresse ou implicite. Nous ne garantissons pas que l'utilisation de notre site sera ininterrompue ou exempte d'erreurs.",
+      "s6P1": "Notre site est fourni « tel quel » et « tel que disponible » sans aucune garantie d'aucune sorte, expresse ou implicite. Nous ne garantissons pas que l'utilisation de notre site sera ininterrompue ou exempte d'erreurs.",
       "s7Title": "7. Indemnisation",
       "s7P1": "Vous acceptez d'indemniser et de degager de toute responsabilite DBC Electronics, ses dirigeants, directeurs, employes et agents, de toute reclamation, perte, responsabilite, depense, y compris les honoraires d'avocat, decoulant de votre utilisation de notre site ou de votre violation de ces conditions.",
       "s8Title": "8. Resiliation",
@@ -738,7 +762,7 @@
       "intro": "Chez DBC, chaque ligne de ces CGV est pensee pour vous simplifier la vie : des tarifs transparents, un service client humain et des interventions eclair sur vos appareils reconditionnes.",
       "s0Title": "0. Identite du vendeur",
       "s0P1": "<strong>DBC PARIS 17 BIS</strong>, SAS immatriculee au RCS Paris 922 178 488, TVA FR28922178488, siege social 110 avenue de Villiers, 75017 Paris.",
-      "s0P2": "Service client : WhatsApp (icone sur le site) \u2014 reponse < 4 h ouvrees | Tel. 07 43 39 66 69 \u2014 reponse < 1 h ouvree | E-mail : contact@dbcstore.fr \u2014 reponse < 24 h ouvrees",
+      "s0P2": "Service client : WhatsApp (icone sur le site) — reponse < 4 h ouvrees | Tel. 07 43 39 66 69 — reponse < 1 h ouvree | E-mail : contact@dbcstore.fr — reponse < 24 h ouvrees",
       "s1Title": "1. Champ d'application et acceptation",
       "s1P1": "Les presentes Conditions Generales de Vente (CGV) s'appliquent a toute commande passee sur dbcstore.fr. En confirmant votre achat, vous acceptez sans reserve ces CGV.",
       "s2Title": "2. Definitions",
@@ -746,8 +770,8 @@
       "s2Li2": "<strong>Produits</strong> : appareils electroniques reconditionnes ou neufs, accessoires et services associes.",
       "s2Li3": "<strong>Plateforme</strong> : site dbcstore.fr",
       "s3Title": "3. Creation de compte et commande",
-      "s3P1": "Creer un compte est recommande mais jamais obligatoire : vous pouvez passer commande en mode \u00ab invite \u00bb.",
-      "s3P2": "Parcours express : selection \u2022 panier \u2022 livraison/paiement \u2022 validation. Le paiement vaut engagement de payer.",
+      "s3P1": "Creer un compte est recommande mais jamais obligatoire : vous pouvez passer commande en mode « invite ».",
+      "s3P2": "Parcours express : selection • panier • livraison/paiement • validation. Le paiement vaut engagement de payer.",
       "s3P3": "Nous confirmons la disponibilite en moins de 24 h. Si un Produit est finalement indisponible, nous annulons et remboursons immediatement.",
       "s4Title": "4. Prix et modalites de paiement",
       "s4Li1": "Prix en euros TTC, affiches hors frais de livraison eventuels.",
@@ -768,7 +792,7 @@
       "s5Row3Delay": "48-72 h",
       "s5Row3Price": "Affiche avant paiement",
       "s5P1": "La propriete et les risques vous sont transferes a la remise physique du colis, une fois le paiement integral recu.",
-      "s6Title": "6. Droit de retractation \u2014 30 jours",
+      "s6Title": "6. Droit de retractation — 30 jours",
       "s6P1": "Vous disposez de <strong>30 jours</strong> pour changer d'avis. Un WhatsApp, un appel ou un e-mail suffit et nous vous expedions une etiquette pre-payee dans les 4 h ouvrees. Vous avez ensuite 14 jours pour expedier le Produit dans son etat d'origine.",
       "s6P2": "Nous remboursons sous 14 jours maximum apres reception, frais de port initiaux inclus.",
       "s6P3": "Exceptions : articles personnalises, ecouteurs intra-auriculaires ouverts, accessoires scelles descelles.",
@@ -776,7 +800,7 @@
       "s7_1Title": "7.1 Garanties legales",
       "s7_1Li1": "<strong>Conformite</strong> : 2 ans (1 an pour les biens d'occasion).",
       "s7_1Li2": "<strong>Vices caches</strong> : 2 ans a compter de la decouverte.",
-      "s7_2Title": "7.2 Garantie commerciale DBC \u2014 24 mois",
+      "s7_2Title": "7.2 Garantie commerciale DBC — 24 mois",
       "s7_2Li1": "<strong>Interventions instantanees</strong> : 90 % des reparations ou echanges se font sur-le-champ en atelier.",
       "s7_2Li2": "<strong>Engagement maximum</strong> : jamais plus de 3 jours ouvres pour solutionner un probleme, pieces d'origine incluses.",
       "s7_2Li3": "<strong>Zero frais</strong> : transport, diagnostics et main-d'oeuvre pris en charge par DBC.",
@@ -845,7 +869,7 @@
       "legalForm": "Forme juridique",
       "legalFormValue": "SAS (Societe par Actions Simplifiee)",
       "shareCapital": "Capital social",
-      "shareCapitalValue": "100 \u20ac",
+      "shareCapitalValue": "100 €",
       "headquarters": "Siege social",
       "headquartersValue": "110 avenue de Villiers, 75017 Paris, France",
       "rcs": "RCS",
@@ -871,16 +895,16 @@
     },
     "refund": {
       "intro": "Chez DBC, nous voulons offrir une experience plus simple et plus flexible que ce que proposent la plupart des places de marche du reconditionne. Si un appareil ne vous convient pas, nous mettons tout en oeuvre pour que le retour, l'echange ou le remboursement se fasse sans friction.",
-      "s1Title": "1. Droit de retractation \u2014 30 jours pour changer d'avis",
+      "s1Title": "1. Droit de retractation — 30 jours pour changer d'avis",
       "s1P1": "Vous disposez de <strong>30 jours calendaires</strong> a compter de la reception de votre produit pour exercer votre droit de retractation, sans avoir a motiver votre decision.",
       "s1Li1": "Le jour de livraison n'est pas compte.",
       "s1Li2": "Si l'echeance tombe un samedi, dimanche ou jour ferie, elle est reportee au jour ouvre suivant.",
       "s1Li3": "Aucun frais ne vous sera facture : l'etiquette de transport retour et l'assurance sont integralement prises en charge par DBC Store.",
       "s2Title": "2. Comment declencher un retour ?",
-      "s2P1": "Inutile de remplir un long formulaire \u2014 deux solutions rapides :",
+      "s2P1": "Inutile de remplir un long formulaire — deux solutions rapides :",
       "s2Li1": "<strong>WhatsApp</strong> : cliquez sur l'icone verte presente dans le coin inferieur droit de chaque page, puis envoyez simplement votre numero de commande.",
       "s2Li2": "<strong>Appel</strong> : appelez-nous au 07 43 39 66 69.",
-      "s2Li3": "<strong>E-mail</strong> : ecrivez-nous a contact@dbcstore.fr avec en objet \u00ab Retour \u2013 N\u00b0 de commande XXXX \u00bb.",
+      "s2Li3": "<strong>E-mail</strong> : ecrivez-nous a contact@dbcstore.fr avec en objet « Retour – N° de commande XXXX ».",
       "s2P2": "Nous repondons sous <strong>4 heures ouvrees</strong> avec : votre etiquette pre-payee (Colissimo ou Mondial Relay, selon votre preference), le guide de preparation colis, et la date d'enlevement proposee.",
       "s3Title": "3. Preparation de l'appareil avant expedition",
       "s3Li1": "<strong>Sauvegardez</strong> vos donnees et <strong>reinitialisez</strong> l'appareil.",
@@ -895,19 +919,19 @@
       "s4ThBank": "Delai bancaire",
       "s4ThSupport": "Support",
       "s4Row1Method": "Carte bancaire",
-      "s4Row1Trigger": "\u2264 2 jours ouvres",
+      "s4Row1Trigger": "≤ 2 jours ouvres",
       "s4Row1Bank": "~5 jours ouvres",
       "s4Row1Support": "Meme carte",
       "s4Row2Method": "PayPal",
-      "s4Row2Trigger": "\u2264 2 jours ouvres",
+      "s4Row2Trigger": "≤ 2 jours ouvres",
       "s4Row2Bank": "~5 jours ouvres",
       "s4Row2Support": "Meme compte",
       "s4Row3Method": "Virement SEPA",
-      "s4Row3Trigger": "\u2264 2 jours ouvres",
+      "s4Row3Trigger": "≤ 2 jours ouvres",
       "s4Row3Bank": "~3 jours ouvres",
       "s4Row3Support": "IBAN fourni",
-      "s4P1": "Le delai commence des la confirmation de reception dans notre entrepot. Vous recevrez un e-mail de confirmation et la mise a jour dans \u00ab Mon compte \u00bb.",
-      "s5Title": "5. Garantie commerciale \u2014 24 mois",
+      "s4P1": "Le delai commence des la confirmation de reception dans notre entrepot. Vous recevrez un e-mail de confirmation et la mise a jour dans « Mon compte ».",
+      "s5Title": "5. Garantie commerciale — 24 mois",
       "s5P1": "Tous les produits reconditionnes vendus par DBC Store sont couverts par une <strong>garantie commerciale de 24 mois</strong>, soit 12 mois de plus que la majorite des acteurs du secteur.",
       "s5CoveredTitle": "Sont couverts",
       "s5CoveredLi1": "Defauts techniques internes",
@@ -917,7 +941,7 @@
       "s5ExcludedLi1": "Usure normale (batterie)",
       "s5ExcludedLi2": "Oxydation ou dommages liquides",
       "s5ExcludedLi3": "Casse ou choc physique",
-      "s5P2": "Nous privilegions la reparation rapide (\u2264 3 jours ouvres pour smartphones/tablettes, \u2264 5 jours ouvres pour ordinateurs). Si la reparation est impossible ou depasse 10 jours ouvres, vous pouvez choisir entre un remplacement equivalent, un avoir valable 12 mois, ou un remboursement integral.",
+      "s5P2": "Nous privilegions la reparation rapide (≤ 3 jours ouvres pour smartphones/tablettes, ≤ 5 jours ouvres pour ordinateurs). Si la reparation est impossible ou depasse 10 jours ouvres, vous pouvez choisir entre un remplacement equivalent, un avoir valable 12 mois, ou un remboursement integral.",
       "s5P3": "Les frais de transport lies aux interventions sous garantie sont entierement pris en charge par DBC.",
       "s6Title": "6. Exceptions & ajustements de remboursement",
       "s6Li1": "<strong>Accessoires manquants</strong> : retenue du montant catalogue.",
@@ -929,7 +953,7 @@
       "s8Li1": "<strong>WhatsApp</strong> : icone verte sur le site (reponse < 4 h ouvrees)",
       "s8Li2": "<strong>Appel</strong> : 07 43 39 66 69 (reponse < 1 h ouvrees)",
       "s8Li3": "<strong>E-mail</strong> : contact@dbcstore.fr (reponse < 24 h ouvrees)",
-      "s8P1": "Notre equipe est disponible du lundi au vendredi, 9 h \u2013 19 h (heure de Paris)."
+      "s8P1": "Notre equipe est disponible du lundi au vendredi, 9 h – 19 h (heure de Paris)."
     }
   },
   "reviews": {
