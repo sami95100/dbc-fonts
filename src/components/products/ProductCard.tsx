@@ -25,11 +25,15 @@ function ProductCardComponent({ product }: ProductCardProps) {
   const imageUrl = product.primaryImageUrl;
 
   const categorySlug = CATEGORY_SLUG_MAP[product.category] || "smartphones";
+  const productHref =
+    product.externalProductUrl ||
+    `/${locale}/products/${categorySlug}/${product.brandSlug}/${product.slug}`;
 
   return (
     <Link
-      href={`/${locale}/products/${categorySlug}/${product.brandSlug}/${product.slug}`}
+      href={productHref}
       className="group block rounded-2xl border border-gray-100 bg-white p-4 transition-shadow hover:shadow-lg"
+      prefetch={!product.externalProductUrl}
     >
       {/* Mobile: Horizontal layout / Desktop: Vertical layout */}
       <div className="flex gap-4 sm:block">

@@ -11,7 +11,8 @@ import {
   getCategoryImages,
 } from "@/lib/api/products";
 import { apiModelToProduct } from "@/lib/api/transformers";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { getShopifyProductUrlByBrandModel } from "@/lib/shopify-catalog";
 
 interface ProductPageProps {
   params: Promise<{
@@ -28,6 +29,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const modelResponse = await getModelBySlug(modelSlug);
 
   if (!modelResponse.data) {
+    const shopifyUrl = getShopifyProductUrlByBrandModel(brand, modelSlug);
+    if (shopifyUrl) {
+      redirect(shopifyUrl);
+    }
     notFound();
   }
 

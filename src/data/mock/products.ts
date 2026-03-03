@@ -49,6 +49,8 @@ export interface Product {
   inStock: boolean;
   // Image primaire depuis l'API (couleur par defaut)
   primaryImageUrl?: string | null;
+  // URL externe (Shopify) si la PDP locale n'existe pas encore
+  externalProductUrl?: string;
   description?: string;
   isPromo?: boolean;
 }

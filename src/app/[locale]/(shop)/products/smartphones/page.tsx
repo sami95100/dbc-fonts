@@ -4,7 +4,7 @@ import { TrustBar } from "@/components/products/TrustBar";
 import { FilteredProductGrid } from "@/components/products/FilteredProductGrid";
 import { getModels } from "@/lib/api/products";
 import { getFilters } from "@/lib/api/filters";
-import { apiModelsToProductList } from "@/lib/api/transformers";
+import { apiModelsToProductList, applySmartphoneListingRules } from "@/lib/api/transformers";
 import { getCategoryBySlug } from "@/data/mock/categories";
 
 interface SmartphonesPageProps {
@@ -27,7 +27,9 @@ export default async function SmartphonesPage({ params }: SmartphonesPageProps) 
   ]);
 
   const products = modelsResponse.data?.items
-    ? apiModelsToProductList(modelsResponse.data.items)
+    ? applySmartphoneListingRules(apiModelsToProductList(modelsResponse.data.items), {
+      includeFeaturedIphones: true,
+    })
     : [];
 
   const defaultFilters = {
@@ -79,6 +81,7 @@ export default async function SmartphonesPage({ params }: SmartphonesPageProps) 
           initialProducts={products}
           initialFilters={filters}
           locale={locale}
+          category="mobile"
         />
       </div>
     </>

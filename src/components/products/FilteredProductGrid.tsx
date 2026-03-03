@@ -7,21 +7,27 @@ import { ProductGrid } from "./ProductGrid";
 import { FilterBarWrapper } from "@/components/filters";
 import { getModels } from "@/lib/api/products";
 import { type FilterValues } from "@/lib/api/filters";
-import { apiModelsToProductList } from "@/lib/api/transformers";
+import { apiModelsToProductList, applySmartphoneListingRules } from "@/lib/api/transformers";
 import type { Product } from "@/data/mock/products";
 
 interface FilteredProductGridProps {
   brand?: string;
+  brandSlug?: string;
   initialProducts: Product[];
   initialFilters: FilterValues;
   locale: string;
+  category?: string;
 }
+
+const SHOPIFY_FALLBACK_BRANDS = new Set(["apple", "samsung", "google"]);
 
 function FilteredProductGridInner({
   brand,
+  brandSlug,
   initialProducts,
   initialFilters,
-  locale,
+  locale: _locale,
+  category,
 }: FilteredProductGridProps) {
   const searchParams = useSearchParams();
   const t = useTranslations("catalog.filters");
@@ -50,6 +56,7 @@ function FilteredProductGridInner({
       try {
         const response = await getModels({
           brand,
+          category,
           minPrice: minPrice ? parseInt(minPrice, 10) : undefined,
           maxPrice: maxPrice ? parseInt(maxPrice, 10) : undefined,
           year: years.length > 0 ? parseInt(years[0], 10) : undefined,
@@ -59,7 +66,16 @@ function FilteredProductGridInner({
         });
 
         if (response.data && response.data.items.length > 0) {
-          setProducts(apiModelsToProductList(response.data.items));
+          const mapped = apiModelsToProductList(response.data.items);
+          setProducts(
+            category === "mobile"
+              ? applySmartphoneListingRules(mapped, {
+                includeFeaturedIphones: !brand,
+                includeShopifyBrandFallback: !!brandSlug && SHOPIFY_FALLBACK_BRANDS.has(brandSlug),
+                brandSlug,
+              })
+              : mapped
+          );
         } else {
           setProducts([]);
         }
@@ -72,7 +88,7 @@ function FilteredProductGridInner({
     }
 
     fetchFilteredProducts();
-  }, [brand, minPrice, maxPrice, years.join(","), storages.join(","), colors.join(","), initialProducts]);
+  }, [brand, brandSlug, category, minPrice, maxPrice, years.join(","), storages.join(","), colors.join(","), initialProducts]);
 
   return (
     <>

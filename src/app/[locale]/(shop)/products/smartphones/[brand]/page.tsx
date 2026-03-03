@@ -4,7 +4,7 @@ import { TrustBar } from "@/components/products/TrustBar";
 import { FilteredProductGrid } from "@/components/products/FilteredProductGrid";
 import { getModels } from "@/lib/api/products";
 import { getFilters } from "@/lib/api/filters";
-import { apiModelsToProductList } from "@/lib/api/transformers";
+import { apiModelsToProductList, applySmartphoneListingRules } from "@/lib/api/transformers";
 import { BRANDS } from "@/data/mock/brands";
 import { getCategoryBySlug, getSubcategoryBySlug } from "@/data/mock/categories";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,8 @@ interface SmartphonesBrandPageProps {
     brand: string;
   }>;
 }
+
+const SHOPIFY_FALLBACK_BRANDS = new Set(["apple", "samsung", "google"]);
 
 export default async function SmartphonesBrandPage({ params }: SmartphonesBrandPageProps) {
   const { locale, brand } = await params;
@@ -37,7 +39,10 @@ export default async function SmartphonesBrandPage({ params }: SmartphonesBrandP
   ]);
 
   const products = modelsResponse.data?.items
-    ? apiModelsToProductList(modelsResponse.data.items)
+    ? applySmartphoneListingRules(apiModelsToProductList(modelsResponse.data.items), {
+      includeShopifyBrandFallback: SHOPIFY_FALLBACK_BRANDS.has(brand),
+      brandSlug: brand,
+    })
     : [];
 
   const defaultFilters = {
@@ -92,9 +97,11 @@ export default async function SmartphonesBrandPage({ params }: SmartphonesBrandP
 
         <FilteredProductGrid
           brand={brandName}
+          brandSlug={brand}
           initialProducts={products}
           initialFilters={filters}
           locale={locale}
+          category="mobile"
         />
       </div>
     </>

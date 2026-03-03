@@ -16,6 +16,14 @@ import type {
   ProductStorage,
   ProductSim,
 } from "@/data/mock/products";
+import { getLocalImageBySlug } from "@/data/local-product-images";
+import {
+  getShopifyEnrichment,
+  getShopifyProductUrlByHandle,
+  getShopifySmartphoneByHandle,
+  getShopifySmartphonesByBrand,
+  type ShopifyCatalogItem,
+} from "@/lib/shopify-catalog";
 
 // ==================================
 // Mapping couleurs API → hex codes
@@ -77,11 +85,45 @@ const COLOR_HEX_MAP: Record<string, string> = {
   // Other variants
   Coral: "#ff6b6b",
   Corail: "#ff6b6b",
+  Gris: "#8b8b8b",
+  Beige: "#d8ccb8",
+  Cuivre: "#b87333",
+  Navy: "#1d3557",
+  Lavande: "#b7a6e6",
+  Sauge: "#9caf88",
+  Brume: "#a7c1d9",
+  Outremer: "#4a6fa5",
+  "Bleu intense": "#2d4e5c",
+  "Orange cosmique": "#d48a3a",
+  "Noir sideral": "#1d1d1f",
+  "Rose pale": "#f2d4d7",
+  "Or rose": "#e5c3b8",
 };
 
 export function getColorHex(colorName: string): string {
-  return COLOR_HEX_MAP[colorName] || "#999999";
+  const normalized = colorName
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+  return (
+    COLOR_HEX_MAP[colorName] ||
+    COLOR_HEX_MAP[normalized] ||
+    COLOR_HEX_MAP[colorName.toLowerCase()] ||
+    COLOR_HEX_MAP[normalized.toLowerCase()] ||
+    "#999999"
+  );
 }
+
+const PRODUCT_OVERRIDES: Record<string, Partial<Pick<Product, "priceFrom" | "colors" | "primaryImageUrl">>> = {
+  "iphone-11": {
+    priceFrom: 125,
+    colors: ["Blanc", "Jaune", "Mauve", "Noir", "Rouge", "Vert"].map((name) => ({
+      name,
+      hex: getColorHex(name),
+    })),
+    primaryImageUrl: "/images/products/iphones/iphone-11-noir-face.jpg",
+  },
+};
 
 // ==================================
 // Conditions depuis prix API
@@ -149,12 +191,21 @@ export interface TransformModelParams {
  */
 export function apiModelToProduct(params: TransformModelParams): Product {
   const { model, prices, options, images } = params;
+  const shopify = getShopifyEnrichment(model.slug);
+  const override = PRODUCT_OVERRIDES[model.slug];
 
-  // Construire les couleurs avec hex codes (API prioritaire, fallback local)
-  const colors: ProductColor[] = options.colors.map((c) => ({
-    name: c.value,
-    hex: c.hex || getColorHex(c.value),
+  // Priorite couleurs: Shopify > options API > model API
+  const colorSource =
+    shopify?.colors.length
+      ? shopify.colors
+      : options.colors.length
+        ? options.colors.map((c) => c.value)
+        : (model.colors ?? []);
+  const colors: ProductColor[] = colorSource.map((colorName) => ({
+    name: colorName,
+    hex: getColorHex(colorName),
   }));
+  const finalColors = override?.colors ?? colors;
 
   // Construire les storages
   const storages: ProductStorage[] = options.storages.map((s) => ({
@@ -182,6 +233,8 @@ export function apiModelToProduct(params: TransformModelParams): Product {
     .map((c) => c.price)
     .filter((p): p is number => p !== null && p > 0);
   const priceFrom =
+    override?.priceFrom ||
+    shopify?.priceMin ||
     model.price_from ||
     (availablePrices.length > 0 ? Math.min(...availablePrices) : 0);
 
@@ -202,7 +255,11 @@ export function apiModelToProduct(params: TransformModelParams): Product {
   };
 
   // Image primaire: priorite API (model.primary_image_url) > images param > undefined
-  let primaryImageUrl: string | null | undefined = model.primary_image_url;
+  let primaryImageUrl: string | null | undefined =
+    override?.primaryImageUrl ||
+    getLocalImageBySlug(model.slug) ||
+    model.primary_image_url ||
+    shopify?.primaryImageUrl;
 
   // Fallback sur les images passees en parametre
   if (!primaryImageUrl && images && colors.length > 0) {
@@ -234,7 +291,7 @@ export function apiModelToProduct(params: TransformModelParams): Product {
     priceNew,
     rating: model.review_avg || 0,
     reviewCount: model.review_count || 0,
-    colors,
+    colors: finalColors,
     storages,
     sims,
     conditions,
@@ -262,27 +319,198 @@ export function apiModelsToProductList(models: PhoneModel[]): Product[] {
     accessory: "audio",
   };
 
-  return models.map((model) => ({
-    id: model.id,
-    slug: model.slug,
-    name: model.name,
-    brand: model.brand,
-    brandSlug: model.brand.toLowerCase(),
-    category: (model.category ? categoryMap[model.category] : undefined) || "smartphones",
-    priceFrom: model.price_from || model.price_imparfait || 0,
-    priceNew: model.new_price || 0,
-    rating: model.review_avg || 0,
-    reviewCount: model.review_count || 0,
-    colors: (model.colors ?? []).map((c) => ({ name: c, hex: getColorHex(c) })),
+  return models.map((model) => {
+    const shopify = getShopifyEnrichment(model.slug);
+    const override = PRODUCT_OVERRIDES[model.slug];
+    const colorSource = shopify?.colors.length ? shopify.colors : (model.colors ?? []);
+    const mappedColors = colorSource.map((c) => ({ name: c, hex: getColorHex(c) }));
+
+    return {
+      id: model.id,
+      slug: model.slug,
+      name: model.name,
+      brand: model.brand,
+      brandSlug: model.brand.toLowerCase(),
+      category: (model.category ? categoryMap[model.category] : undefined) || "smartphones",
+      priceFrom: override?.priceFrom || shopify?.priceMin || model.price_from || model.price_imparfait || 0,
+      priceNew: model.new_price || 0,
+      rating: model.review_avg || 0,
+      reviewCount: model.review_count || 0,
+      colors: override?.colors || mappedColors,
+      storages: [],
+      conditions: [],
+      batteryOptions: { standard: { price: 0 }, new: { price: 30 } },
+      imageFolder: model.slug,
+      inStock: true,
+      primaryImageUrl:
+        override?.primaryImageUrl ||
+        getLocalImageBySlug(model.slug) ||
+        model.primary_image_url ||
+        shopify?.primaryImageUrl ||
+        undefined,
+      isPromo: model.has_promo || false,
+      description: model.description || undefined,
+    };
+  });
+}
+
+function isIphoneOlderThan7(slug: string): boolean {
+  const match = /^iphone-(\d+)/.exec(slug);
+  if (!match) return false;
+  const generation = Number.parseInt(match[1], 10);
+  return Number.isFinite(generation) && generation < 7;
+}
+
+function buildFallbackProductFromShopify(slug: string): Product | undefined {
+  const item = getShopifySmartphoneByHandle(slug);
+  if (!item) return undefined;
+
+  const colors = (item.colors ?? []).map((name) => ({
+    name,
+    hex: getColorHex(name),
+  }));
+
+  return {
+    id: `shopify-${slug}`,
+    slug,
+    name: item.title || slug.replace(/-/g, " "),
+    brand: "Apple",
+    brandSlug: "apple",
+    category: "smartphones",
+    priceFrom: item.price_min || 0,
+    priceNew: 0,
+    rating: 0,
+    reviewCount: 0,
+    colors,
     storages: [],
     conditions: [],
     batteryOptions: { standard: { price: 0 }, new: { price: 30 } },
-    imageFolder: model.slug,
+    imageFolder: slug,
     inStock: true,
-    primaryImageUrl: model.primary_image_url || undefined,
-    isPromo: model.has_promo || false,
-    description: model.description || undefined,
+    primaryImageUrl: getLocalImageBySlug(slug) || item.images?.[0],
+    externalProductUrl: getShopifyProductUrlByHandle(item.handle),
+    description: undefined,
+    isPromo: false,
+  };
+}
+
+function buildFallbackIphone16eProduct(): Product {
+  const colors = ["Blanc", "Noir"].map((name) => ({
+    name,
+    hex: getColorHex(name),
   }));
+
+  return {
+    id: "fallback-iphone-16e",
+    slug: "iphone-16e",
+    name: "iPhone 16e",
+    brand: "Apple",
+    brandSlug: "apple",
+    category: "smartphones",
+    priceFrom: 0,
+    priceNew: 0,
+    rating: 0,
+    reviewCount: 0,
+    colors,
+    storages: [],
+    conditions: [],
+    batteryOptions: { standard: { price: 0 }, new: { price: 30 } },
+    imageFolder: "iphone-16e",
+    inStock: true,
+    primaryImageUrl: getLocalImageBySlug("iphone-16e"),
+    description: undefined,
+    isPromo: false,
+  };
+}
+
+function toBrandName(brandSlug: string): string {
+  if (!brandSlug) return "";
+  return brandSlug.charAt(0).toUpperCase() + brandSlug.slice(1);
+}
+
+function toModelSlugFromShopifyHandle(handle: string, brandSlug: string): string {
+  const normalizedHandle = handle.toLowerCase();
+  const prefix = `${brandSlug.toLowerCase()}-`;
+  return normalizedHandle.startsWith(prefix) ? normalizedHandle.slice(prefix.length) : normalizedHandle;
+}
+
+function buildFallbackProductFromShopifyBrandItem(
+  item: ShopifyCatalogItem,
+  brandSlug: string
+): Product | undefined {
+  const slug = toModelSlugFromShopifyHandle(item.handle, brandSlug);
+  if (!slug) return undefined;
+
+  const colors = (item.colors ?? []).map((name) => ({
+    name,
+    hex: getColorHex(name),
+  }));
+
+  return {
+    id: `shopify-${brandSlug}-${slug}`,
+    slug,
+    name: item.title || slug.replace(/-/g, " "),
+    brand: toBrandName(brandSlug),
+    brandSlug,
+    category: "smartphones",
+    priceFrom: item.price_min || 0,
+    priceNew: 0,
+    rating: 0,
+    reviewCount: 0,
+    colors,
+    storages: [],
+    conditions: [],
+    batteryOptions: { standard: { price: 0 }, new: { price: 30 } },
+    imageFolder: slug,
+    inStock: true,
+    primaryImageUrl: getLocalImageBySlug(slug) || item.images?.[0],
+    externalProductUrl: getShopifyProductUrlByHandle(item.handle),
+    description: undefined,
+    isPromo: false,
+  };
+}
+
+interface SmartphoneListingRulesOptions {
+  includeFeaturedIphones?: boolean;
+  includeShopifyBrandFallback?: boolean;
+  brandSlug?: string;
+}
+
+export function applySmartphoneListingRules(
+  products: Product[],
+  options?: SmartphoneListingRulesOptions
+): Product[] {
+  const bySlug = new Map<string, Product>();
+
+  for (const product of products) {
+    if (product.brandSlug === "apple" && isIphoneOlderThan7(product.slug)) continue;
+    bySlug.set(product.slug, product);
+  }
+
+  if (options?.includeFeaturedIphones) {
+    const requiredIphoneSlugs = ["iphone-17-pro-max", "iphone-17", "iphone-air", "iphone-16e"] as const;
+
+    for (const slug of requiredIphoneSlugs) {
+      if (bySlug.has(slug)) continue;
+      const fallback =
+        buildFallbackProductFromShopify(slug) ||
+        (slug === "iphone-16e" ? buildFallbackIphone16eProduct() : undefined);
+      if (fallback) {
+        bySlug.set(slug, fallback);
+      }
+    }
+  }
+
+  if (options?.includeShopifyBrandFallback && options.brandSlug) {
+    const shopifyBrandProducts = getShopifySmartphonesByBrand(options.brandSlug);
+    for (const item of shopifyBrandProducts) {
+      const fallback = buildFallbackProductFromShopifyBrandItem(item, options.brandSlug);
+      if (!fallback || bySlug.has(fallback.slug)) continue;
+      bySlug.set(fallback.slug, fallback);
+    }
+  }
+
+  return [...bySlug.values()].sort((a, b) => b.priceFrom - a.priceFrom);
 }
 
 /**
