@@ -1,34 +1,46 @@
-import { getModels } from "@/lib/api/products";
-import { getColorHex } from "@/lib/api/transformers";
-import type { PhoneModel } from "@/types/product";
+import topSellers from "@/data/top-sellers.json";
 import { PromoDealsCarousel, type PromoProduct } from "./PromoDealsCarousel";
 
-function modelToPromo(model: PhoneModel): PromoProduct {
-  const priceFrom = model.price_from ?? 0;
-  const newPrice = model.new_price ?? 0;
+/** Map a color name (FR) to a hex value for the dot display */
+const COLOR_MAP: Record<string, string> = {
+  noir: "#1d1d1f",
+  minuit: "#1d1d1f",
+  blanc: "#f5f5f0",
+  argent: "#e3e4df",
+  silver: "#e3e4df",
+  "lumière stellaire": "#f9f3ee",
+  or: "#f4e8ce",
+  gold: "#f4e8ce",
+  "or rose": "#faddd7",
+  "or clair": "#f4e8ce",
+  rose: "#faddd7",
+  rouge: "#bf0013",
+  bleu: "#a7c1d9",
+  "bleu pacifique": "#2d4e5c",
+  "bleu alpine": "#3e5f6e",
+  vert: "#4e5851",
+  "vert alpine": "#394c38",
+  violet: "#b8afe6",
+  "violet intense": "#59476b",
+  mauve: "#e3d0e8",
+  jaune: "#f9e479",
+  graphite: "#54524f",
+};
 
-  let badge: string | null = null;
-  if (newPrice > 0 && priceFrom > 0 && priceFrom < newPrice) {
-    badge = `-${Math.round((1 - priceFrom / newPrice) * 100)}%`;
-  }
-
-  return {
-    slug: `${model.brand.toLowerCase()}/${model.slug}`,
-    name: model.name,
-    brand: model.brand,
-    imageUrl: model.primary_image_url ?? null,
-    priceFrom,
-    colors: (model.colors ?? []).map(getColorHex),
-    badge,
-  };
+function getColorHex(name: string): string {
+  return COLOR_MAP[name.toLowerCase()] ?? "#cccccc";
 }
 
 export async function PromoDeals() {
-  const res = await getModels({ promo: true, perPage: 8 });
-
-  const products: PromoProduct[] = res.data?.items
-    ? res.data.items.map(modelToPromo)
-    : [];
+  const products: PromoProduct[] = topSellers.slice(0, 8).map((item, index) => ({
+    slug: item.handle,
+    name: item.name,
+    brand: "Apple",
+    imageUrl: item.images[0] ?? null,
+    priceFrom: item.price_from,
+    colors: item.colors.map(getColorHex),
+    badge: index < 3 ? "Best-seller" : null,
+  }));
 
   if (products.length === 0) return null;
 
