@@ -1,4 +1,4 @@
-import { HeroSection, ReassuranceSection, PromoDeals, ShoppingGuides, GradeExplainer, ServicesSection, StoresSection } from "@/components/home";
+import { HeroSection, ReassuranceSection, PromoDeals, ShoppingGuides, GradeExplainer, StoresSection } from "@/components/home";
 
 export default function HomePage() {
   return (
@@ -6,10 +6,10 @@ export default function HomePage() {
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Reassurance - Pacte Qualité DBC */}
+      {/* Reassurance - Standard DBC Labs */}
       <ReassuranceSection />
 
-      {/* Promo Deals */}
+      {/* Top ventes */}
       <PromoDeals />
 
       {/* Shopping Guides */}
@@ -17,9 +17,6 @@ export default function HomePage() {
 
       {/* Grade Explainer */}
       <GradeExplainer />
-
-      {/* Services: Vente, Réparation, Reprise */}
-      <ServicesSection />
 
       {/* Stores */}
       <StoresSection />

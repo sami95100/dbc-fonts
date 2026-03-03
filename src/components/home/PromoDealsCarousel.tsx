@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect, useCallback } from "react";
@@ -52,7 +51,7 @@ export function PromoDealsCarousel({ products }: PromoDealsCarouselProps) {
     const el = scrollRef.current;
     if (!el) return;
     el.scrollBy({
-      left: direction === "left" ? -320 : 320,
+      left: direction === "left" ? -200 : 200,
       behavior: "smooth",
     });
   };
@@ -60,95 +59,105 @@ export function PromoDealsCarousel({ products }: PromoDealsCarouselProps) {
   if (products.length === 0) return null;
 
   return (
-    <section ref={inViewRef} className={`relative py-8 md:py-12 lg:py-16 transition-[opacity,transform] duration-[0.6s] ease-[cubic-bezier(0.25,0.1,0.25,1)] will-change-[opacity,transform] ${isInView ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}>
-
+    <section
+      ref={inViewRef}
+      className={`relative py-8 md:py-12 transition-[opacity,transform] duration-[0.6s] ease-[cubic-bezier(0.25,0.1,0.25,1)] will-change-[opacity,transform] ${isInView ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}
+    >
       {/* Title */}
-      <div className="relative mx-auto max-w-7xl px-4">
-        <div className="mb-8 md:mb-10">
-          <h2 className="text-[28px] font-bold leading-tight tracking-tight text-gray-900 md:text-[32px] lg:text-[36px]">
+      <div className="mx-auto max-w-7xl px-5">
+        <div className="mb-6">
+          <h2 className="text-[24px] font-bold leading-tight tracking-tight text-gray-900 md:text-[28px]">
             {t("promoDeals.title")}{" "}
-            <span className="font-normal text-gray-500">{t("promoDeals.titleAccent")}</span>
+            <span className="font-normal text-gray-400">
+              {t("promoDeals.titleAccent")}
+            </span>
           </h2>
         </div>
       </div>
 
-      {/* Carousel - full width */}
+      {/* Carousel */}
       <div className="relative">
         {/* Left arrow */}
         <button
           onClick={() => scroll("left")}
-          className={`absolute left-4 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm transition-opacity hover:bg-gray-50 md:flex ${
-            canScrollLeft ? "opacity-100" : "pointer-events-none opacity-0"
-          }`}
+          className={`absolute left-2 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md transition-opacity md:flex ${canScrollLeft ? "opacity-100" : "pointer-events-none opacity-0"}`}
           aria-label={t("hero.previous")}
         >
-          <ChevronLeft className="h-5 w-5 text-gray-600" />
+          <ChevronLeft className="h-4 w-4 text-gray-600" />
         </button>
 
         {/* Scroll container */}
         <div
           ref={scrollRef}
-          className="flex gap-3 overflow-x-auto scroll-smooth px-4 pb-6 scrollbar-hide md:gap-4 md:px-8"
+          className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-5 pb-4 scrollbar-hide"
         >
           {products.map((product) => (
             <Link
               key={product.slug}
               href={`/${locale}/products/${product.slug}`}
-              className="group flex w-[280px] shrink-0 flex-col overflow-hidden rounded-3xl bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg md:w-[320px] lg:w-[370px]"
+              className="group relative flex w-[155px] shrink-0 snap-start flex-col rounded-2xl bg-white p-3 pb-4 shadow-sm ring-1 ring-gray-100 transition-all duration-300 hover:shadow-md hover:ring-gray-200 md:w-[175px]"
             >
-              {/* Product name */}
-              <div className="px-6 pt-6">
-                <h3 className="text-[19px] font-semibold leading-tight text-gray-900">
-                  {product.name}
-                </h3>
-              </div>
-
-              {/* Product image */}
-              <div className="relative mx-auto my-4 aspect-[3/4] w-[55%]">
+              {/* Image with sticker badge */}
+              <div className="relative mx-auto mt-2 flex aspect-square w-[85%] items-center justify-center overflow-visible">
+                {/* Best-seller sticker — top-right of the iPhone image */}
                 {product.badge && (
-                  <span className="absolute -right-8 -top-2 z-10 rounded-full bg-highlight px-3 py-1.5 text-sm font-bold text-primary">
-                    {product.badge}
-                  </span>
+                  <div
+                    className="absolute -right-2 -top-2 z-10 flex h-10 w-10 items-center justify-center md:h-12 md:w-12"
+                    style={{ transform: "rotate(12deg)" }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/assets/taches/tache-10-highlight.svg"
+                      alt=""
+                      className="pointer-events-none absolute inset-0 h-full w-full"
+                      aria-hidden="true"
+                    />
+                    <span className="relative text-center font-display text-[9px] font-bold leading-[1.1] text-primary md:text-[10px]">
+                      Best<br />seller
+                    </span>
+                  </div>
                 )}
                 {product.imageUrl ? (
-                  <Image
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
                     src={product.imageUrl}
                     alt={product.name}
-                    fill
-                    className="object-contain"
-                    sizes="(max-width: 768px) 140px, (max-width: 1024px) 160px, 180px"
+                    width={160}
+                    height={160}
+                    className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center rounded-2xl bg-gray-100">
-                    <span className="text-4xl text-gray-300">?</span>
+                  <div className="flex h-full w-full items-center justify-center rounded-xl bg-gray-50">
+                    <span className="text-2xl text-gray-200">?</span>
                   </div>
                 )}
               </div>
 
-              {/* Color dots */}
+              {/* Name — centered */}
+              <h3 className="mt-3 text-center text-[13px] font-semibold leading-tight text-gray-900">
+                {product.name}
+              </h3>
+
+              {/* Color dots — centered, bigger */}
               {product.colors.length > 0 && (
-                <div className="flex items-center justify-center gap-2 pb-4">
+                <div className="mt-2 flex flex-wrap items-center justify-center gap-1.5">
                   {product.colors.map((hex, i) => (
                     <span
                       key={i}
-                      className="h-3 w-3 rounded-full border border-gray-200"
+                      className="h-2.5 w-2.5 rounded-full ring-1 ring-gray-200"
                       style={{ backgroundColor: hex }}
                     />
                   ))}
                 </div>
               )}
 
-              {/* Price + CTA */}
-              <div className="flex items-end justify-between px-6 pb-6">
-                <div>
-                  <p className="text-xs text-gray-500">{t("promoDeals.from")}</p>
-                  <p className="text-lg font-bold text-gray-900">
-                    {product.priceFrom} &euro;
-                  </p>
-                </div>
-                <span className="rounded-full bg-green-700 px-4 py-2 text-sm font-semibold text-white transition-colors group-hover:bg-green-800">
-                  {t("promoDeals.buy")}
-                </span>
+              {/* Price — bottom left */}
+              <div className="mt-auto pt-3">
+                <p className="text-[10px] text-gray-400">{t("promoDeals.from")}</p>
+                <p className="text-[16px] font-bold leading-tight text-gray-900">
+                  {product.priceFrom}&nbsp;€
+                </p>
               </div>
             </Link>
           ))}
@@ -157,12 +166,10 @@ export function PromoDealsCarousel({ products }: PromoDealsCarouselProps) {
         {/* Right arrow */}
         <button
           onClick={() => scroll("right")}
-          className={`absolute right-4 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm transition-opacity hover:bg-gray-50 md:flex ${
-            canScrollRight ? "opacity-100" : "pointer-events-none opacity-0"
-          }`}
+          className={`absolute right-2 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md transition-opacity md:flex ${canScrollRight ? "opacity-100" : "pointer-events-none opacity-0"}`}
           aria-label={t("hero.next")}
         >
-          <ChevronRight className="h-5 w-5 text-gray-600" />
+          <ChevronRight className="h-4 w-4 text-gray-600" />
         </button>
       </div>
     </section>

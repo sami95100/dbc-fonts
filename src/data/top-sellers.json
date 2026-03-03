@@ -1,7 +1,6 @@
 [
   {
     "name": "iPhone 13",
-    "sales": 386,
     "handle": "iphone-13",
     "price_from": 243,
     "colors": [
@@ -13,111 +12,88 @@
       "Vert"
     ],
     "images": [
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone13_green__djhme72ls0ae_large_e100183e-267d-4c18-89a0-d7bf612644b1.jpg?v=1748114634",
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone13_pink__epn5x8y336uu_large_0e7c8226-a909-4d6b-b41c-268ad6e20846.jpg?v=1748114635"
+      "/images/products/iphones/iphone-13-bleu-face.jpg",
+      "/images/products/iphones/iphone-13-lumiere-stellaire-face.jpg"
     ]
   },
   {
-    "name": "iPhone SE (2020)",
-    "sales": 102,
-    "handle": "iphone-se-2",
-    "price_from": 104,
-    "colors": [
-      "Blanc",
-      "Noir",
-      "Rouge"
-    ],
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphoneSE_2nd_gen_black__ecica68egiky_large_dea7b3a5-3f58-49e1-ad21-13852d556e05.jpg?v=1748125279",
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphoneSE_2nd_gen_white__gew5k7cvtdqy_large_dc5c6e64-040e-4348-942e-85ee8d716fb2.jpg?v=1748125279"
-    ]
-  },
-  {
-    "name": "iPhone 7",
-    "sales": 74,
-    "handle": "iphone-7",
-    "price_from": 65,
+    "name": "iPhone 14 Pro",
+    "handle": "iphone-14-pro",
+    "price_from": 335,
     "colors": [
       "Argent",
       "Noir",
       "Or",
-      "Or Rose"
+      "Violet intense"
     ],
     "images": [
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone7_black__b3gscxdb682q_large_1_340be01f-bfae-4ea1-8297-41a24bc821f0.jpg?v=1747934415",
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone7_silver__b49d2w2mzlzm_large_2b2475e5-c4fa-470a-8bc9-cbc68cd26bae.jpg?v=1747934416"
+      "/images/products/iphones/iphone-14-pro-argent-face.jpg",
+      "/images/products/iphones/iphone-14-pro-noir-sideral-face.jpg"
     ]
   },
   {
-    "name": "iPhone 8",
-    "sales": 41,
-    "handle": "iphone-8",
-    "price_from": 80,
+    "name": "iPhone 16 Pro",
+    "handle": "iphone-16-pro",
+    "price_from": 578,
+    "colors": [
+      "Titane blanc",
+      "Titane naturel",
+      "Titane noir",
+      "Titane sable"
+    ],
+    "images": [
+      "/images/products/iphones/iphone-16-pro-titane-blanc-face.jpg",
+      "/images/products/iphones/iphone-16-pro-titane-naturel-face.jpg"
+    ]
+  },
+  {
+    "name": "iPhone 16 Pro Max",
+    "handle": "iphone-16-pro-max",
+    "price_from": 687,
+    "colors": [
+      "Titane blanc",
+      "Titane naturel",
+      "Titane noir",
+      "Titane sable"
+    ],
+    "images": [
+      "/images/products/iphones/iphone-16-pro-max-titane-blanc-face.jpg",
+      "/images/products/iphones/iphone-16-pro-max-titane-naturel-face.jpg"
+    ]
+  },
+  {
+    "name": "iPhone 16",
+    "handle": "iphone-16",
+    "price_from": 556,
+    "colors": [
+      "Blanc",
+      "Noir",
+      "Outremer",
+      "Rose",
+      "Sarcelle"
+    ],
+    "images": [
+      "/images/products/iphones/iphone-16-blanc-face.jpg",
+      "/images/products/iphones/iphone-16-noir-face.jpg"
+    ]
+  },
+  {
+    "name": "iPhone 14 Pro Max",
+    "handle": "iphone-14-pro-max",
+    "price_from": 407,
     "colors": [
       "Argent",
       "Noir",
-      "Or"
+      "Or",
+      "Violet intense"
     ],
     "images": [
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone8_gold__i0h3tzi3t8y2_large_5e70b2a0-982a-4bf6-a6cf-42d023ef6255.jpg?v=1748114516",
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone8_spacegray__ftu9xvgzjs66_large_35535308-5a11-4405-82dd-1f7dfc012398.jpg?v=1748114516"
-    ]
-  },
-  {
-    "name": "iPhone 14",
-    "sales": 39,
-    "handle": "iphone-14",
-    "price_from": 278,
-    "colors": [
-      "Bleu",
-      "Jaune",
-      "Lumière stellaire",
-      "Mauve",
-      "Minuit",
-      "Rouge"
-    ],
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone14_blue__dia4tqneecmu_large_7c235f39-e33c-4398-87ce-dba8a308b25c.jpg?v=1748114531",
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone14_purple__e92m8vvthziq_large_dc7c39bb-87ba-4f55-bd73-162ee62eed01.jpg?v=1748114532"
-    ]
-  },
-  {
-    "name": "iPhone 12 Pro",
-    "sales": 37,
-    "handle": "iphone-12-pro-max",
-    "price_from": 204,
-    "colors": [
-      "Bleu Pacifique",
-      "Gold",
-      "Graphite",
-      "Silver"
-    ],
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone12_pro_max_pacific_blue__b51sbplmr8ia_large_9cb03473-05b1-4d84-84da-86eb9f86eae8.jpg?v=1748114664",
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone12_pro_max_gold__fcmv1e9vqve6_large_08c70010-deb4-4cbd-88db-85412c3ab3fd.jpg?v=1748114665"
-    ]
-  },
-  {
-    "name": "iPhone 12 Mini",
-    "sales": 36,
-    "handle": "iphone-12-mini",
-    "price_from": 135,
-    "colors": [
-      "Blanc",
-      "Bleu",
-      "Noir",
-      "Rouge",
-      "Vert",
-      "Violet"
-    ],
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone12_mini_purple__66o2ddjsxtuy_large_e8f81028-0270-4d80-913f-1c05b5b712fc.jpg?v=1748114726",
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone12_mini_blue__fexiomyld722_large_d79649b9-abe2-42ab-ba3e-e436e4bb36ed.jpg?v=1748114727"
+      "/images/products/iphones/iphone-14-pro-max-argent-face.jpg",
+      "/images/products/iphones/iphone-14-pro-max-noir-sideral-face.jpg"
     ]
   },
   {
     "name": "iPhone 12",
-    "sales": 32,
     "handle": "iphone-12",
     "price_from": 143,
     "colors": [
@@ -129,75 +105,8 @@
       "Vert"
     ],
     "images": [
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone12_purple__fv6jm3l1hcia_large_0b6ef73a-e691-41a0-aa27-c295e7cf9ed3.jpg?v=1748114683",
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone12_blue__evxvj86rzj42_large_0cb5777b-0a12-452c-b189-3575112e0ea3.jpg?v=1748114684"
-    ]
-  },
-  {
-    "name": "iPhone 11",
-    "sales": 27,
-    "handle": "iphone-11",
-    "price_from": 125,
-    "colors": [
-      "Blanc",
-      "Jaune",
-      "Mauve",
-      "Noir",
-      "Vert"
-    ],
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone11_purple__dscc77061402_large_3_e56af1a9-05b7-43f5-a7a3-abe2b6b4049a.jpg?v=1748114816",
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone11_yellow__e4omg2gkfbwy_large_728abd3d-82bc-4744-a9ba-8ec4344f1b77.jpg?v=1748114817"
-    ]
-  },
-  {
-    "name": "iPhone 14 Pro",
-    "sales": 15,
-    "handle": "iphone-14-pro-max",
-    "price_from": 407,
-    "colors": [
-      "Argent",
-      "Noir",
-      "Or",
-      "Violet intense"
-    ],
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone14_pro_max_deep_purple__diuabahv3w4m_large_fa152a17-cc7b-49dc-91f3-2f5075677d58.jpg?v=1748114440",
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone14_pro_max_gold__d4ji4p0rioeq_large_b9184763-dc82-412a-80fd-c8bddfa30a68.jpg?v=1748114441"
-    ]
-  },
-  {
-    "name": "iPhone 13 Pro",
-    "sales": 13,
-    "handle": "iphone-13-pro-max",
-    "price_from": 348,
-    "colors": [
-      "Argent",
-      "Bleu Alpine",
-      "Graphite",
-      "Or",
-      "Vert alpine"
-    ],
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone13_pro_max_alpine_green__e9ps5f6os0i2_large_337c1e9a-4173-4843-a6c4-589b50ff45d6.jpg?v=1748114555",
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/compare_iphone13_pro_max_silver__d86ajrc5k30i_large_a68cc5dc-1800-476e-ba76-02ac39d4ba0e.jpg?v=1748114556"
-    ]
-  },
-  {
-    "name": "iPhone 15",
-    "sales": 6,
-    "handle": "iphone-15",
-    "price_from": 391,
-    "colors": [
-      "Bleu",
-      "Jaune",
-      "Noir",
-      "Rose",
-      "Vert"
-    ],
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/Comparaison_iPhone_15_rose.jpg?v=1748114780",
-      "https://cdn.shopify.com/s/files/1/0878/2276/2323/files/iPhone15_Yellow_Comparison.jpg?v=1748114781"
+      "/images/products/iphones/iphone-12-blanc-face.jpg",
+      "/images/products/iphones/iphone-12-bleu-face.jpg"
     ]
   }
 ]

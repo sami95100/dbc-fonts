@@ -1,7 +1,6 @@
 import topSellers from "@/data/top-sellers.json";
 import { PromoDealsCarousel, type PromoProduct } from "./PromoDealsCarousel";
 
-/** Map a color name (FR) to a hex value for the dot display */
 const COLOR_MAP: Record<string, string> = {
   noir: "#1d1d1f",
   minuit: "#1d1d1f",
@@ -12,12 +11,16 @@ const COLOR_MAP: Record<string, string> = {
   or: "#f4e8ce",
   gold: "#f4e8ce",
   "or rose": "#faddd7",
-  "or clair": "#f4e8ce",
   rose: "#faddd7",
   rouge: "#bf0013",
   bleu: "#a7c1d9",
   "bleu pacifique": "#2d4e5c",
   "bleu alpine": "#3e5f6e",
+  "bleu titane": "#3d4f5f",
+  "titane naturel": "#9a9490",
+  "titane noir": "#3a3632",
+  "titane blanc": "#e3e2dd",
+  "titane désert": "#c2b8a3",
   vert: "#4e5851",
   "vert alpine": "#394c38",
   violet: "#b8afe6",
@@ -25,6 +28,10 @@ const COLOR_MAP: Record<string, string> = {
   mauve: "#e3d0e8",
   jaune: "#f9e479",
   graphite: "#54524f",
+  "noir sidéral": "#1d1d1f",
+  "bleu outremer": "#4a6fa5",
+  "sarcelle": "#5e8d87",
+  "rose pâle": "#f2d4d7",
 };
 
 function getColorHex(name: string): string {
@@ -32,7 +39,7 @@ function getColorHex(name: string): string {
 }
 
 export async function PromoDeals() {
-  const products: PromoProduct[] = topSellers.slice(0, 8).map((item, index) => ({
+  const products: PromoProduct[] = topSellers.map((item, index) => ({
     slug: item.handle,
     name: item.name,
     brand: "Apple",
