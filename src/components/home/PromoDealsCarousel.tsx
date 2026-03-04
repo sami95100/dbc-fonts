@@ -95,7 +95,7 @@ export function PromoDealsCarousel({ products }: PromoDealsCarouselProps) {
             <Link
               key={product.slug}
               href={`/${locale}/products/${product.slug}`}
-              className="group relative flex w-[155px] shrink-0 snap-start flex-col rounded-2xl bg-white p-3 pb-4 shadow-sm ring-1 ring-gray-100 transition-all duration-300 hover:shadow-md hover:ring-gray-200 md:w-[175px]"
+              className="group relative flex w-[180px] shrink-0 snap-start flex-col rounded-2xl bg-white p-4 pb-4 shadow-sm ring-1 ring-gray-100 transition-all duration-300 hover:shadow-md hover:ring-gray-200 md:w-[200px]"
             >
               {/* Image with sticker badge */}
               <div className="relative mx-auto mt-2 flex aspect-square w-[85%] items-center justify-center overflow-visible">
