@@ -280,8 +280,8 @@
     },
     "reassurance": {
       "line1": "C'est la même qualité,",
-      "line2": "c'est juste le prix qui baisse",
-      "line3": "grace au",
+      "line2": "C'est juste le prix qui baisse,",
+      "line3": "Grace au",
       "highlight": "Standard DBC Labs"
     }
   },
