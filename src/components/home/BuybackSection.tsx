@@ -25,7 +25,7 @@ export function BuybackSection() {
         </h2>
 
         {/* Capsule - same sizing as ImpactSection */}
-        <div className="overflow-hidden rounded-[32px] bg-gray-50 px-6 py-10 md:rounded-[40px] md:px-12 md:py-14 lg:px-16 lg:py-16">
+        <div className="overflow-hidden rounded-[32px] border border-gray-200 bg-gray-50 px-6 py-10 md:rounded-[40px] md:px-12 md:py-14 lg:px-16 lg:py-16">
           {/* Tagline */}
           <p className="font-display text-[20px] font-semibold leading-snug tracking-tight text-gray-600 md:text-[24px] lg:text-[28px]">
             Le meilleur moment pour vendre, c&apos;etait hier. Le deuxieme,{" "}
