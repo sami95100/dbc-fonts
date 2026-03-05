@@ -295,20 +295,21 @@ h1, h2, h3, h4, h5, h6 {
                idle-bob-1 6.5s ease-in-out 1.65s infinite;
   }
 
-  /* ─── Animated highlight underline ─────────────────── */
+}
 
-  .highlight-underline {
-    background-image: url('/assets/taches/tache-23-highlight.svg');
-    background-repeat: repeat-x;
-    background-position: 0 100%;
-    background-size: 0% 8px;
-    padding-bottom: 2px;
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
-    transition: background-size 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s;
-  }
+/* ─── Animated highlight underline ─────────────────── */
 
-  .highlight-underline.is-visible {
-    background-size: 100% 8px;
-  }
+.highlight-underline {
+  background-image: url('/assets/taches/tache-23-highlight.svg');
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  background-size: 0% 8px;
+  padding-bottom: 2px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s;
+}
+
+.highlight-underline.is-visible {
+  background-size: 100% 8px;
 }
