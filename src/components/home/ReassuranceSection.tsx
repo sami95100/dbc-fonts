@@ -15,7 +15,8 @@ const TRUST_ITEMS = [
 export function ReassuranceSection() {
   const locale = useLocale();
   const t = useTranslations("home");
-  const { ref: inViewRef, isInView } = useInView({ threshold: 0.2, waitForScroll: true });
+  const { ref: inViewRef, isInView } = useInView();
+  const { ref: highlightRef, isInView: highlightVisible } = useInView({ waitForScroll: true });
 
   return (
     <section
@@ -24,14 +25,14 @@ export function ReassuranceSection() {
     >
       <div className="mx-auto max-w-[980px] px-[22px] md:px-[44px] lg:px-0">
         {/* Title - centered, multi-line */}
-        <h2 className="text-center text-[28px] font-bold leading-[1.2] tracking-tight text-gray-900 md:text-[36px] lg:text-[44px]">
+        <h2 ref={highlightRef} className="text-center text-[28px] font-bold leading-[1.2] tracking-tight text-gray-900 md:text-[36px] lg:text-[44px]">
           <span className="block">{t("reassurance.line1")}</span>
           <span className="block">{t("reassurance.line2")}</span>
           <span>
             {t("reassurance.line3")}{" "}
             <Link
               href={`/${locale}/standard-dbc-labs`}
-              className={`font-display text-primary transition-opacity hover:opacity-80 highlight-underline ${isInView ? "is-visible" : ""}`}
+              className={`font-display text-primary transition-opacity hover:opacity-80 highlight-underline ${highlightVisible ? "is-visible" : ""}`}
             >
               {t("reassurance.highlight")}
             </Link>

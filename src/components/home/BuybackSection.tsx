@@ -8,6 +8,7 @@ import { ArrowRight, Banknote, Truck, MapPin } from "lucide-react";
 export function BuybackSection() {
   const locale = useLocale();
   const { ref, isInView } = useInView();
+  const { ref: titleRef, isInView: titleVisible } = useInView({ threshold: 0.5, rootMargin: "-20% 0px -20% 0px" });
 
   return (
     <section
@@ -18,7 +19,7 @@ export function BuybackSection() {
     >
       <div className="mx-auto max-w-7xl px-4">
         {/* Section title */}
-        <h2 className="mb-6 text-[28px] font-bold leading-tight tracking-tight text-gray-900 md:mb-8 md:text-[32px] lg:text-[36px]">
+        <h2 ref={titleRef} className="mb-6 text-[28px] font-bold leading-tight tracking-tight text-gray-900 md:mb-8 md:text-[32px] lg:text-[36px]">
           Revends ton telephone.{" "}
           <span className="font-normal text-gray-500">Au meilleur prix, sans effort.</span>
         </h2>
@@ -28,7 +29,7 @@ export function BuybackSection() {
           {/* Tagline */}
           <p className="font-display text-[20px] font-semibold leading-snug tracking-tight text-gray-600 md:text-[24px] lg:text-[28px]">
             Le meilleur moment pour vendre, c&apos;etait hier. Le deuxieme,{" "}
-            <span className={`font-bold text-primary highlight-underline ${isInView ? "is-visible" : ""}`}>
+            <span className={`font-bold text-primary highlight-underline ${titleVisible ? "is-visible" : ""}`}>
               c&apos;est maintenant
             </span>
             .
