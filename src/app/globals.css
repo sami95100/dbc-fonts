@@ -200,3 +200,115 @@ h1, h2, h3, h4, h5, h6 {
 @utility animate-delay-400 {
   animation-delay: 400ms;
 }
+
+/* ─── DBC Run Logo Animation ─── */
+
+@layer base {
+  /* Character entrance: slide in from outside */
+  @keyframes char-enter-top-left {
+    0% { transform: translate(-60px, -60px) scale(0.5); opacity: 0; }
+    100% { transform: translate(0, 0) scale(1); opacity: 1; }
+  }
+  @keyframes char-enter-top-right {
+    0% { transform: translate(60px, -60px) scale(0.5); opacity: 0; }
+    100% { transform: translate(0, 0) scale(1); opacity: 1; }
+  }
+  @keyframes char-enter-bottom-left {
+    0% { transform: translate(-60px, 60px) scale(0.5); opacity: 0; }
+    100% { transform: translate(0, 0) scale(1); opacity: 1; }
+  }
+  @keyframes char-enter-bottom-center {
+    0% { transform: translate(0, 80px) scale(0.5); opacity: 0; }
+    100% { transform: translate(0, 0) scale(1); opacity: 1; }
+  }
+  @keyframes char-enter-left {
+    0% { transform: translate(-80px, 0) scale(0.5); opacity: 0; }
+    100% { transform: translate(0, 0) scale(1); opacity: 1; }
+  }
+  @keyframes char-enter-right {
+    0% { transform: translate(80px, 0) scale(0.5); opacity: 0; }
+    100% { transform: translate(0, 0) scale(1); opacity: 1; }
+  }
+
+  /* Idle micro-movements */
+  @keyframes idle-bob-1 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(2px, -3px) rotate(1deg); }
+    75% { transform: translate(-1px, -1px) rotate(-0.5deg); }
+  }
+  @keyframes idle-bob-2 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(-2px, -2px) rotate(-0.8deg); }
+    66% { transform: translate(1px, -3px) rotate(0.5deg); }
+  }
+
+  /* Logo levitate */
+  @keyframes logo-levitate {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  /* Container */
+  .dbc-logo-animated svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Characters hidden by default */
+  .dbc-logo-animated #char-top-left,
+  .dbc-logo-animated #char-top-right,
+  .dbc-logo-animated #char-bottom-left,
+  .dbc-logo-animated #char-bottom-center,
+  .dbc-logo-animated #char-left,
+  .dbc-logo-animated #char-right {
+    opacity: 0;
+  }
+
+  /* When visible: characters fly in, then idle */
+  .dbc-logo-animated.is-visible {
+    animation: logo-levitate 4s ease-in-out 1.5s infinite;
+  }
+
+  .dbc-logo-animated.is-visible #char-top-left {
+    animation: char-enter-top-left 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards,
+               idle-bob-1 5s ease-in-out 1.2s infinite;
+  }
+  .dbc-logo-animated.is-visible #char-top-right {
+    animation: char-enter-top-right 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards,
+               idle-bob-2 6s ease-in-out 1.35s infinite;
+  }
+  .dbc-logo-animated.is-visible #char-left {
+    animation: char-enter-left 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards,
+               idle-bob-1 5.5s ease-in-out 1.5s infinite;
+  }
+  .dbc-logo-animated.is-visible #char-right {
+    animation: char-enter-right 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards,
+               idle-bob-2 7s ease-in-out 1.4s infinite;
+  }
+  .dbc-logo-animated.is-visible #char-bottom-left {
+    animation: char-enter-bottom-left 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards,
+               idle-bob-2 5s ease-in-out 1.55s infinite;
+  }
+  .dbc-logo-animated.is-visible #char-bottom-center {
+    animation: char-enter-bottom-center 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards,
+               idle-bob-1 6.5s ease-in-out 1.65s infinite;
+  }
+
+  /* ─── Animated highlight underline ─────────────────── */
+
+  .highlight-underline {
+    background-image: url('/assets/taches/tache-23-highlight.svg');
+    background-repeat: repeat-x;
+    background-position: 0 100%;
+    background-size: 0% 8px;
+    padding-bottom: 2px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    transition: background-size 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s;
+  }
+
+  .highlight-underline.is-visible {
+    background-size: 100% 8px;
+  }
+}

@@ -31,16 +31,7 @@ export function ReassuranceSection() {
             {t("reassurance.line3")}{" "}
             <Link
               href={`/${locale}/standard-dbc-labs`}
-              className="font-display text-primary transition-opacity hover:opacity-80"
-              style={{
-                backgroundImage: "url('/assets/taches/tache-23-highlight.svg')",
-                backgroundRepeat: "repeat-x",
-                backgroundPosition: "0 100%",
-                backgroundSize: "100% 8px",
-                paddingBottom: "2px",
-                WebkitBoxDecorationBreak: "clone",
-                boxDecorationBreak: "clone" as never,
-              }}
+              className={`font-display text-primary transition-opacity hover:opacity-80 highlight-underline ${isInView ? "is-visible" : ""}`}
             >
               {t("reassurance.highlight")}
             </Link>

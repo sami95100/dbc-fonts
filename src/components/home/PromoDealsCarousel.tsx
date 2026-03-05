@@ -63,34 +63,33 @@ export function PromoDealsCarousel({ products }: PromoDealsCarouselProps) {
       ref={inViewRef}
       className={`relative py-8 md:py-12 transition-[opacity,transform] duration-[0.6s] ease-[cubic-bezier(0.25,0.1,0.25,1)] will-change-[opacity,transform] ${isInView ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}
     >
-      {/* Title */}
-      <div className="mx-auto max-w-7xl px-5">
+      <div className="mx-auto max-w-7xl px-4">
+        {/* Title */}
         <div className="mb-6">
-          <h2 className="text-[24px] font-bold leading-tight tracking-tight text-gray-900 md:text-[28px]">
+          <h2 className="text-[28px] font-bold leading-tight tracking-tight text-gray-900 md:text-[32px] lg:text-[36px]">
             {t("promoDeals.title")}{" "}
-            <span className="font-normal text-gray-400">
+            <span className="font-normal text-gray-500">
               {t("promoDeals.titleAccent")}
             </span>
           </h2>
         </div>
-      </div>
 
-      {/* Carousel */}
-      <div className="relative">
-        {/* Left arrow */}
-        <button
-          onClick={() => scroll("left")}
-          className={`absolute left-2 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md transition-opacity md:flex ${canScrollLeft ? "opacity-100" : "pointer-events-none opacity-0"}`}
-          aria-label={t("hero.previous")}
-        >
-          <ChevronLeft className="h-4 w-4 text-gray-600" />
-        </button>
+        {/* Carousel */}
+        <div className="relative">
+          {/* Left arrow */}
+          <button
+            onClick={() => scroll("left")}
+            className={`absolute left-2 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md transition-opacity md:flex ${canScrollLeft ? "opacity-100" : "pointer-events-none opacity-0"}`}
+            aria-label={t("hero.previous")}
+          >
+            <ChevronLeft className="h-4 w-4 text-gray-600" />
+          </button>
 
-        {/* Scroll container */}
-        <div
-          ref={scrollRef}
-          className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-5 pb-4 scrollbar-hide"
-        >
+          {/* Scroll container */}
+          <div
+            ref={scrollRef}
+            className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-4 scrollbar-hide md:gap-4"
+          >
           {products.map((product) => (
             <Link
               key={product.slug}
@@ -163,14 +162,15 @@ export function PromoDealsCarousel({ products }: PromoDealsCarouselProps) {
           ))}
         </div>
 
-        {/* Right arrow */}
-        <button
-          onClick={() => scroll("right")}
-          className={`absolute right-2 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md transition-opacity md:flex ${canScrollRight ? "opacity-100" : "pointer-events-none opacity-0"}`}
-          aria-label={t("hero.next")}
-        >
-          <ChevronRight className="h-4 w-4 text-gray-600" />
-        </button>
+          {/* Right arrow */}
+          <button
+            onClick={() => scroll("right")}
+            className={`absolute right-2 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md transition-opacity md:flex ${canScrollRight ? "opacity-100" : "pointer-events-none opacity-0"}`}
+            aria-label={t("hero.next")}
+          >
+            <ChevronRight className="h-4 w-4 text-gray-600" />
+          </button>
+        </div>
       </div>
     </section>
   );

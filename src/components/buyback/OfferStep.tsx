@@ -67,18 +67,7 @@ export function OfferStep({ estimate, onAccept, onDecline }: OfferStepProps) {
           <div className="mt-5 border-t border-green-200 pt-5">
             <p className="font-display text-[17px] font-bold leading-relaxed tracking-tight text-gray-900 md:text-[19px]">
               Chaque jour qui passe, ton telephone{" "}
-              <span
-                className="text-primary"
-                style={{
-                  backgroundImage: "url('/assets/taches/tache-23-highlight.svg')",
-                  backgroundRepeat: "repeat-x",
-                  backgroundPosition: "0 100%",
-                  backgroundSize: "100% 8px",
-                  paddingBottom: "2px",
-                  WebkitBoxDecorationBreak: "clone",
-                  boxDecorationBreak: "clone" as never,
-                }}
-              >
+              <span className="text-primary highlight-underline is-visible">
                 perd de la valeur
               </span>
               .

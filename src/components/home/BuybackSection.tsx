@@ -28,18 +28,7 @@ export function BuybackSection() {
           {/* Tagline */}
           <p className="font-display text-[20px] font-semibold leading-snug tracking-tight text-gray-600 md:text-[24px] lg:text-[28px]">
             Le meilleur moment pour vendre, c&apos;etait hier. Le deuxieme,{" "}
-            <span
-              className="font-bold text-primary"
-              style={{
-                backgroundImage: "url('/assets/taches/tache-23-highlight.svg')",
-                backgroundRepeat: "repeat-x",
-                backgroundPosition: "0 100%",
-                backgroundSize: "100% 8px",
-                paddingBottom: "2px",
-                WebkitBoxDecorationBreak: "clone",
-                boxDecorationBreak: "clone" as never,
-              }}
-            >
+            <span className={`font-bold text-primary highlight-underline ${isInView ? "is-visible" : ""}`}>
               c&apos;est maintenant
             </span>
             .
