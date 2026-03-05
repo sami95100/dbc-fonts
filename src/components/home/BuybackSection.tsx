@@ -8,7 +8,7 @@ import { ArrowRight, Banknote, Truck, MapPin } from "lucide-react";
 export function BuybackSection() {
   const locale = useLocale();
   const { ref, isInView } = useInView();
-  const { ref: titleRef, isInView: titleVisible } = useInView({ threshold: 0.5, rootMargin: "-20% 0px -20% 0px" });
+  const { ref: titleRef, isInView: titleVisible } = useInView({ threshold: 1, rootMargin: "-34% 0px -34% 0px" });
 
   return (
     <section
