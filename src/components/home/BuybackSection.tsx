@@ -36,13 +36,15 @@ export function BuybackSection() {
           </p>
 
           {/* CTA right after tagline */}
+          <div className="mt-6 text-center">
           <Link
             href={`/${locale}/reprise`}
-            className="group mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-primary/90 hover:shadow-md md:text-base"
+            className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-primary/90 hover:shadow-md md:text-base"
           >
             Estimer mon telephone
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
+          </div>
 
           {/* Divider */}
           <div className="my-8 h-px bg-gray-200 md:my-10" />
