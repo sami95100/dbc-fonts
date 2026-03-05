@@ -17,6 +17,7 @@ import { getMyOrders, type MyOrdersResponse } from "@/lib/api/orders";
 import { useProfile } from "@/hooks/useProfile";
 import ProfileForm from "@/components/account/ProfileForm";
 import OrderCard from "@/components/account/OrderCard";
+import { SalesTab } from "@/components/account/SalesTab";
 
 export default function AccountPage() {
   const locale = useLocale();
@@ -28,6 +29,7 @@ export default function AccountPage() {
   const [orders, setOrders] = useState<MyOrdersResponse | null>(null);
   const [loadingOrders, setLoadingOrders] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [activeTab, setActiveTab] = useState<"orders" | "sales" | "profile">("orders");
 
   const fetchOrders = useCallback(
     async (page: number = 1) => {
@@ -92,69 +94,96 @@ export default function AccountPage() {
           <p className="font-medium text-gray-900">{user.email}</p>
         </div>
 
-        {/* Profile */}
-        <div className="mb-8">
-          <ProfileForm profile={profile} />
+        {/* Tabs */}
+        <div className="mb-6 flex gap-1 border-b border-gray-200">
+          {(["orders", "sales", "profile"] as const).map((tab) => (
+            <button
+              key={tab}
+              type="button"
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-3 text-sm font-medium transition-colors ${
+                activeTab === tab
+                  ? "border-b-2 border-primary text-gray-900"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              {tab === "orders" ? "Commandes" : tab === "sales" ? "Reventes" : "Profil"}
+            </button>
+          ))}
         </div>
 
-        {/* Orders */}
-        <h2 className="mb-4 text-lg font-semibold text-gray-900">
-          {t("page.ordersTitle")}
-        </h2>
+        {/* Profile tab */}
+        {activeTab === "profile" && (
+          <div className="mb-8">
+            <ProfileForm profile={profile} />
+          </div>
+        )}
 
-        {loadingOrders ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
-          </div>
-        ) : !orders || orders.orders.length === 0 ? (
-          <div className="rounded-lg border border-gray-200 bg-white p-8 text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-              <ShoppingBag className="h-8 w-8 text-gray-400" />
-            </div>
-            <p className="mb-4 text-gray-500">{t("page.noOrders")}</p>
-            <Link
-              href={`/${locale}/products/smartphones`}
-              className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-medium text-white transition hover:bg-primary/90"
-            >
-              {t("page.browseProducts")}
-            </Link>
-          </div>
-        ) : (
+        {/* Sales tab */}
+        {activeTab === "sales" && <SalesTab />}
+
+        {/* Orders tab */}
+        {activeTab === "orders" && (
           <>
-            <div className="space-y-4">
-              {orders.orders.map((order) => (
-                <OrderCard key={order.id} order={order} />
-              ))}
-            </div>
+            <h2 className="mb-4 text-lg font-semibold text-gray-900">
+              {t("page.ordersTitle")}
+            </h2>
 
-            {/* Pagination */}
-            {orders.pages > 1 && (
-              <div className="mt-6 flex items-center justify-center gap-4">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={currentPage <= 1}
-                  onClick={() => goToPage(currentPage - 1)}
-                >
-                  <ChevronLeft className="mr-1 h-4 w-4" />
-                  {t("page.previousPage")}
-                </Button>
-                <span className="text-sm text-gray-600">
-                  {t("page.pageOf", {
-                    current: currentPage,
-                    total: orders.pages,
-                  })}
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={currentPage >= orders.pages}
-                  onClick={() => goToPage(currentPage + 1)}
-                >
-                  {t("page.nextPage")}
-                  <ChevronRight className="ml-1 h-4 w-4" />
-                </Button>
+            {loadingOrders ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
               </div>
+            ) : !orders || orders.orders.length === 0 ? (
+              <div className="rounded-lg border border-gray-200 bg-white p-8 text-center">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+                  <ShoppingBag className="h-8 w-8 text-gray-400" />
+                </div>
+                <p className="mb-4 text-gray-500">{t("page.noOrders")}</p>
+                <Link
+                  href={`/${locale}/products/smartphones`}
+                  className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-medium text-white transition hover:bg-primary/90"
+                >
+                  {t("page.browseProducts")}
+                </Link>
+              </div>
+            ) : (
+              <>
+                <div className="space-y-4">
+                  {orders.orders.map((order) => (
+                    <OrderCard key={order.id} order={order} />
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {orders.pages > 1 && (
+                  <div className="mt-6 flex items-center justify-center gap-4">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={currentPage <= 1}
+                      onClick={() => goToPage(currentPage - 1)}
+                    >
+                      <ChevronLeft className="mr-1 h-4 w-4" />
+                      {t("page.previousPage")}
+                    </Button>
+                    <span className="text-sm text-gray-600">
+                      {t("page.pageOf", {
+                        current: currentPage,
+                        total: orders.pages,
+                      })}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={currentPage >= orders.pages}
+                      onClick={() => goToPage(currentPage + 1)}
+                    >
+                      {t("page.nextPage")}
+                      <ChevronRight className="ml-1 h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
           </>
         )}

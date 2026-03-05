@@ -6,3 +6,5 @@ export { GradeExplainer } from "./GradeExplainer";
 export { BrandValues } from "./BrandValues";
 export { ServicesSection } from "./ServicesSection";
 export { StoresSection } from "./StoresSection";
+export { ImpactSection } from "./ImpactSection";
+export { BuybackSection } from "./BuybackSection";

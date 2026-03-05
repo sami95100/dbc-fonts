@@ -1,4 +1,4 @@
-import { HeroSection, ReassuranceSection, PromoDeals, ShoppingGuides, GradeExplainer, StoresSection } from "@/components/home";
+import { HeroSection, ReassuranceSection, PromoDeals, ShoppingGuides, GradeExplainer, StoresSection, ImpactSection, BuybackSection } from "@/components/home";
 
 export default function HomePage() {
   return (
@@ -18,8 +18,14 @@ export default function HomePage() {
       {/* Grade Explainer */}
       <GradeExplainer />
 
+      {/* Buyback CTA */}
+      <BuybackSection />
+
       {/* Stores */}
       <StoresSection />
+
+      {/* Impact RSE */}
+      <ImpactSection />
     </>
   );
 }

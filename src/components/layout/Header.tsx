@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { Search, ShoppingCart } from "lucide-react";
+import { Search, ShoppingCart, ArrowLeftRight } from "lucide-react";
 import { DbcLogo } from "@/components/ui/dbc-logo";
 import { MobileMenu } from "./MobileMenu";
 import { TopBar } from "./TopBar";
@@ -56,6 +56,15 @@ export function Header() {
 
               {/* Right actions */}
               <div className="flex items-center gap-1 md:gap-2">
+                {/* Revendre - buyback CTA */}
+                <Link
+                  href={`/${locale}/reprise`}
+                  className="flex items-center gap-1.5 rounded-full border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-900 transition-all hover:border-gray-900 hover:shadow-sm md:px-4 md:py-2 md:text-sm"
+                >
+                  <ArrowLeftRight className="h-3.5 w-3.5 md:h-4 md:w-4" aria-hidden="true" />
+                  {t("sell")}
+                </Link>
+
                 {/* Search - opens overlay */}
                 <button
                   onClick={() => setSearchOpen(true)}
