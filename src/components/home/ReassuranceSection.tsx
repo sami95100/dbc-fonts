@@ -15,7 +15,7 @@ const TRUST_ITEMS = [
 export function ReassuranceSection() {
   const locale = useLocale();
   const t = useTranslations("home");
-  const { ref: inViewRef, isInView } = useInView();
+  const { ref: inViewRef, isInView } = useInView({ threshold: 0.3, rootMargin: "-50px" });
 
   return (
     <section
